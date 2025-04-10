@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Modern UI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    @include('includes.frontend.style-login')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Bagian kiri (gambar) -->
+        <div class="image-section">
+            <img src="{{ asset('assets/frontend/landing-page/assets/img/hero-img.png') }}" alt="Login Illustration">
+        </div>
+
+        <!-- Bagian kanan (form login) -->
+        <div class="login-section">
+            <h2>Selamat Datang, Pelajar!</h2>
+            <p>Silakan masuk untuk melanjutkan!</p>
+            <form class="pt-3" method="POST" action="{{ route('login-siswa') }}">
+                @csrf
+
+                <div class="input-group">
+                    <input name="id_user" :value="old('id_user')" type="text" placeholder="Email atau Username"
+                        id="id_user" required>
+                </div>
+
+                <!-- Password with eye icon -->
+                <div class="input-group password-container">
+                    <input name="password" type="password" placeholder="Password" id="password" required>
+                    <i class="fas fa-eye eye-icon" id="togglePassword"></i>
+                </div>
+
+                <div class="remember-forgot">
+                    <label><input type="checkbox"> Ingat saya</label>
+                    <a href="{{ route('password.request') }}"><i class="fas fa-key"></i> Lupa Password?</a>
+                </div>
+
+                <button type="submit" class="login-btn">Masuk</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript untuk men-toggle password visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordField = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function() {
+            // Cek tipe input dan toggle antara password dan text
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                togglePassword.classList.remove('fa-eye');
+                togglePassword.classList.add('fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                togglePassword.classList.remove('fa-eye-slash');
+                togglePassword.classList.add('fa-eye');
+            }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if ($errors->any())
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Gagal',
+                    html: '<p style="color: #555;">{{ $errors->first() }}</p>',
+                    confirmButtonText: '<i class="fas fa-redo"></i> Coba Lagi',
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: 'swal-btn-red'
+                    }
+                });
+            @endif
+        });
+    </script>
+    
+
+</body>
+
+</html>
