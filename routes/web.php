@@ -32,6 +32,7 @@ use App\Http\Controllers\Admin\ProfileSekolahController;
 use App\Http\Controllers\Frontend\LandingPageController;
 use App\Http\Controllers\Siswa\DashboardSiswaController;
 use App\Http\Controllers\Admin\PertemuanMateriController;
+use App\Http\Controllers\Siswa\SiswaKuisSessionController;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -419,6 +420,9 @@ Route::middleware(PreventBackHistory::class, RedirectIfNotSiswa::class)->prefix(
 
     // kuis siswa
     Route::get('/mata-pelajaran/{mapel}/{kelas}/{tahunAjaran}/kuis/{judulKuis}/action', [KuisSiswaController::class, 'action'])->name('kuis-siswa.action');
+
+    Route::post('/kuis/cek-token', [SiswaKuisSessionController::class, 'cekToken'])->name('kuis-siswa.cek-token');
+
 });
 
 require __DIR__ . '/auth.php';

@@ -41,4 +41,10 @@ class PertemuanKuis extends Model
     {
         return $this->belongsTo('App\Models\Kuis', 'kuis_id');
     }
+
+    // siswa kuuis session
+    public function SiswaKuisSession()
+    {
+        return $this->hasMany(SiswaKuisSession::class, 'pertemuan_kuis_id');
+    }
 }

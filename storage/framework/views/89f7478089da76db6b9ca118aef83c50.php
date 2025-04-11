@@ -177,6 +177,7 @@
                         }
 
                         $groupedData[$judulGroup]['kuis'][] = [
+                            'id_pertemuan' => $kuis->id,
                             'id' => $kuis->kuis->id,
                             'pertemuan_ke' => $kuis->pertemuan->judul,
                             'judul' => $kuis->kuis->judul,
@@ -237,15 +238,18 @@
                                             <?php echo e($kuis['pertemuan_ke']); ?> - <?php echo e($kuis['kategori_kuis']); ?> -
                                             <?php echo e($kuis['judul']); ?></span>
 
+                                        <!-- Tombol Kerjakan Kuis -->
                                         <a href="#" class="btn btn-outline-primary btn-sm btn-kerjakan-kuis"
                                             data-link="<?php echo e(route('kuis-siswa.action', [
                                                 'mapel' => Str::slug($kuis['nama_mapel']),
                                                 'kelas' => Str::slug($kuis['nama_kelas']),
                                                 'tahunAjaran' => str_replace('/', '-', $kuis['tahun_ajaran']),
                                                 'judulKuis' => Str::slug($kuis['judul']),
-                                            ])); ?>">
+                                            ])); ?>"
+                                            data-pertemuan-id="<?php echo e($kuis['id_pertemuan']); ?>">
                                             Kerjakan
                                         </a>
+
 
                                     </div>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -332,10 +336,38 @@
             </div>
         </div>
 
+        <!-- Modal Input Token -->
+        <div class="modal fade" id="modalTokenKuis" tabindex="-1" aria-labelledby="modalTokenLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <form method="POST" action="<?php echo e(route('kuis-siswa.cek-token')); ?>" id="formTokenKuis">
+                    <?php echo csrf_field(); ?>
+                    <input type="hidden" name="pertemuan_kuis_id" id="pertemuan_kuis_id">
+                    <input type="hidden" name="redirect_link" id="redirect_link">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Masukkan Token Kuis</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Tutup"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" name="token" class="form-control" placeholder="Masukkan token"
+                                required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Mulai Kuis</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
     </main>
     <!-- Tambahkan ini sebelum </body> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -423,7 +455,7 @@
                 if (result.isConfirmed) {
                     let form = document.createElement("form");
                     form.method = "POST";
-                    form.action = `/hapus-tugas-siswa/${tugasId}`;
+                    form.action = `/siswa/hapus-tugas-siswa/${tugasId}`;
 
                     let csrfInput = document.createElement("input");
                     csrfInput.type = "hidden";
@@ -464,34 +496,33 @@
         });
     </script>
 
+    
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const buttons = document.querySelectorAll('.btn-kerjakan-kuis');
+        document.querySelectorAll('.btn-kerjakan-kuis').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const pertemuanId = this.dataset.pertemuanId;
+                const link = this.dataset.link;
 
-            buttons.forEach(function(button) {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
+                document.getElementById('pertemuan_kuis_id').value = pertemuanId;
+                document.getElementById('redirect_link').value = link;
 
-                    const targetLink = this.getAttribute('data-link');
-
-                    Swal.fire({
-                        title: 'Yakin ingin mengerjakan kuis?',
-                        text: "Pastikan kamu sudah siap!",
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#aaa',
-                        confirmButtonText: 'Ya, mulai sekarang!',
-                        cancelButtonText: 'Nanti dulu'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = targetLink;
-                        }
-                    });
-                });
+                $('#modalTokenKuis').modal('show');
             });
         });
     </script>
+
+    <?php if(session('token_error')): ?>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Token Salah',
+                text: '<?php echo e(session('token_error')); ?>',
+            });
+        </script>
+    <?php endif; ?>
+
 
 
 </body>

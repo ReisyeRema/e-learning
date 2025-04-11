@@ -177,6 +177,7 @@
                         }
 
                         $groupedData[$judulGroup]['kuis'][] = [
+                            'id_pertemuan' => $kuis->id,
                             'id' => $kuis->kuis->id,
                             'pertemuan_ke' => $kuis->pertemuan->judul,
                             'judul' => $kuis->kuis->judul,
@@ -236,15 +237,18 @@
                                             {{ $kuis['pertemuan_ke'] }} - {{ $kuis['kategori_kuis'] }} -
                                             {{ $kuis['judul'] }}</span>
 
+                                        <!-- Tombol Kerjakan Kuis -->
                                         <a href="#" class="btn btn-outline-primary btn-sm btn-kerjakan-kuis"
                                             data-link="{{ route('kuis-siswa.action', [
                                                 'mapel' => Str::slug($kuis['nama_mapel']),
                                                 'kelas' => Str::slug($kuis['nama_kelas']),
                                                 'tahunAjaran' => str_replace('/', '-', $kuis['tahun_ajaran']),
                                                 'judulKuis' => Str::slug($kuis['judul']),
-                                            ]) }}">
+                                            ]) }}"
+                                            data-pertemuan-id="{{ $kuis['id_pertemuan'] }}">
                                             Kerjakan
                                         </a>
+
 
                                     </div>
                                 @endforeach
@@ -331,10 +335,38 @@
             </div>
         </div>
 
+        <!-- Modal Input Token -->
+        <div class="modal fade" id="modalTokenKuis" tabindex="-1" aria-labelledby="modalTokenLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <form method="POST" action="{{ route('kuis-siswa.cek-token') }}" id="formTokenKuis">
+                    @csrf
+                    <input type="hidden" name="pertemuan_kuis_id" id="pertemuan_kuis_id">
+                    <input type="hidden" name="redirect_link" id="redirect_link">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Masukkan Token Kuis</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Tutup"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" name="token" class="form-control" placeholder="Masukkan token"
+                                required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Mulai Kuis</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
     </main>
     <!-- Tambahkan ini sebelum </body> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -422,7 +454,7 @@
                 if (result.isConfirmed) {
                     let form = document.createElement("form");
                     form.method = "POST";
-                    form.action = `/hapus-tugas-siswa/${tugasId}`;
+                    form.action = `/siswa/hapus-tugas-siswa/${tugasId}`;
 
                     let csrfInput = document.createElement("input");
                     csrfInput.type = "hidden";
@@ -463,7 +495,7 @@
         });
     </script>
 
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             const buttons = document.querySelectorAll('.btn-kerjakan-kuis');
 
@@ -490,7 +522,33 @@
                 });
             });
         });
+    </script> --}}
+
+    <script>
+        document.querySelectorAll('.btn-kerjakan-kuis').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const pertemuanId = this.dataset.pertemuanId;
+                const link = this.dataset.link;
+
+                document.getElementById('pertemuan_kuis_id').value = pertemuanId;
+                document.getElementById('redirect_link').value = link;
+
+                $('#modalTokenKuis').modal('show');
+            });
+        });
     </script>
+
+    @if (session('token_error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Token Salah',
+                text: '{{ session('token_error') }}',
+            });
+        </script>
+    @endif
+
 
 
 </body>
