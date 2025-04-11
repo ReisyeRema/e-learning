@@ -38,9 +38,14 @@ class SoalKuisController extends Controller
         }
 
         // Pastikan pilihan jawaban dikonversi ke JSON jika tipe soal Objective
-        if ($request->type_soal === 'Objective' && is_array($request->pilihan_jawaban)) {
-            $validatedData['pilihan_jawaban'] = json_encode($request->pilihan_jawaban);
-        } else {
+        // if ($request->type_soal === 'Objective' && is_array($request->pilihan_jawaban)) {
+        //     $validatedData['pilihan_jawaban'] = json_encode($request->pilihan_jawaban);
+        // } else {
+        //     $validatedData['pilihan_jawaban'] = null;
+        // }
+
+        // Tidak perlu json_encode, cukup isi array langsung
+        if ($request->type_soal !== 'Objective') {
             $validatedData['pilihan_jawaban'] = null;
         }
 
@@ -69,9 +74,8 @@ class SoalKuisController extends Controller
             $validatedData['gambar'] = $newImage;
         }
 
-        if ($request->type_soal === 'Objective' && is_array($request->pilihan_jawaban)) {
-            $validatedData['pilihan_jawaban'] = json_encode($request->pilihan_jawaban);
-        } else {
+         // Tidak perlu json_encode
+        if ($request->type_soal !== 'Objective') {
             $validatedData['pilihan_jawaban'] = null;
         }
 

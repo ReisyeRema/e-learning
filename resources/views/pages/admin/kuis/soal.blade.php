@@ -115,8 +115,8 @@
 
                                                         <div class="soal-fields" id="soal_fields_{{ $item->id }}">
                                                             @if ($item->type_soal == 'Objective')
-                                                                @php $choices = json_decode($item->pilihan_jawaban, true); @endphp
-                                                                <div class="form-group">
+                                                            @php $choices = $item->pilihan_jawaban; @endphp
+                                                            <div class="form-group">
                                                                     <label>Pilihan Jawaban</label>
                                                                     <input type="text" name="pilihan_jawaban[A]"
                                                                         class="form-control mb-2" placeholder="Jawaban A"

@@ -22,8 +22,14 @@ class KuisSiswaController extends Controller
             })
             ->firstOrFail();
 
+        $kuis = Kuis::with('soalKuis')
+            ->where('judul', str_replace('-', ' ', $judulKuis))
+            ->firstOrFail();
+
         return view('pages.siswa.kuis.action', [
             'pembelajaran' => $pembelajaran,
+            'kuis' => $kuis,
+            'soalKuis' => $kuis->soalKuis,
         ]);
     }
 }

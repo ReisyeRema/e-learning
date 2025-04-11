@@ -90,44 +90,47 @@
 
             <form id="quiz-form">
 
-                <!-- Soal Pilihan Ganda -->
-                <div class="question">
-                    <div class="question-number">Soal 1</div>
-                    <p><strong>Berapakah hasil dari 2 + 2?</strong></p>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="q1" id="q1a" value="a">
-                        <label class="form-check-label" for="q1a">3</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="q1" id="q1b" value="b">
-                        <label class="form-check-label" for="q1b">4</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="q1" id="q1c" value="c">
-                        <label class="form-check-label" for="q1c">5</label>
-                    </div>
-                </div>
+                <?php $no = 1; ?>
 
-                <!-- Soal Essay -->
-                <div class="question">
-                    <div class="question-number">Soal 2</div>
-                    <p><strong>Jelaskan pengertian dari bilangan prima.</strong></p>
-                    <textarea class="form-control mt-2" name="q2" rows="4" placeholder="Tulis jawaban Anda di sini..."></textarea>
-                </div>
+                <?php $__currentLoopData = $soalKuis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $soal): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="question">
+                        <div class="question-number">Soal <?php echo e($no++); ?></div>
+                        <p><strong><?php echo e($soal->teks_soal); ?></strong></p>
 
-                <!-- Soal True / False -->
-                <div class="question">
-                    <div class="question-number">Soal 3</div>
-                    <p><strong>Angka 10 adalah bilangan genap. (Benar/Salah)</strong></p>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="q3" id="q3true" value="true">
-                        <label class="form-check-label" for="q3true">Benar</label>
+                        
+                        <?php if($soal->gambar): ?>
+                            <img src="<?php echo e(asset('storage/' . $soal->gambar)); ?>" alt="Gambar Soal" class="img-fluid mb-3">
+                        <?php endif; ?>
+
+                        
+                        <?php if($soal->type_soal === 'Objective'): ?>
+                            <?php $__currentLoopData = $soal->pilihan_jawaban; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $pilihan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="soal_<?php echo e($soal->id); ?>"
+                                        id="soal_<?php echo e($soal->id); ?>_<?php echo e($key); ?>" value="<?php echo e($key); ?>">
+                                    <label class="form-check-label"
+                                        for="soal_<?php echo e($soal->id); ?>_<?php echo e($key); ?>"><?php echo e($pilihan); ?></label>
+                                </div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php elseif($soal->type_soal === 'Essay'): ?>
+                            <textarea class="form-control mt-2" name="soal_<?php echo e($soal->id); ?>" rows="4"
+                                placeholder="Tulis jawaban Anda di sini..."></textarea>
+                        <?php elseif($soal->type_soal === 'TrueFalse'): ?>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="soal_<?php echo e($soal->id); ?>"
+                                    id="true_<?php echo e($soal->id); ?>" value="true">
+                                <label class="form-check-label" for="true_<?php echo e($soal->id); ?>">Benar</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="soal_<?php echo e($soal->id); ?>"
+                                    id="false_<?php echo e($soal->id); ?>" value="false">
+                                <label class="form-check-label" for="false_<?php echo e($soal->id); ?>">Salah</label>
+                            </div>
+                        <?php else: ?>
+                            <p><em>Tipe soal tidak dikenali</em></p>
+                        <?php endif; ?>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="q3" id="q3false" value="false">
-                        <label class="form-check-label" for="q3false">Salah</label>
-                    </div>
-                </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-success shadow">Kumpulkan Jawaban</button>

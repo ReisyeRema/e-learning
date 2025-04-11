@@ -67,7 +67,7 @@ class SoalKuisRequest extends FormRequest
             'gambar.max' => 'Ukuran Gambar maksimal 2 MB.',
             'type_soal.required' => 'Tipe soal harus dipilih.',
             'type_soal.in' => 'Tipe soal harus salah satu dari: Objective, Essay, atau TrueFalse.',
-            'pilihan_jawaban.json' => 'Pilihan jawaban harus dalam format JSON yang valid.',
+            // 'pilihan_jawaban.json' => 'Pilihan jawaban harus dalam format JSON yang valid.',
             'jawaban_benar.required' => 'Jawaban benar tidak boleh kosong.',
             'jawaban_benar.string' => 'Jawaban benar harus berupa teks.',
             'skor.integer' => 'Skor harus berupa angka.',

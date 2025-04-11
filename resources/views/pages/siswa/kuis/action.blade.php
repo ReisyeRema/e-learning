@@ -90,44 +90,47 @@
 
             <form id="quiz-form">
 
-                <!-- Soal Pilihan Ganda -->
-                <div class="question">
-                    <div class="question-number">Soal 1</div>
-                    <p><strong>Berapakah hasil dari 2 + 2?</strong></p>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="q1" id="q1a" value="a">
-                        <label class="form-check-label" for="q1a">3</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="q1" id="q1b" value="b">
-                        <label class="form-check-label" for="q1b">4</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="q1" id="q1c" value="c">
-                        <label class="form-check-label" for="q1c">5</label>
-                    </div>
-                </div>
+                @php $no = 1; @endphp
 
-                <!-- Soal Essay -->
-                <div class="question">
-                    <div class="question-number">Soal 2</div>
-                    <p><strong>Jelaskan pengertian dari bilangan prima.</strong></p>
-                    <textarea class="form-control mt-2" name="q2" rows="4" placeholder="Tulis jawaban Anda di sini..."></textarea>
-                </div>
+                @foreach ($soalKuis as $soal)
+                    <div class="question">
+                        <div class="question-number">Soal {{ $no++ }}</div>
+                        <p><strong>{{ $soal->teks_soal }}</strong></p>
 
-                <!-- Soal True / False -->
-                <div class="question">
-                    <div class="question-number">Soal 3</div>
-                    <p><strong>Angka 10 adalah bilangan genap. (Benar/Salah)</strong></p>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="q3" id="q3true" value="true">
-                        <label class="form-check-label" for="q3true">Benar</label>
+                        {{-- Gambar jika ada --}}
+                        @if ($soal->gambar)
+                            <img src="{{ asset('storage/' . $soal->gambar) }}" alt="Gambar Soal" class="img-fluid mb-3">
+                        @endif
+
+                        {{-- Tipe soal --}}
+                        @if ($soal->type_soal === 'Objective')
+                            @foreach ($soal->pilihan_jawaban as $key => $pilihan)
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="soal_{{ $soal->id }}"
+                                        id="soal_{{ $soal->id }}_{{ $key }}" value="{{ $key }}">
+                                    <label class="form-check-label"
+                                        for="soal_{{ $soal->id }}_{{ $key }}">{{ $pilihan }}</label>
+                                </div>
+                            @endforeach
+                        @elseif ($soal->type_soal === 'Essay')
+                            <textarea class="form-control mt-2" name="soal_{{ $soal->id }}" rows="4"
+                                placeholder="Tulis jawaban Anda di sini..."></textarea>
+                        @elseif ($soal->type_soal === 'TrueFalse')
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="soal_{{ $soal->id }}"
+                                    id="true_{{ $soal->id }}" value="true">
+                                <label class="form-check-label" for="true_{{ $soal->id }}">Benar</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="soal_{{ $soal->id }}"
+                                    id="false_{{ $soal->id }}" value="false">
+                                <label class="form-check-label" for="false_{{ $soal->id }}">Salah</label>
+                            </div>
+                        @else
+                            <p><em>Tipe soal tidak dikenali</em></p>
+                        @endif
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="q3" id="q3false" value="false">
-                        <label class="form-check-label" for="q3false">Salah</label>
-                    </div>
-                </div>
+                @endforeach
 
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-success shadow">Kumpulkan Jawaban</button>
