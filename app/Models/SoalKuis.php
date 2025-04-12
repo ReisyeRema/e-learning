@@ -30,4 +30,10 @@ class SoalKuis extends Model
         return $this->belongsTo('App\Models\Kuis', 'kuis_id','id');
     }
 
+    public function jawabanKuis()
+    {
+        return $this->hasMany(JawabanKuis::class, 'soal_id');
+    }
+
+
 }

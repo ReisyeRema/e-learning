@@ -31,13 +31,19 @@ class Kuis extends Model
 
     public function soalKuis()
     {
-        return $this->hasMany('App\Models\SoalKuis', 'kuis_id','id');
+        return $this->hasMany('App\Models\SoalKuis', 'kuis_id', 'id');
     }
 
     public function pertemuanKuis()
     {
         return $this->hasMany(PertemuanKuis::class, 'kuis_id');
     }
+
+    public function hasilKuis()
+    {
+        return $this->hasMany(HasilKuis::class, 'kuis_id');
+    }
+
 
     protected static function boot()
     {
@@ -47,7 +53,7 @@ class Kuis extends Model
             foreach ($kuis->pertemuanKuis as $kuisPertemuan) {
                 $kuisPertemuan->delete(); // Soft delete kuisPertemuan terkait
             }
-        });        
+        });
 
         static::restoring(function ($kuis) {
             // Restore semua kuisPertemuan kuis yang terkait saat kuis di-restore

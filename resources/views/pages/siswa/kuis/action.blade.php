@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Kuis Matematika</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -88,42 +89,39 @@
 
             <h3 class="text-center">🧠 Kuis Matematika Dasar</h3>
 
-            <form id="quiz-form">
-
+            <form id="quiz-form" action="{{ route('kuis.kumpulkan') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="kuis_id" value="{{ $kuis->id }}">
+            
                 @php $no = 1; @endphp
 
                 @foreach ($soalKuis as $soal)
                     <div class="question">
                         <div class="question-number">Soal {{ $no++ }}</div>
                         <p><strong>{{ $soal->teks_soal }}</strong></p>
-
-                        {{-- Gambar jika ada --}}
+            
                         @if ($soal->gambar)
                             <img src="{{ asset('storage/' . $soal->gambar) }}" alt="Gambar Soal" class="img-fluid mb-3">
                         @endif
-
-                        {{-- Tipe soal --}}
+            
                         @if ($soal->type_soal === 'Objective')
                             @foreach ($soal->pilihan_jawaban as $key => $pilihan)
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="soal_{{ $soal->id }}"
-                                        id="soal_{{ $soal->id }}_{{ $key }}" value="{{ $key }}">
-                                    <label class="form-check-label"
-                                        for="soal_{{ $soal->id }}_{{ $key }}">{{ $pilihan }}</label>
+                                    <input class="form-check-input" type="radio" name="soal_{{ $soal->id }}" 
+                                        id="soal_{{ $soal->id }}_{{ $key }}" value="{{ $key }}" >
+                                    <label class="form-check-label" for="soal_{{ $soal->id }}_{{ $key }}">{{ $pilihan }}</label>
                                 </div>
                             @endforeach
                         @elseif ($soal->type_soal === 'Essay')
                             <textarea class="form-control mt-2" name="soal_{{ $soal->id }}" rows="4"
-                                placeholder="Tulis jawaban Anda di sini..."></textarea>
+                                placeholder="Tulis jawaban Anda di sini..." ></textarea>
                         @elseif ($soal->type_soal === 'TrueFalse')
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="soal_{{ $soal->id }}"
-                                    id="true_{{ $soal->id }}" value="true">
+                                <input class="form-check-input" type="radio" name="soal_{{ $soal->id }}" id="true_{{ $soal->id }}" value="true" >
                                 <label class="form-check-label" for="true_{{ $soal->id }}">Benar</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="soal_{{ $soal->id }}"
-                                    id="false_{{ $soal->id }}" value="false">
+                                <input class="form-check-input" type="radio" name="soal_{{ $soal->id }}" id="false_{{ $soal->id }}" value="false" >
                                 <label class="form-check-label" for="false_{{ $soal->id }}">Salah</label>
                             </div>
                         @else
@@ -131,20 +129,55 @@
                         @endif
                     </div>
                 @endforeach
-
+            
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-success shadow">Kumpulkan Jawaban</button>
                 </div>
             </form>
+            
         </div>
     </main>
 
     <script>
         document.getElementById("quiz-form").addEventListener("submit", function(e) {
             e.preventDefault();
-            alert("Jawaban berhasil dikumpulkan!");
+    
+            const form = e.target;
+            const formData = new FormData(form);
+            const unanswered = [];
+    
+            @foreach ($soalKuis as $soal)
+                const soalId = "soal_{{ $soal->id }}";
+                const answer = formData.get(soalId);
+                if (!answer || answer.trim() === "") {
+                    unanswered.push({ id: soalId });
+                }
+            @endforeach
+    
+            if (unanswered.length > 0) {
+                alert("Harap jawab semua soal terlebih dahulu sebelum mengumpulkan.");
+                return;
+            }
+    
+            fetch("{{ route('kuis.kumpulkan') }}", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Jawaban berhasil dikumpulkan!");
+                window.location.reload(); // Atau redirect ke halaman lain jika perlu
+            })
+            .catch(error => {
+                console.error("Terjadi kesalahan:", error);
+                alert("Terjadi kesalahan saat mengirim jawaban.");
+            });
         });
     </script>
+    
 </body>
 
 </html>

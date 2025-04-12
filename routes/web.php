@@ -420,8 +420,9 @@ Route::middleware(PreventBackHistory::class, RedirectIfNotSiswa::class)->prefix(
 
     // kuis siswa
     Route::get('/mata-pelajaran/{mapel}/{kelas}/{tahunAjaran}/kuis/{judulKuis}/action', [KuisSiswaController::class, 'action'])->name('kuis-siswa.action');
-
     Route::post('/kuis/cek-token', [SiswaKuisSessionController::class, 'cekToken'])->name('kuis-siswa.cek-token');
+    Route::post('/kuis/kumpulkan', [KuisSiswaController::class, 'kumpulkan'])->name('kuis.kumpulkan');
+
 
 });
 
