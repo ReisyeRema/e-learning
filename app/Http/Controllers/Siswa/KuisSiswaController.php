@@ -9,6 +9,7 @@ use App\Models\JawabanKuis;
 use Illuminate\Support\Str;
 use App\Models\Pembelajaran;
 use Illuminate\Http\Request;
+use App\Models\ProfilSekolah;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,67 +38,6 @@ class KuisSiswaController extends Controller
         ]);
     }
 
-
-    // public function kumpulkan(Request $request)
-    // {
-    //     dd($request->all());
-    //     $userId = Auth::id();
-    //     $kuisId = $request->kuis_id; // Pastikan ID kuis ada di form (atau bisa diambil dari URL)
-
-    //     $totalSkor = 0;
-    //     $totalSoal = 0;
-
-    //     // Menyimpan jawaban untuk setiap soal
-    //     foreach ($request->except('_token', 'kuis_id') as $key => $value) {
-    //         if (str_starts_with($key, 'soal_')) {
-    //             $soalId = str_replace('soal_', '', $key);
-    //             $soal = SoalKuis::find($soalId);
-
-    //             $jawabanUser = trim($value);
-    //             $isCorrect = false;
-
-    //             if ($soal->type_soal === 'Essay') {
-    //                 $isCorrect = strtolower(trim($soal->jawaban_benar)) === strtolower($jawabanUser);
-    //             } elseif ($soal->type_soal === 'Objective' || $soal->type_soal === 'TrueFalse') {
-    //                 $isCorrect = $soal->jawaban_benar == $jawabanUser;
-    //             }
-
-    //             // Simpan jawaban per soal ke dalam jawaban_kuis
-    //             JawabanKuis::updateOrCreate(
-    //                 [
-    //                     'soal_id' => $soalId,
-    //                     'siswa_id' => $userId,
-    //                 ],
-    //                 [
-    //                     'jawaban_user' => $jawabanUser,
-    //                     'status' => $isCorrect,
-    //                 ]
-    //             );
-
-    //             // Hitung skor
-    //             if ($isCorrect) {
-    //                 $totalSkor++;
-    //             }
-
-    //             $totalSoal++;
-    //         }
-    //     }
-
-    //     // Simpan hasil akhir kuis ke dalam tabel hasil_kuis
-    //     HasilKuis::updateOrCreate(
-    //         [
-    //             'kuis_id' => $kuisId,
-    //             'siswa_id' => $userId,
-    //         ],
-    //         [
-    //             'skor_total' => $totalSkor,
-    //             'is_done' => true,
-    //         ]
-    //     );
-
-    //     return response()->json(['success' => true, 'message' => 'Jawaban berhasil dikumpulkan!']);
-    // }
-
     public function kumpulkan(Request $request)
     {
         $request->validate([
@@ -106,7 +46,8 @@ class KuisSiswaController extends Controller
 
         $userId = Auth::id();
         $kuisId = $request->kuis_id;
-        $totalSkor = 0;
+        $jumlahBenar = 0;
+        $jumlahSoal = 0;
         $jawabanJSON = [];
 
         foreach ($request->all() as $key => $jawabanUser) {
@@ -118,6 +59,7 @@ class KuisSiswaController extends Controller
                     continue;
                 }
 
+                $jumlahSoal++; // hitung total soal yang dijawab
                 $isCorrect = false;
 
                 if ($soal->type_soal === 'Essay') {
@@ -127,7 +69,7 @@ class KuisSiswaController extends Controller
                 }
 
                 if ($isCorrect) {
-                    $totalSkor++;
+                    $jumlahBenar++;
                 }
 
                 $jawabanJSON[$soalId] = [
@@ -137,6 +79,9 @@ class KuisSiswaController extends Controller
             }
         }
 
+        // Hitung skor sebagai persentase
+        $skorTotal = $jumlahSoal > 0 ? round(($jumlahBenar / $jumlahSoal) * 100) : 0;
+
         // Simpan ke tabel hasil_kuis
         HasilKuis::updateOrCreate(
             [
@@ -145,11 +90,35 @@ class KuisSiswaController extends Controller
             ],
             [
                 'jawaban_user' => json_encode($jawabanJSON),
-                'skor_total' => $totalSkor,
+                'skor_total' => $skorTotal,
                 'is_done' => true
             ]
         );
 
-        return response()->json(['message' => 'Jawaban berhasil dikumpulkan!']);
+        return redirect()->route('list-kuis.index')->with('success', 'Jawaban berhasil dikumpulkan!');
+    }
+
+
+    public function index()
+    {
+        $siswaId = Auth::id();
+
+        $kuisList = Kuis::whereHas('pertemuanKuis.pembelajaran.enrollments', function ($query) use ($siswaId) {
+            $query->where('siswa_id', $siswaId);
+        })
+            ->with(['pertemuanKuis.pembelajaran' => function ($query) {
+                $query->withCount('enrollments')
+                    ->withCount('pertemuanMateri');
+            }, 'hasilKuis' => function ($query) use ($siswaId) {
+                $query->where('siswa_id', $siswaId);
+            }])
+            ->get()
+            ->sortByDesc(function ($tugas) {
+                return optional($tugas->pertemuanKuis->sortByDesc('created_at')->first())->created_at;
+            });
+
+        $profileSekolah = ProfilSekolah::first();
+
+        return view('pages.siswa.kuis.index', compact('kuisList', 'profileSekolah'));
     }
 }

@@ -17,16 +17,21 @@
             <div class="col-lg-4 col-md-6 footer-links">
                 <h4>Useful Links</h4>
                 <ul class="list-unstyled">
-                    <li><i class="bi bi-chevron-right"></i> <a href="<?php echo e(route('landing-page.index')); ?>#hero">Beranda</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a href="<?php echo e(route('landing-page.index')); ?>#about">Tentang Kami</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a href="<?php echo e(route('landing-page.index')); ?>#class">Kelas</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a href="<?php echo e(route('landing-page.index')); ?>#contact">Kontak</a></li>
+                    <li><i class="bi bi-chevron-right"></i> <a href="<?php echo e(route('landing-page.index')); ?>#hero">Beranda</a>
+                    </li>
+                    <li><i class="bi bi-chevron-right"></i> <a href="<?php echo e(route('landing-page.index')); ?>#about">Tentang
+                            Kami</a></li>
+                    <li><i class="bi bi-chevron-right"></i> <a href="<?php echo e(route('landing-page.index')); ?>#class">Kelas</a>
+                    </li>
+                    <li><i class="bi bi-chevron-right"></i> <a
+                            href="<?php echo e(route('landing-page.index')); ?>#contact">Kontak</a></li>
                 </ul>
             </div>
 
             <div class="col-lg-4 col-md-12 text-lg-end">
-                <h4>Follow Us</h4>
-                <p>Cras fermentum odio eu feugiat lide par naso tierra videa magna derita valies</p>
+                <h4>Ikuti Kami</h4>
+                <p>Ikuti kami di media sosial untuk mendapatkan informasi terbaru seputar pembelajaran dan update
+                    e-learning.</p>
                 <div class="social-links d-flex justify-content-lg-end">
                     <a href=""><i class="bi bi-twitter-x"></i></a>
                     <a href=""><i class="bi bi-facebook"></i></a>
@@ -38,7 +43,7 @@
     </div>
 
     <div class="container copyright text-center mt-4">
-        <p>© <span>Copyright</span> <strong class="px-1 sitename">eNno</strong> <span>All Rights Reserved</span></p>
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">Reisye Rema</strong> <span>All Rights Reserved</span></p>
         <div class="credits">
             Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
         </div>

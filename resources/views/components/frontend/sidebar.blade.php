@@ -13,8 +13,8 @@
         <li class="{{ Request::routeIs('list-tugas.index') ? 'active' : '' }}">
             <a href="{{ route('list-tugas.index') }}"><i class="fas fa-tasks"></i> Tugas</a>
         </li>
-        <li class="">
-            <a href="#"><i class="fas fa-question-circle"></i> Kuis</a>
+        <li class="{{ Request::routeIs('list-kuis.index') ? 'active' : '' }}">
+            <a href="{{ route('list-kuis.index') }}"><i class="fas fa-question-circle"></i> Kuis</a>
         </li>
         <li>
             <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

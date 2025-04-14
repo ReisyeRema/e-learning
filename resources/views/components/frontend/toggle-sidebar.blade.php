@@ -5,18 +5,21 @@
         right: -450px;
         width: 450px;
         height: 100%;
-        background: white;
-        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
-        transition: right 0.3s ease-in-out;
+        background: #ffffff;
+        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
+        transition: right 0.4s ease;
         z-index: 9999;
         overflow-y: auto;
-        padding: 45px;
+        padding: 40px 30px;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
     }
 
     .profile-sidebar h2 {
-        font-size: 22px;
-        border-bottom: 2px solid rgba(255, 255, 255, 0.3);
-        font-weight: bold;
+        font-size: 18px;
+        font-weight: 600;
+        color: #666;
+        margin-bottom: 15px;
     }
 
     .profile-sidebar.active {
@@ -25,27 +28,32 @@
 
     .profile-sidebar .close-btn {
         position: absolute;
-        top: 10px;
-        right: 15px;
-        font-size: 24px;
+        top: 20px;
+        right: 25px;
+        font-size: 26px;
+        color: #999;
         cursor: pointer;
+        transition: color 0.3s ease;
     }
 
     .profile-header {
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 30px;
     }
 
     .profile-header img {
-        width: 80px;
-        height: 80px;
+        width: 90px;
+        height: 90px;
         border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .profile-header h3 {
-        margin-top: 5px;
-        font-size: 18px;
-        font-weight: bold;
+        margin-top: 12px;
+        font-size: 20px;
+        font-weight: 700;
+        color: #333;
     }
 
     .profile-header p {
@@ -61,42 +69,47 @@
     }
 
     .profile-menu li {
-        padding: 15px 20px;
+        margin-bottom: 10px;
     }
 
     .profile-menu a {
-        text-decoration: none;
-        color: black;
-        font-size: 16px;
         display: flex;
         align-items: center;
-        transition: color 0.2s;
+        padding: 12px 18px;
+        font-size: 16px;
+        color: #333;
+        background: #f8f9fa;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: all 0.2s ease;
     }
 
     .profile-menu a:hover,
     .profile-menu a.active {
-        color: #10bc69;
+        background-color: #10bc69;
+        color: #fff;
     }
 
     .profile-menu a i {
         margin-right: 10px;
         font-size: 18px;
+        min-width: 24px;
     }
 
     .profile-divider {
         border: none;
         height: 1px;
         background: #adacac;
-        margin: 15px 0;
+        margin: 20px 0;
     }
 
     .overlay {
         position: fixed;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.3);
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.4);
         z-index: 9998;
         display: none;
     }
@@ -132,12 +145,12 @@
                 </a>
             </li>
             <li>
-                <a href="" class="">
+                <a href="{{ route('list-tugas.index') }}" class="{{ Request::routeIs('list-tugas.index') ? 'active' : '' }}">
                     <i class="fas fa-tasks"></i> Tugas
                 </a>
             </li>
             <li>
-                <a href="" class="">
+                <a href="{{ route('list-kuis.index') }}" class="{{ Request::routeIs('list-kuis.index') ? 'active' : '' }}">
                     <i class="fas fa-question-circle"></i> Kuis
                 </a>
             </li>

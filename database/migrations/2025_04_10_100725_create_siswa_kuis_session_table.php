@@ -18,6 +18,7 @@ return new class extends Migration
             $table->time('jam_mulai')->nullable();
             $table->time('jam_selesai')->nullable();
             $table->string('token')->nullable();
+            $table->integer('token_attempts')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

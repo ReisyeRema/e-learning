@@ -85,7 +85,7 @@
                             </div>
                         </div>
 
-                        @if ($tugas->submitTugas->isNotEmpty())
+                        {{-- @if ($tugas->submitTugas->isNotEmpty())
                             <div class="modal fade" id="modalDetailTugas{{ $tugas->id }}" tabindex="-1"
                                 aria-labelledby="modalDetailTugasLabel{{ $tugas->id }}" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -112,6 +112,56 @@
                                                     <span class="text-muted">Tidak ada file tersedia</span>
                                                 @endif
                                             </p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Tutup</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif --}}
+
+                        @if ($tugas->submitTugas->isNotEmpty())
+                            <div class="modal fade" id="modalDetailTugas{{ $tugas->id }}" tabindex="-1"
+                                aria-labelledby="modalDetailTugasLabel{{ $tugas->id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalDetailTugasLabel{{ $tugas->id }}">Detail
+                                                Tugas</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="d-flex mb-2">
+                                                <div style="min-width: 150px;"><strong>Judul</strong></div>
+                                                <div>: {{ $tugas->judul }}</div>
+                                            </div>
+                                            <div class="d-flex mb-2">
+                                                <div style="min-width: 150px;"><strong>Dikumpulkan pada</strong></div>
+                                                <div>:
+                                                    {{ date('d F Y - H:i', strtotime($tugas->submitTugas->first()->created_at)) }}
+                                                </div>
+                                            </div>
+                                            <div class="d-flex mb-2">
+                                                <div style="min-width: 150px;"><strong>File Tugas</strong></div>
+                                                <div>:
+                                                    @if ($tugas->submitTugas->first()->url)
+                                                        <a href="{{ $tugas->submitTugas->first()->url }}" target="_blank"
+                                                            class="btn btn-outline-primary btn-sm">
+                                                            Lihat File
+                                                        </a>
+                                                    @elseif ($tugas->submitTugas->first()->file_path)
+                                                        <a href="https://drive.google.com/file/d/{{ $tugas->submitTugas->first()->file_path }}/view"
+                                                            target="_blank" class="btn btn-outline-primary btn-sm">
+                                                            Lihat File
+                                                        </a>
+                                                    @else
+                                                        <span class="text-muted">Tidak ada file tersedia</span>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
