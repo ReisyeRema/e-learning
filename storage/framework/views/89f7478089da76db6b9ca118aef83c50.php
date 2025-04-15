@@ -249,6 +249,8 @@
                                             data-pertemuan-id="<?php echo e($kuis['id_pertemuan']); ?>">
                                             Kerjakan
                                         </a>
+
+
                                     </div>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             <?php endif; ?>
@@ -349,13 +351,12 @@
                                 aria-label="Tutup"></button>
                         </div>
                         <div class="modal-body">
-                            <input type="text" name="token" class="form-control" placeholder="Masukkan token" required
-                                <?php echo e(session('token_locked') ? 'disabled' : ''); ?>>
+                            <input type="text" name="token" class="form-control" placeholder="Masukkan token"
+                                required>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" <?php echo e(session('token_locked') ? 'disabled' : ''); ?>>
-                                Mulai Kuis
-                            </button>                        </div>
+                            <button type="submit" class="btn btn-primary">Mulai Kuis</button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -521,18 +522,6 @@
             });
         </script>
     <?php endif; ?>
-
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            <?php if(session('token_locked')): ?>
-                const modal = new bootstrap.Modal(document.getElementById('modalTokenKuis'));
-                modal.show();
-            <?php endif; ?>
-        });
-    </script>
-    
-
 
 </body>
 

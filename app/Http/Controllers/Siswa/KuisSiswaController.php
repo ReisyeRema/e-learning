@@ -9,12 +9,37 @@ use App\Models\JawabanKuis;
 use Illuminate\Support\Str;
 use App\Models\Pembelajaran;
 use Illuminate\Http\Request;
+use App\Models\PertemuanKuis;
 use App\Models\ProfilSekolah;
+use App\Models\SiswaKuisSession;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class KuisSiswaController extends Controller
 {
+    // public function action($mapel, $kelas, $tahunAjaran, $judulKuis)
+    // {
+    //     // Cari pembelajaran berdasarkan URL slug
+    //     $pembelajaran = Pembelajaran::whereRaw("LOWER(REPLACE(nama_mapel, ' ', '-')) = ?", [$mapel])
+    //         ->whereHas('kelas', function ($query) use ($kelas) {
+    //             $query->whereRaw("LOWER(REPLACE(nama_kelas, ' ', '-')) = ?", [$kelas]);
+    //         })
+    //         ->whereHas('tahunAjaran', function ($query) use ($tahunAjaran) {
+    //             $query->whereRaw("REPLACE(nama_tahun, '/', '-') = ?", [$tahunAjaran]);
+    //         })
+    //         ->firstOrFail();
+
+    //     $kuis = Kuis::with('soalKuis')
+    //         ->where('judul', str_replace('-', ' ', $judulKuis))
+    //         ->firstOrFail();
+
+    //     return view('pages.siswa.kuis.action', [
+    //         'pembelajaran' => $pembelajaran,
+    //         'kuis' => $kuis,
+    //         'soalKuis' => $kuis->soalKuis,
+    //     ]);
+    // }
+
     public function action($mapel, $kelas, $tahunAjaran, $judulKuis)
     {
         // Cari pembelajaran berdasarkan URL slug
@@ -27,9 +52,30 @@ class KuisSiswaController extends Controller
             })
             ->firstOrFail();
 
-        $kuis = Kuis::with('soalKuis')
-            ->where('judul', str_replace('-', ' ', $judulKuis))
-            ->firstOrFail();
+        // Ambil kuis berdasarkan judul
+        $kuis = Kuis::with('soalKuis')->where('judul', str_replace('-', ' ', $judulKuis))->firstOrFail();
+
+        // Cari pertemuan kuis terkait (jika ada)
+        $pertemuanKuis = PertemuanKuis::where('kuis_id', $kuis->id)
+            ->where('pembelajaran_id', $pembelajaran->id)
+            ->first();
+
+        if (!$pertemuanKuis) {
+            abort(404, 'Pertemuan kuis tidak ditemukan.');
+        }
+
+        // Cek apakah siswa sudah memiliki token aktif
+        $session = SiswaKuisSession::where('pertemuan_kuis_id', $pertemuanKuis->id)
+            ->where('siswa_id', Auth::id())
+            ->first();
+
+        if (!$session || !$session->token) {
+            return redirect()->route('mata-pelajaran.show', [
+                'mapel' => $mapel,
+                'kelas' => $kelas,
+                'tahunAjaran' => $tahunAjaran,
+            ])->with('token_error', 'Silakan masukkan token terlebih dahulu.');
+        }
 
         return view('pages.siswa.kuis.action', [
             'pembelajaran' => $pembelajaran,
@@ -37,6 +83,7 @@ class KuisSiswaController extends Controller
             'soalKuis' => $kuis->soalKuis,
         ]);
     }
+
 
     public function kumpulkan(Request $request)
     {
@@ -94,6 +141,17 @@ class KuisSiswaController extends Controller
                 'is_done' => true
             ]
         );
+
+        // jam selesai
+        $pertemuanId = PertemuanKuis::where('kuis_id', $kuisId)->value('id');
+
+        if ($pertemuanId) {
+            SiswaKuisSession::where('pertemuan_kuis_id', $pertemuanId)
+                ->where('siswa_id', $userId)
+                ->update([
+                    'jam_selesai' => now()->format('H:i:s'),
+                ]);
+        }
 
         return redirect()->route('list-kuis.index')->with('success', 'Jawaban berhasil dikumpulkan!');
     }
