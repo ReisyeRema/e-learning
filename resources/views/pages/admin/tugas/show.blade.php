@@ -53,9 +53,16 @@
                             Tambahkan
                         </button>
                     </div>
-                    <button type="button" class="btn btn-sm btn-warning mb-3 text-white">
+                    @php
+                        $mapelSlug = strtolower(str_replace(' ', '-', $pembelajaran->nama_mapel));
+                        $kelasSlug = strtolower(str_replace(' ', '-', $pembelajaran->kelas->nama_kelas));
+                        $tahunAjaranSlug = str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun);
+                    @endphp
+
+                    <a href="{{ route('list-pertemuan-tugas.index', [$mapelSlug, $kelasSlug, $tahunAjaranSlug]) }}"
+                        class="btn btn-sm btn-warning mb-3 text-white">
                         Lihat Aktivitas Siswa
-                    </button>
+                    </a>
 
                     <!-- Sidebar dan Content -->
                     <div class="row">
@@ -90,7 +97,10 @@
                                 <div class="card-body">
                                     <h5 class="mb-3" id="judul-pertemuan">Klik Pertemuan untuk melihat tugas yang
                                         diinputkan</h5>
-                                    <div class="list-group" id="tugas-container">
+                                    <div class="list-group" id="tugas-container"
+                                        data-mapel="{{ strtolower(str_replace(' ', '-', $pembelajaran->nama_mapel)) }}"
+                                        data-kelas="{{ strtolower(str_replace(' ', '-', $pembelajaran->kelas->nama_kelas)) }}"
+                                        data-tahun="{{ str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun) }}">
                                         <!-- Tugas akan dimasukkan di sini -->
                                     </div>
                                 </div>
@@ -309,30 +319,30 @@
     </script> --}}
 
     <script>
-        $(document).ready(function () {
-            $(".pertemuan-item").click(function () {
+        $(document).ready(function() {
+            $(".pertemuan-item").click(function() {
                 let pertemuanId = $(this).data("pertemuan");
                 let pembelajaranId = $(this).data("pembelajaran");
                 let pertemuanJudul = $(this).text().trim();
-    
+
                 $(".pertemuan-item").removeClass("active");
                 $(this).addClass("active");
-    
+
                 $("#judul-pertemuan").text(pertemuanJudul);
-    
+
                 $.ajax({
                     url: `/guru/tugas/${pertemuanId}?pembelajaran_id=${pembelajaranId}`,
                     type: "GET",
-                    success: function (response) {
+                    success: function(response) {
                         let tugasContainer = $("#tugas-container");
                         tugasContainer.empty();
-    
+
                         if (response.length > 0) {
-                            response.forEach(function (item) {
-                                let fileUrl = item.tugas.file_path
-                                    ? `https://drive.google.com/file/d/${item.tugas.file_path}/view`
-                                    : "#";
-    
+                            response.forEach(function(item) {
+                                let fileUrl = item.tugas.file_path ?
+                                    `https://drive.google.com/file/d/${item.tugas.file_path}/view` :
+                                    "#";
+
                                 let tugasItem = `
                                     <div class="list-group-item d-flex justify-content-between align-items-center border rounded p-2 mb-2 tugas-item"
                                         data-id="${item.id}" data-file-url="${fileUrl}">
@@ -340,16 +350,21 @@
                                             <i class="fas fa-file-alt text-primary"></i>
                                             <span class="ml-2">${item.tugas.judul}</span>
                                         </div>
-                                        <button class="btn btn-danger btn-sm delete-tugas" data-id="${item.id}">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                        <div class="btn-group">
+                                            <button class="btn btn-info btn-sm lihat-siswa" data-id="${item.tugas.id}">
+                                                <i class="fas fa-users"></i> Lihat Siswa
+                                            </button>
+                                            <button class="btn btn-danger btn-sm delete-tugas" data-id="${item.id}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
                                     </div>`;
-    
+
                                 tugasContainer.append(tugasItem);
                             });
-    
+
                             // Buka file
-                            $(".tugas-item").click(function () {
+                            $(".tugas-item").click(function() {
                                 let fileUrl = $(this).data("file-url");
                                 if (fileUrl !== "#") {
                                     window.open(fileUrl, "_blank");
@@ -357,15 +372,34 @@
                                     alert("File tidak tersedia.");
                                 }
                             });
-    
-                            // Hapus tugas
-                            $(".delete-tugas").click(function (e) {
+
+                            $(".lihat-siswa").click(function(e) {
                                 e.preventDefault();
                                 e.stopPropagation();
-    
+
+                                let container = $("#tugas-container");
+                                let mapelSlug = container.data("mapel");
+                                let kelasSlug = container.data("kelas");
+                                let tahunSlug = container.data("tahun");
+
+                                let tugasId = $(this).data(
+                                "id"); // Ambil ID tugas yg diklik
+
+                                let redirectUrl =
+                                    `/guru/submit-tugas/${mapelSlug}/${kelasSlug}/${tahunSlug}/list-tugas?tugas_id=${tugasId}`;
+                                window.location.href = redirectUrl;
+                            });
+
+
+
+                            // Hapus tugas
+                            $(".delete-tugas").click(function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+
                                 let tugasId = $(this).data("id");
                                 let parentItem = $(this).closest(".tugas-item");
-    
+
                                 Swal.fire({
                                     title: "Apakah Anda yakin?",
                                     text: "tugas ini akan dihapus secara permanen!",
@@ -378,29 +412,45 @@
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                         $.ajax({
-                                            url: "/guru/pertemuan-tugas/" + tugasId,
+                                            url: "/guru/pertemuan-tugas/" +
+                                                tugasId,
                                             type: "DELETE",
                                             data: {
                                                 _token: "{{ csrf_token() }}"
                                             },
-                                            success: function (response) {
-                                                if (response.success) {
-                                                    parentItem.fadeOut(300, function () {
-                                                        $(this).remove();
-                                                    });
-                                                    Swal.fire("Terhapus!", "tugas telah dihapus.", "success");
+                                            success: function(
+                                                response) {
+                                                if (response
+                                                    .success) {
+                                                    parentItem
+                                                        .fadeOut(
+                                                            300,
+                                                            function() {
+                                                                $(this)
+                                                                    .remove();
+                                                            });
+                                                    Swal.fire(
+                                                        "Terhapus!",
+                                                        "tugas telah dihapus.",
+                                                        "success"
+                                                    );
                                                 } else {
-                                                    Swal.fire("Gagal!", "Gagal menghapus tugas.", "error");
+                                                    Swal.fire(
+                                                        "Gagal!",
+                                                        "Gagal menghapus tugas.",
+                                                        "error");
                                                 }
                                             },
-                                            error: function () {
-                                                Swal.fire("Error!", "Terjadi kesalahan saat menghapus tugas.", "error");
+                                            error: function() {
+                                                Swal.fire("Error!",
+                                                    "Terjadi kesalahan saat menghapus tugas.",
+                                                    "error");
                                             }
                                         });
                                     }
                                 });
                             });
-    
+
                         } else {
                             tugasContainer.append(
                                 "<p class='text-muted'>Tidak ada materi untuk pertemuan ini.</p>"
@@ -411,5 +461,5 @@
             });
         });
     </script>
-    
+
 @endsection

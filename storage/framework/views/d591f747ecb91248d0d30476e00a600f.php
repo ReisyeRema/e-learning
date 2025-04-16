@@ -83,7 +83,10 @@
                                 <div class="card-body">
                                     <h5 class="mb-3" id="judul-pertemuan">Klik Pertemuan untuk melihat kuis yang
                                         diinputkan</h5>
-                                    <div class="list-group" id="kuis-container">
+                                    <div class="list-group" id="kuis-container"
+                                        data-mapel="<?php echo e(strtolower(str_replace(' ', '-', $pembelajaran->nama_mapel))); ?>"
+                                        data-kelas="<?php echo e(strtolower(str_replace(' ', '-', $pembelajaran->kelas->nama_kelas))); ?>"
+                                        data-tahun="<?php echo e(str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun)); ?>">
                                         <!-- Materi akan dimasukkan di sini -->
                                     </div>
                                 </div>
@@ -257,6 +260,9 @@ unset($__errorArgs, $__bag); ?>
                                             <button class="btn btn-light btn-sm copy-token" data-token="${item.token}" data-token-id="${item.id}">
                                                 <i class="fas fa-copy"></i> Salin
                                             </button>
+                                            <button class="btn btn-info btn-sm lihat-siswa" data-id="${item.kuis.id}">
+                                                <i class="fas fa-users"></i> Lihat Siswa
+                                            </button>
                                             <button class="btn btn-danger btn-sm delete-kuis" data-id="${item.id}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -275,6 +281,23 @@ unset($__errorArgs, $__bag); ?>
                                 } else {
                                     alert("File tidak tersedia.");
                                 }
+                            });
+
+                            $(".lihat-siswa").click(function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+
+                                let container = $("#kuis-container");
+                                let mapelSlug = container.data("mapel");
+                                let kelasSlug = container.data("kelas");
+                                let tahunSlug = container.data("tahun");
+
+                                let kuisId = $(this).data(
+                                "id"); // Ambil ID tugas yg diklik
+
+                                let redirectUrl =
+                                    `/guru/submit-kuis/${mapelSlug}/${kelasSlug}/${tahunSlug}/list-kuis?kuis_id=${kuisId}`;
+                                window.location.href = redirectUrl;
                             });
 
                             // Event klik untuk hapus kuis dengan SweetAlert

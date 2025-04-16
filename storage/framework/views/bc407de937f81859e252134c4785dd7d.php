@@ -88,6 +88,8 @@
                             </div>
                         </div>
 
+                        
+
                         <?php if($tugas->submitTugas->isNotEmpty()): ?>
                             <div class="modal fade" id="modalDetailTugas<?php echo e($tugas->id); ?>" tabindex="-1"
                                 aria-labelledby="modalDetailTugasLabel<?php echo e($tugas->id); ?>" aria-hidden="true">
@@ -100,22 +102,35 @@
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <p><strong>Judul:</strong> <?php echo e($tugas->judul); ?></p>
-                                            <p><strong>Dikumpulkan pada:</strong>
-                                                <?php echo e(date('d F Y - H:i', strtotime($tugas->submitTugas->first()->created_at))); ?>
+                                            <div class="d-flex mb-2">
+                                                <div style="min-width: 150px;"><strong>Judul</strong></div>
+                                                <div>: <?php echo e($tugas->judul); ?></div>
+                                            </div>
+                                            <div class="d-flex mb-2">
+                                                <div style="min-width: 150px;"><strong>Dikumpulkan pada</strong></div>
+                                                <div>:
+                                                    <?php echo e(date('d F Y - H:i', strtotime($tugas->submitTugas->first()->created_at))); ?>
 
-                                            </p>
-                                            <p><strong>File Tugas:</strong>
-                                                <?php if($tugas->submitTugas->first()->url): ?>
-                                                    <a href="<?php echo e($tugas->submitTugas->first()->url); ?>"
-                                                        target="_blank">Klik di sini untuk melihat tugas yang dikumpulkan</a>
-                                                <?php elseif($tugas->submitTugas->first()->file_path): ?>
-                                                    <a href="https://drive.google.com/file/d/<?php echo e($tugas->submitTugas->first()->file_path); ?>/view"
-                                                        target="_blank" class="btn btn-primary">Lihat Tugas</a>
-                                                <?php else: ?>
-                                                    <span class="text-muted">Tidak ada file tersedia</span>
-                                                <?php endif; ?>
-                                            </p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex mb-2">
+                                                <div style="min-width: 150px;"><strong>File Tugas</strong></div>
+                                                <div>:
+                                                    <?php if($tugas->submitTugas->first()->url): ?>
+                                                        <a href="<?php echo e($tugas->submitTugas->first()->url); ?>" target="_blank"
+                                                            class="btn btn-outline-primary btn-sm">
+                                                            Lihat File
+                                                        </a>
+                                                    <?php elseif($tugas->submitTugas->first()->file_path): ?>
+                                                        <a href="https://drive.google.com/file/d/<?php echo e($tugas->submitTugas->first()->file_path); ?>/view"
+                                                            target="_blank" class="btn btn-outline-primary btn-sm">
+                                                            Lihat File
+                                                        </a>
+                                                    <?php else: ?>
+                                                        <span class="text-muted">Tidak ada file tersedia</span>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"

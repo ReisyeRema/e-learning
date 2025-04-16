@@ -273,7 +273,7 @@ class TugasController extends Controller
             ->orderBy('id', 'asc')
             ->get();
 
-        return view('pages.admin.tugas.show', compact('pembelajaran', 'kelasData', 'tugas', 'pertemuanSemua', 'pertemuan'));
+        return view('pages.admin.tugas.show', compact('pembelajaran', 'kelasData', 'tugas', 'pertemuanSemua', 'pertemuan','pertemuanIds'));
     }
 
     // klik pertemuan agar tampil tugas

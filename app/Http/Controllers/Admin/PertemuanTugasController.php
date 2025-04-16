@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Kelas;
+use App\Models\Enrollments;
+use App\Models\SubmitTugas;
 use Illuminate\Support\Str;
 use App\Models\Pembelajaran;
 use Illuminate\Http\Request;
@@ -47,5 +50,62 @@ class PertemuanTugasController extends Controller
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Gagal menghapus materi.'], 500);
         }
+    }
+
+
+    public function listTugas($mapel, $kelas, $tahunAjaran, Request $request)
+    {
+        $mapelNama = Str::title(str_replace('-', ' ', $mapel));
+        $kelasNama = Str::upper(str_replace('-', ' ', $kelas));
+        $tahunAjaranFormatted = str_replace('-', '/', $tahunAjaran);
+
+        $kelasData = Kelas::whereRaw("LOWER(REPLACE(nama_kelas, ' ', '-')) = ?", [$kelas])->firstOrFail();
+
+        $pembelajaran = Pembelajaran::whereRaw("LOWER(REPLACE(nama_mapel, ' ', '-')) = ?", [$mapel])
+            ->where('kelas_id', $kelasData->id)
+            ->whereHas('tahunAjaran', function ($query) use ($tahunAjaranFormatted) {
+                $query->where('nama_tahun', $tahunAjaranFormatted);
+            })
+            ->firstOrFail();
+
+        $pertemuanTugas = $pembelajaran->pertemuanTugas()->with('tugas')->get();
+        $tugasList = $pertemuanTugas->pluck('tugas')->unique('id');
+
+        $enrollments = Enrollments::with('siswa')
+            ->where('pembelajaran_id', $pembelajaran->id)
+            ->get();
+
+        $tugasIdAktif = $request->query('tugas_id');
+
+        // Cuma ambil submit untuk tugas yang dipilih
+        $submitTugas = SubmitTugas::with('siswa')
+            ->where('tugas_id', $tugasIdAktif)
+            ->get()
+            ->groupBy(function ($item) {
+                return $item->tugas_id . '-' . $item->siswa_id;
+            });
+
+        return view('pages.admin.tugas.list-tugas', compact(
+            'tugasList',
+            'pembelajaran',
+            'kelasData',
+            'enrollments',
+            'submitTugas',
+            'tugasIdAktif'
+        ));
+    }
+
+
+    public function updateSkor(Request $request, $id)
+    {
+        $request->validate([
+            'skor' => 'required|numeric|min:0|max:100',
+        ]);
+
+        $submit = SubmitTugas::findOrFail($id);
+        $submit->skor = $request->skor;
+        $submit->save();
+
+        return redirect()->back()->with('success', 'Skor berhasil diperbarui.');
     }
 }
