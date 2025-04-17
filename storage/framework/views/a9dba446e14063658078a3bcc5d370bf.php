@@ -46,22 +46,24 @@
                                         </p>
 
                                         <!-- Progress Bar -->
-                                        <?php
-                                            $progress = rand(50, 100);
-                                        ?>
+                                        
+
                                         <div class="mb-2">
                                             <div class="d-flex justify-content-between small">
-                                                <span class="fw-bold"><?php echo e($progress); ?>% Completed</span>
-                                                <span
-                                                    class="text-muted"><?php echo e($progress < 100 ? 'Belum Selesai' : 'Selesai'); ?></span>
+                                                <span class="fw-bold"><?php echo e($enrollment->progress); ?>% Completed</span>
+                                                <span class="text-muted">
+                                                    <?php echo e($enrollment->progress < 100 ? 'Belum Selesai' : 'Selesai'); ?>
+
+                                                </span>
                                             </div>
                                             <div class="progress" style="height: 6px;">
                                                 <div class="progress-bar bg-success" role="progressbar"
-                                                    style="width: <?php echo e($progress); ?>%;" aria-valuenow="<?php echo e($progress); ?>"
+                                                    style="width: <?php echo e($enrollment->progress); ?>%;"
+                                                    aria-valuenow="<?php echo e($enrollment->progress); ?>"
                                                     aria-valuemin="0" aria-valuemax="100">
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>                                        
 
                                         <hr class="profile-divider">
 

@@ -14,22 +14,19 @@ class TugasSiswaController extends Controller
     {
         $siswaId = Auth::id();
 
-        $tugasList = Tugas::whereHas('pertemuanTugas.pembelajaran.enrollments', function ($query) use ($siswaId) {
-            $query->where('siswa_id', $siswaId);
-        })
-            ->with(['pertemuanTugas.pembelajaran' => function ($query) {
-                $query->withCount('enrollments') 
-                    ->withCount('pertemuanMateri'); 
-            }, 'submitTugas' => function ($query) use ($siswaId) {
+        // Ambil semua pertemuanTugas yang berasal dari pembelajaran yang di-enroll siswa
+        $pertemuanTugasList = \App\Models\PertemuanTugas::with(['tugas', 'pembelajaran.kelas', 'pembelajaran.tahunAjaran'])
+            ->whereHas('pembelajaran.enrollments', function ($query) use ($siswaId) {
+                $query->where('siswa_id', $siswaId);
+            })
+            ->with(['tugas.submitTugas' => function ($query) use ($siswaId) {
                 $query->where('siswa_id', $siswaId);
             }])
             ->get()
-            ->sortByDesc(function ($tugas) {
-                return optional($tugas->pertemuanTugas->sortByDesc('created_at')->first())->created_at;
-            });
-        
-        $profileSekolah = ProfilSekolah::first(); 
+            ->sortByDesc('created_at'); // Atau bisa juga berdasarkan deadline
 
-        return view('pages.siswa.tugas.index', compact('tugasList','profileSekolah'));
+        $profileSekolah = ProfilSekolah::first();
+
+        return view('pages.siswa.tugas.index', compact('pertemuanTugasList', 'profileSekolah'));
     }
 }

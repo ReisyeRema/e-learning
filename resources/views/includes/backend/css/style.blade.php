@@ -11,7 +11,7 @@
  <!-- inject:css -->
  <link rel="stylesheet" href="{{ asset('skydash/css/vertical-layout-light/style.css') }}">
  <!-- endinject -->
- <link rel="shortcut icon" href="{{ asset('skydash/images/favicon.png') }}" />
+ <link rel="shortcut icon" href="{{ url('storage/logo_sekolah/' . $profilSekolah->foto) }}" />
  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
 

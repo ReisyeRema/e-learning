@@ -217,6 +217,11 @@
                     "*submit-tugas/$slugMapel/$slugKelas/$slugTahunAjaran",
                     "*submit-kuis/$slugMapel/$slugKelas/$slugTahunAjaran",
                     "*siswa-kelas/$slugMapel/$slugKelas/$slugTahunAjaran",
+
+                    // Tambahan route baru:
+                    "*submit-tugas/$slugMapel/$slugKelas/$slugTahunAjaran/list-tugas",
+                    "*submit-kuis/$slugMapel/$slugKelas/$slugTahunAjaran/list-kuis",
+                    "*pertemuan-kuis/$slugMapel/$slugKelas/$slugTahunAjaran/hasil-kuis/*/*",
                 ];
 
                 $isActive = false;

@@ -45,7 +45,7 @@
                                         </p>
 
                                         <!-- Progress Bar -->
-                                        @php
+                                        {{-- @php
                                             $progress = rand(50, 100);
                                         @endphp
                                         <div class="mb-2">
@@ -60,7 +60,23 @@
                                                     aria-valuemin="0" aria-valuemax="100">
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
+
+                                        <div class="mb-2">
+                                            <div class="d-flex justify-content-between small">
+                                                <span class="fw-bold">{{ $enrollment->progress }}% Completed</span>
+                                                <span class="text-muted">
+                                                    {{ $enrollment->progress < 100 ? 'Belum Selesai' : 'Selesai' }}
+                                                </span>
+                                            </div>
+                                            <div class="progress" style="height: 6px;">
+                                                <div class="progress-bar bg-success" role="progressbar"
+                                                    style="width: {{ $enrollment->progress }}%;"
+                                                    aria-valuenow="{{ $enrollment->progress }}"
+                                                    aria-valuemin="0" aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        </div>                                        
 
                                         <hr class="profile-divider">
 

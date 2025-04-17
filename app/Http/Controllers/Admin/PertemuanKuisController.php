@@ -9,11 +9,16 @@ use App\Models\SoalKuis;
 use App\Models\HasilKuis;
 use App\Models\Enrollments;
 use Illuminate\Support\Str;
+use App\Exports\ExportNilai;
 use App\Models\Pembelajaran;
 use Illuminate\Http\Request;
 use App\Models\PertemuanKuis;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ExportNilaiKuisMultiSheet;
 use App\Http\Requests\Admin\PertemuanKuisRequest;
+
 
 class PertemuanKuisController extends Controller
 {
@@ -86,7 +91,10 @@ class PertemuanKuisController extends Controller
 
         $enrollments = Enrollments::with('siswa')
             ->where('pembelajaran_id', $pembelajaran->id)
-            ->get();
+            ->get()
+            ->sortBy(fn($enroll) => strtolower($enroll->siswa->name ?? '')) // urutkan berdasarkan nama siswa
+            ->values(); // reset key
+
 
         $kuisIdAktif = $request->query('kuis_id');
 
@@ -188,5 +196,73 @@ class PertemuanKuisController extends Controller
         ]);
 
         return back()->with('success', 'Penilaian berhasil diperbarui.');
+    }
+
+
+    // public function export_excel()
+    // {
+    //     $guruId = Auth::id(); // Pastikan hanya data guru aktif
+    //     return Excel::download(new ExportNilaiKuisMultiSheet($guruId), "nilai_kuis.xlsx");
+    // }
+
+    // public function export_excel()
+    // {
+    //     $guruId = Auth::id();
+
+    //     // Ambil satu pembelajaran yang diampu guru (asumsi satu kelas/tahun/mapel per export)
+    //     $pembelajaran = \App\Models\Pembelajaran::with(['kelas', 'tahunAjaran'])
+    //         ->where('guru_id', $guruId)
+    //         ->first();
+
+    //     if (!$pembelajaran) {
+    //         abort(404, 'Data pembelajaran tidak ditemukan.');
+    //     }
+
+    //     // Ambil data untuk nama file
+    //     $namaKelas = $pembelajaran->kelas->nama_kelas ?? 'Kelas';
+    //     $tahunAjaran = $pembelajaran->tahunAjaran->nama_tahun ?? 'TahunAjaran';
+    //     $mapel = $pembelajaran->nama_mapel ?? 'Mapel';
+
+    //     // Slugify nama agar aman untuk nama file
+    //     $namaKelasSlug = str_replace(' ', '_', $namaKelas);
+    //     $tahunAjaranSlug = str_replace([' ', '/', '\\'], '-', $tahunAjaran); // ganti slash agar aman
+    //     $mapelSlug = str_replace(' ', '_', $mapel);
+
+    //     $filename = "nilai_kuis_{$namaKelasSlug}_{$tahunAjaranSlug}_{$mapelSlug}.xlsx";
+
+    //     // Jalankan export
+    //     return Excel::download(new \App\Exports\ExportNilaiKuisMultiSheet($guruId), $filename);
+    // }
+
+    public function export_excel(Request $request)
+    {
+        $guruId = Auth::id();
+        $pembelajaranId = $request->query('pembelajaran_id');
+
+        $pembelajaran = \App\Models\Pembelajaran::with(['kelas', 'tahunAjaran'])
+            ->where('guru_id', $guruId)
+            ->when($pembelajaranId, function ($query, $pembelajaranId) {
+                $query->where('id', $pembelajaranId);
+            })
+            ->first();
+
+        if (!$pembelajaran) {
+            abort(404, 'Data pembelajaran tidak ditemukan.');
+        }
+
+        $namaKelas = $pembelajaran->kelas->nama_kelas ?? 'Kelas';
+        $tahunAjaran = $pembelajaran->tahunAjaran->nama_tahun ?? 'TahunAjaran';
+        $mapel = $pembelajaran->nama_mapel ?? 'Mapel';
+
+        $namaKelasSlug = str_replace(' ', '_', $namaKelas);
+        $tahunAjaranSlug = str_replace([' ', '/', '\\'], '-', $tahunAjaran);
+        $mapelSlug = str_replace(' ', '_', $mapel);
+
+        $filename = "nilai_kuis_{$namaKelasSlug}_{$tahunAjaranSlug}_{$mapelSlug}.xlsx";
+
+        return Excel::download(
+            new \App\Exports\ExportNilaiKuisMultiSheet($guruId, $pembelajaran->id),
+            $filename
+        );
     }
 }

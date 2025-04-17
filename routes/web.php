@@ -379,6 +379,8 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->group(function () {
     Route::delete('/pertemuan-tugas/{id}', [PertemuanTugasController::class, 'destroy'])->name('pertemuan-tugas.destroy');
     Route::get('/submit-tugas/{mapel}/{kelas}/{tahunAjaran}/list-tugas', [PertemuanTugasController::class, 'listTugas'])->name('list-pertemuan-tugas.index');
     Route::put('/submit-tugas/{id}/update-skor', [PertemuanTugasController::class, 'updateSkor'])->name('submit-tugas.updateSkor');
+    Route::get('/tugas/export/excel', [PertemuanTugasController::class, 'export_excel'])->name('tugas.export');
+
 
 
     // Pertemuan Kuis guru
@@ -388,7 +390,7 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->group(function () {
     Route::get('/submit-kuis/{mapel}/{kelas}/{tahunAjaran}/list-kuis', [PertemuanKuisController::class, 'listKuis'])->name('list-pertemuan-kuis.index');
     Route::get('/pertemuan-kuis/{mapel}/{kelas}/{tahunAjaran}/hasil-kuis/{kuis}/{siswa}', [PertemuanKuisController::class, 'show'])->name('hasil-kuis.show');
     Route::post('/pertemuan-kuis/hasil-kuis/{kuis}/{siswa}', [PertemuanKuisController::class, 'updateEssay'])->name('hasil-kuis.updateEssay');
-
+    Route::get('/nilai/export/excel', [PertemuanKuisController::class, 'export_excel'])->name('nilai.export');
 
 
     // Approval/Tolak oleh guru

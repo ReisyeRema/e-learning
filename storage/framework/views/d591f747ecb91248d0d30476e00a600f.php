@@ -46,7 +46,7 @@
                 <div class="card-body">
 
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h4 class="mb-3">Daftar Kuis Siswa <?php echo e($kelasData->nama_kelas); ?></h4>
+                        <h4 class="mb-3">Daftar Kuis Siswa <?php echo e($kelasData->nama_kelas); ?></h4>                    
                         <!-- Button to trigger modal -->
                         <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
                             data-target="#addKurikulumModal">
@@ -54,6 +54,9 @@
                         </button>
                     </div>
 
+                    <a href="<?php echo e(route('nilai.export', ['pembelajaran_id' => $pembelajaran->id])); ?>" class="btn btn-sm btn-success mb-3">
+                        <i class="fa fa-download"></i> Export Nilai Kuis
+                    </a>                    
 
                     <!-- Sidebar dan Content -->
                     <div class="row">

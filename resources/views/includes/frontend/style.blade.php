@@ -1,5 +1,5 @@
 <!-- Favicons -->
-<link href="{{ asset('assets/frontend/landing-page/assets/img/favicon.png') }}" rel="icon">
+<link href="{{ url('storage/logo_sekolah/' . $profilSekolah->foto) }}" rel="icon">
 <link href="{{ asset('assets/frontend/landing-page/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
 <!-- Fonts -->

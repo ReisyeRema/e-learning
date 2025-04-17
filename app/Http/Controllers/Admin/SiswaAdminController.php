@@ -200,9 +200,13 @@ class SiswaAdminController extends Controller
         // Ambil daftar siswa yang terdaftar dalam pembelajaran ini
         $siswaList = User::with(['enrollments' => function ($query) use ($pembelajaran) {
             $query->where('pembelajaran_id', $pembelajaran->id);
-        }])->whereHas('enrollments', function ($query) use ($pembelajaran) {
+        }])
+        ->whereHas('enrollments', function ($query) use ($pembelajaran) {
             $query->where('pembelajaran_id', $pembelajaran->id);
-        })->get();        
+        })
+        ->get()
+        ->sortBy('name') // 🔥 urutkan berdasarkan nama
+        ->values(); // reset ulang key-nya (0, 1, 2, ...)               
 
 
         return view('pages.admin.siswa.show', compact('pembelajaran', 'kelasData', 'siswaList'));

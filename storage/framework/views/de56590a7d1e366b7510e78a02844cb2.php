@@ -1,5 +1,5 @@
 <!-- Favicons -->
-<link href="<?php echo e(asset('assets/frontend/landing-page/assets/img/favicon.png')); ?>" rel="icon">
+<link href="<?php echo e(url('storage/logo_sekolah/' . $profilSekolah->foto)); ?>" rel="icon">
 <link href="<?php echo e(asset('assets/frontend/landing-page/assets/img/apple-touch-icon.png')); ?>" rel="apple-touch-icon">
 
 <!-- Fonts -->

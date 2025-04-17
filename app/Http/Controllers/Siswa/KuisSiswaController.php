@@ -157,26 +157,46 @@ class KuisSiswaController extends Controller
     }
 
 
+    // public function index()
+    // {
+    //     $siswaId = Auth::id();
+
+    //     $kuisList = Kuis::whereHas('pertemuanKuis.pembelajaran.enrollments', function ($query) use ($siswaId) {
+    //         $query->where('siswa_id', $siswaId);
+    //     })
+    //         ->with(['pertemuanKuis.pembelajaran' => function ($query) {
+    //             $query->withCount('enrollments')
+    //                 ->withCount('pertemuanMateri');
+    //         }, 'hasilKuis' => function ($query) use ($siswaId) {
+    //             $query->where('siswa_id', $siswaId);
+    //         }])
+    //         ->get()
+    //         ->sortByDesc(function ($tugas) {
+    //             return optional($tugas->pertemuanKuis->sortByDesc('created_at')->first())->created_at;
+    //         });
+
+    //     $profileSekolah = ProfilSekolah::first();
+
+    //     return view('pages.siswa.kuis.index', compact('kuisList', 'profileSekolah'));
+    // }
+
     public function index()
     {
         $siswaId = Auth::id();
 
-        $kuisList = Kuis::whereHas('pertemuanKuis.pembelajaran.enrollments', function ($query) use ($siswaId) {
-            $query->where('siswa_id', $siswaId);
-        })
-            ->with(['pertemuanKuis.pembelajaran' => function ($query) {
-                $query->withCount('enrollments')
-                    ->withCount('pertemuanMateri');
-            }, 'hasilKuis' => function ($query) use ($siswaId) {
+        // Ambil semua pertemuanTugas yang berasal dari pembelajaran yang di-enroll siswa
+        $pertemuanKuisList = \App\Models\PertemuanKuis::with(['kuis', 'pembelajaran.kelas', 'pembelajaran.tahunAjaran'])
+            ->whereHas('pembelajaran.enrollments', function ($query) use ($siswaId) {
+                $query->where('siswa_id', $siswaId);
+            })
+            ->with(['kuis.hasilKuis' => function ($query) use ($siswaId) {
                 $query->where('siswa_id', $siswaId);
             }])
             ->get()
-            ->sortByDesc(function ($tugas) {
-                return optional($tugas->pertemuanKuis->sortByDesc('created_at')->first())->created_at;
-            });
+            ->sortByDesc('created_at'); // Atau bisa juga berdasarkan deadline
 
         $profileSekolah = ProfilSekolah::first();
 
-        return view('pages.siswa.kuis.index', compact('kuisList', 'profileSekolah'));
+        return view('pages.siswa.kuis.index', compact('pertemuanKuisList', 'profileSekolah'));
     }
 }

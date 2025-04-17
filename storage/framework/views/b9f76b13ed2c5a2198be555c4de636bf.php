@@ -53,16 +53,12 @@
                             Tambahkan
                         </button>
                     </div>
-                    <?php
-                        $mapelSlug = strtolower(str_replace(' ', '-', $pembelajaran->nama_mapel));
-                        $kelasSlug = strtolower(str_replace(' ', '-', $pembelajaran->kelas->nama_kelas));
-                        $tahunAjaranSlug = str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun);
-                    ?>
+                    
 
-                    <a href="<?php echo e(route('list-pertemuan-tugas.index', [$mapelSlug, $kelasSlug, $tahunAjaranSlug])); ?>"
-                        class="btn btn-sm btn-warning mb-3 text-white">
-                        Lihat Aktivitas Siswa
+                    <a href="<?php echo e(route('tugas.export', ['pembelajaran_id' => $pembelajaran->id])); ?>" class="btn btn-sm btn-success mb-3">
+                        <i class="fa fa-download"></i> Export Nilai Tugas
                     </a>
+                    
 
                     <!-- Sidebar dan Content -->
                     <div class="row">
@@ -299,7 +295,7 @@ unset($__errorArgs, $__bag); ?>
                                 let tahunSlug = container.data("tahun");
 
                                 let tugasId = $(this).data(
-                                "id"); // Ambil ID tugas yg diklik
+                                    "id"); // Ambil ID tugas yg diklik
 
                                 let redirectUrl =
                                     `/guru/submit-tugas/${mapelSlug}/${kelasSlug}/${tahunSlug}/list-tugas?tugas_id=${tugasId}`;
