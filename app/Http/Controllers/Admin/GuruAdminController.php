@@ -2,20 +2,25 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exports\ExportGuru;
 use App\Models\Guru;
 use App\Models\User;
+use App\Exports\ExportGuru;
+use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\GuruAdminRequest;
-use Maatwebsite\Excel\Facades\Excel;
 
 class GuruAdminController extends Controller
 {
     public function index()
     {
+        // Log aktivitas
+        $this->logActivity('Mengakses Data Guru', 'User membuka halaman data guru');
+
         $users = User::role('Guru')->with('guru')->get();
         return view('pages.admin.guru.index', compact('users'));
     }
@@ -146,5 +151,16 @@ class GuruAdminController extends Controller
     function export_excel()
     {
         return Excel::download(new ExportGuru, "guru.xlsx");
+    }
+
+
+    // Menambahkan log aktivitas
+    protected function logActivity($activity, $details = '')
+    {
+        UserActivity::create([
+            'user_id' => Auth::id(),
+            'activity' => $activity,
+            'details' => $details,
+        ]);
     }
 }

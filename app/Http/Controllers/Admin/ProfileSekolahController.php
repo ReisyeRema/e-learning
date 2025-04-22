@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use App\Models\ProfilSekolah;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileSekolahController extends Controller
 {
     public function index()
     {
+        // Log aktivitas
+        $this->logActivity('Mengakses Data Profile Sekolah', 'User membuka halaman data profile sekolah');
+
 
         return view('pages.admin.profilSekolah.index');
     }
@@ -65,21 +70,31 @@ class ProfileSekolahController extends Controller
             if ($profilSekolah->foto && Storage::disk('public')->exists('logo_sekolah/' . $profilSekolah->foto)) {
                 Storage::disk('public')->delete('logo_sekolah/' . $profilSekolah->foto); // Hapus foto lama
             }
-        
+
             // Ambil ekstensi file dan buat nama file baru
             $extension = $request->file('foto')->getClientOriginalExtension();
             $newImage = $request->nama_sekolah . '.' . now()->timestamp . '.' . $extension;
-        
+
             // Simpan foto baru ke disk public/logo_sekolah
             $storedPath = $request->file('foto')->storeAs('logo_sekolah', $newImage, 'public');
-        
+
             // Update path foto pada model profilSekolah
             $profilSekolah->foto = $newImage;
         }
-        
+
 
         $profilSekolah->save();
 
         return redirect()->route('profilesekolah.index')->with('success', 'Perubahan berhasil disimpan');
+    }
+
+    // Menambahkan log aktivitas
+    protected function logActivity($activity, $details = '')
+    {
+        UserActivity::create([
+            'user_id' => Auth::id(),
+            'activity' => $activity,
+            'details' => $details,
+        ]);
     }
 }

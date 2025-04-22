@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\PreventBackHistory;
 use App\Http\Middleware\RedirectIfNotSiswa;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\KuisController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Admin\TugasController;
@@ -45,9 +46,10 @@ Route::get('/', function () {
 });
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'], PreventBackHistory::class)->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified', PreventBackHistory::class])
+    ->name('dashboard');
+
 
 Route::get('/landing-page', [LandingPageController::class, 'index'])->name('landing-page.index');
 

@@ -16,7 +16,7 @@
                     <div class="col-lg-4 mx-auto">
                         <div class="auth-form-light text-left py-5 px-4 px-sm-5" style="border-radius: 15px;">
                             <div class="brand-logo text-center mb-4">
-                                <img src="<?php echo e(asset('skydash/images/logo.svg')); ?>" alt="logo">
+                                <img src="<?php echo e(url('storage/logo_sekolah/' . $profilSekolah->foto)); ?>" alt="logo">
                             </div>
 
                             <?php echo $__env->yieldContent('content'); ?>

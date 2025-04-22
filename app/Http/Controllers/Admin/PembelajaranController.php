@@ -9,8 +9,10 @@ use App\Models\Mapel;
 use App\Models\Kurikulum;
 use App\Models\TahunAjaran;
 use App\Models\Pembelajaran;
+use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\PembelajaranAdminRequest;
 
@@ -18,6 +20,9 @@ class PembelajaranController extends Controller
 {
     public function index()
     {
+        // Log aktivitas
+        $this->logActivity('Mengakses Data Pembelajaran', 'User membuka halaman data pembelajaran');
+
         $pembelajaran = Pembelajaran::all();
         return view('pages.admin.pembelajaran.index', compact('pembelajaran'));
     }
@@ -97,5 +102,16 @@ class PembelajaranController extends Controller
         $pembelajaran->delete();
 
         return redirect()->route('pembelajaran.index')->with('success', 'Data Pembelajaran berhasil dihapus.');
+    }
+
+
+    // Menambahkan log aktivitas
+    protected function logActivity($activity, $details = '')
+    {
+        UserActivity::create([
+            'user_id' => Auth::id(),
+            'activity' => $activity,
+            'details' => $details,
+        ]);
     }
 }

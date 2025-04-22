@@ -3,15 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Kurikulum;
+use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\KurikulumRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Admin\KurikulumRequest;
 
 class KurikulumAdminController extends Controller
 {
     public function index()
     {
+        // Log aktivitas
+        $this->logActivity('Mengakses Data Kurikulum', 'User membuka halaman data kurikulum');
+
         $kurikulum = Kurikulum::all();
         return view('pages.admin.kurikulum.index', compact('kurikulum'));
     }
@@ -78,5 +83,16 @@ class KurikulumAdminController extends Controller
 
         $kurikulum->delete();
         return redirect()->route('kurikulum.index')->with('success', 'Kurikulum Berhasil Dihapus');
+    }
+
+
+    // Menambahkan log aktivitas
+    protected function logActivity($activity, $details = '')
+    {
+        UserActivity::create([
+            'user_id' => Auth::id(),
+            'activity' => $activity,
+            'details' => $details,
+        ]);
     }
 }

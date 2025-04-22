@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
@@ -48,6 +49,12 @@ class AuthenticatedSessionController extends Controller
             $request->authenticate();
             $request->session()->regenerate();
 
+            // Catat aktivitas login
+            DB::table('login_activities')->insert([
+                'user_id' => Auth::id(),
+                'login_at' => now(),
+            ]);
+
             $user = Auth::user();
 
             // Pastikan user memiliki role 'Super Admin'
@@ -55,7 +62,7 @@ class AuthenticatedSessionController extends Controller
                 Auth::logout();
                 return back()->withErrors(['email' => 'Anda tidak memiliki akses ke halaman ini.']);
             }
-    
+
 
             return redirect()->intended(route('dashboard'));
         } catch (ValidationException $e) {
@@ -75,7 +82,7 @@ class AuthenticatedSessionController extends Controller
                 Auth::logout();
                 return back()->withErrors(['email' => 'Anda tidak memiliki akses ke halaman ini.']);
             }
-    
+
 
             return redirect()->route('dashboard-siswa.index');
         } catch (ValidationException $e) {
@@ -88,7 +95,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        $user = Auth::user(); 
+        $user = Auth::user();
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
@@ -101,5 +108,4 @@ class AuthenticatedSessionController extends Controller
 
         return redirect()->route('login');
     }
-
 }

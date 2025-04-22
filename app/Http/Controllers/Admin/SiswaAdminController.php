@@ -8,8 +8,10 @@ use App\Models\Siswa;
 use Illuminate\Support\Str;
 use App\Exports\ExportSiswa;
 use App\Models\Pembelajaran;
+use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
@@ -19,6 +21,10 @@ class SiswaAdminController extends Controller
 {
     public function index(Request $request)
     {
+
+        // Log aktivitas
+        $this->logActivity('Mengakses Data Siswa', 'User membuka halaman data siswa');
+
         // Ambil semua data kelas untuk dropdown
         $kelas = \App\Models\Kelas::all();
 
@@ -182,7 +188,7 @@ class SiswaAdminController extends Controller
         // Ubah slug kembali ke format nama asli
         $mapelNama = Str::title(str_replace('-', ' ', $mapel));
         $kelasNama = Str::upper(str_replace('-', ' ', $kelas));
-        
+
         // Ubah "2023-2024" kembali menjadi "2023/2024" agar cocok dengan database
         $tahunAjaranFormatted = str_replace('-', '/', $tahunAjaran);
 
@@ -201,14 +207,25 @@ class SiswaAdminController extends Controller
         $siswaList = User::with(['enrollments' => function ($query) use ($pembelajaran) {
             $query->where('pembelajaran_id', $pembelajaran->id);
         }])
-        ->whereHas('enrollments', function ($query) use ($pembelajaran) {
-            $query->where('pembelajaran_id', $pembelajaran->id);
-        })
-        ->get()
-        ->sortBy('name') // 🔥 urutkan berdasarkan nama
-        ->values(); // reset ulang key-nya (0, 1, 2, ...)               
+            ->whereHas('enrollments', function ($query) use ($pembelajaran) {
+                $query->where('pembelajaran_id', $pembelajaran->id);
+            })
+            ->get()
+            ->sortBy('name') // 🔥 urutkan berdasarkan nama
+            ->values(); // reset ulang key-nya (0, 1, 2, ...)               
 
 
         return view('pages.admin.siswa.show', compact('pembelajaran', 'kelasData', 'siswaList'));
+    }
+
+
+    // Menambahkan log aktivitas
+    protected function logActivity($activity, $details = '')
+    {
+        UserActivity::create([
+            'user_id' => Auth::id(),
+            'activity' => $activity,
+            'details' => $details,
+        ]);
     }
 }

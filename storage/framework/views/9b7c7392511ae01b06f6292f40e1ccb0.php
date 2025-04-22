@@ -1,7 +1,7 @@
 <?php $__env->startSection('title', 'Login'); ?>
 
 <?php $__env->startSection('content'); ?>
-    <h4 class="text-center">Selamat Datang, Admin!</h4>
+    <h4 class="text-center">Selamat Datang, Tenaga Pendidik!</h4>
     <h6 class="font-weight-light text-center mb-4">Masuk ke akun Anda untuk melanjutkan.</h6>
 
     <form class="pt-3" method="POST" action="<?php echo e(route('login')); ?>">
