@@ -5,7 +5,7 @@
         right: -450px;
         width: 450px;
         height: 100%;
-        background: #ffffff;
+        background: #2c8182;
         box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
         transition: right 0.4s ease;
         z-index: 9999;
@@ -18,7 +18,7 @@
     .profile-sidebar h2 {
         font-size: 18px;
         font-weight: 600;
-        color: #666;
+        color: white;
         margin-bottom: 15px;
     }
 
@@ -53,12 +53,12 @@
         margin-top: 12px;
         font-size: 20px;
         font-weight: 700;
-        color: #333;
+        color: white;
     }
 
     .profile-header p {
         font-size: 16px;
-        color: #555;
+        color: white;
         margin-top: 5px;
     }
 
@@ -86,7 +86,7 @@
 
     .profile-menu a:hover,
     .profile-menu a.active {
-        background-color: #10bc69;
+        background-color: #48a6a7;
         color: #fff;
     }
 
@@ -99,7 +99,7 @@
     .profile-divider {
         border: none;
         height: 1px;
-        background: #adacac;
+        background: white;
         margin: 20px 0;
     }
 
@@ -119,7 +119,7 @@
     <aside id="profile-sidebar" class="profile-sidebar">
         <span class="close-btn">&times;</span>
         <div class="profile-header">
-            <img src="<?php echo e(Auth::user()->foto ? asset('storage/foto_user/' . Auth::user()->foto) : asset('assets/img/profil.png')); ?>"
+            <img src="<?php echo e(Auth::user()->foto ? asset('storage/foto_user/' . Auth::user()->foto) : asset('assets/img/avatar2.jpeg')); ?>"
                 alt="Foto Profil">
             <h3><?php echo e(Auth::user()->name); ?></h3>
         </div>

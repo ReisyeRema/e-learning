@@ -60,24 +60,28 @@
 
         <div class="row">
             <?php $__currentLoopData = $statusPembelajaran; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $status): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="col-md-12 mb-3">
-                <div class="card p-3 border-0 shadow-sm bg-white rounded-3">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="icon-container" style="width: 40px; height: 40px; border-radius: 50%; background-color: <?php echo e($status->status == 'selesai' ? '#28a745' : '#ffc107'); ?>; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas <?php echo e($status->status == 'selesai' ? 'fa-check' : 'fa-clock'); ?> text-white"></i>
+                <div class="col-md-12 mb-3">
+                    <div class="card p-3 border-0 shadow-sm bg-white rounded-3">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="icon-container"
+                                style="width: 40px; height: 40px; border-radius: 50%; background-color: <?php echo e($status->status == 'selesai' ? '#28a745' : '#ffc107'); ?>; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-check text-white"></i>
+                            </div>
+                            <div>
+                                <h6 class="ms-3 fw-bold mt-3 text-dark"><?php echo e($status->activity); ?></h6>
+                                <p class=" ms-3 text-muted fs-6"><?php echo e($status->details); ?></p>
+                            </div>
                         </div>
-                        <h6 class="ms-3 fw-bold mb-0 text-dark"><?php echo e($status->pembelajaran->nama_mapel); ?></h6>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        
-                        <small class="text-muted">
-                            Terakhir: <?php echo e(\Carbon\Carbon::parse($status->updated_at)->translatedFormat('d M Y H:i')); ?>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                Terakhir:
+                                <?php echo e(\Carbon\Carbon::parse($status->performed_at)->translatedFormat('l, d F Y - H:i')); ?>
 
-                        </small>
+                            </small>
+                        </div>
                     </div>
                 </div>
-            </div>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
     </div>
 

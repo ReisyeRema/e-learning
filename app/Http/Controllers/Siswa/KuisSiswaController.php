@@ -8,6 +8,7 @@ use App\Models\HasilKuis;
 use App\Models\JawabanKuis;
 use Illuminate\Support\Str;
 use App\Models\Pembelajaran;
+use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use App\Models\PertemuanKuis;
 use App\Models\ProfilSekolah;
@@ -182,6 +183,8 @@ class KuisSiswaController extends Controller
 
     public function index()
     {
+        $this->logActivity('Mengakses List Kuis', 'User membuka halaman list Kuis');
+
         $siswaId = Auth::id();
 
         // Ambil semua pertemuanTugas yang berasal dari pembelajaran yang di-enroll siswa
@@ -198,5 +201,14 @@ class KuisSiswaController extends Controller
         $profileSekolah = ProfilSekolah::first();
 
         return view('pages.siswa.kuis.index', compact('pertemuanKuisList', 'profileSekolah'));
+    }
+
+    protected function logActivity($activity, $details = '')
+    {
+        UserActivity::create([
+            'user_id' => Auth::id(),
+            'activity' => $activity,
+            'details' => $details,
+        ]);
     }
 }

@@ -24,8 +24,8 @@
         position: sticky;
         height: fit-content;
         /* Sesuai dengan isi, tidak ikut memanjang */
-        background: #F5F7F8;
-        color: #586E72;
+        background: #48a6a7;
+        color: white;
         box-shadow: 2px 0 5px rgba(221, 220, 220, 0.2);
         border-radius: 5%;
 
@@ -35,9 +35,10 @@
         text-align: center;
         font-size: 22px;
         margin-bottom: 20px;
-        border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        border-bottom: 2px solid white;
         padding-bottom: 10px;
         font-weight: bold;
+        color: white
     }
 
     .sidebar ul {
@@ -54,10 +55,11 @@
 
     .sidebar ul li a {
         text-decoration: none;
-        color: #586E72;
+        color: white;
         font-size: 16px;
         display: flex;
         align-items: center;
+        font-weight: bold;
     }
 
     .sidebar ul li a i {
@@ -67,20 +69,20 @@
     }
 
     .sidebar ul li:hover {
-        background: #10bc69;
+        background: white;
     }
 
     .sidebar ul li:hover a {
-        color: white;
+        color: #48a6a7;
     }
 
     .sidebar ul li.active {
-        background: #10bc69;
+        background: white;
         font-weight: bold;
     }
 
     .sidebar ul li.active a {
-        color: white;
+        color: #48a6a7;
     }
 
     .content {
@@ -122,7 +124,7 @@
         font-weight: bold;
     }
 
-    .profile-divider {
+    .profile-divider-2 {
         border: none;
         height: 3px;
         background: #939393;

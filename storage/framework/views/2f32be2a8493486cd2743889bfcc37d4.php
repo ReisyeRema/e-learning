@@ -19,6 +19,19 @@
             padding: 50px;
         }
 
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url('<?php echo e(asset('assets/frontend/landing-page/assets/img/bg.jpg')); ?>') no-repeat center center;
+            background-size: cover;
+            filter: blur(30px);
+            z-index: -1;
+        }
+
         .container {
             max-width: 1450px;
             background: white;
@@ -106,7 +119,8 @@
                         <p><strong><?php echo e($soal->teks_soal); ?></strong></p>
 
                         <?php if($soal->gambar): ?>
-                            <img src="<?php echo e(asset('storage/' . $soal->gambar)); ?>" alt="Gambar Soal" class="img-fluid mb-3">
+                            <img src="<?php echo e(asset('storage/' . $soal->gambar)); ?>" alt="Gambar Soal"
+                                class="img-fluid mb-3">
                         <?php endif; ?>
 
                         <?php if($soal->type_soal === 'Objective'): ?>

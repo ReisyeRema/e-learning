@@ -1,10 +1,10 @@
-<footer id="footer" class="footer" style="background-color: #fcfbfb">
+<footer id="footer" class="footer">
 
     <div class="container footer-top">
         <div class="row gy-4">
-            <div class="col-lg-4 col-md-6 footer-about">
+            <div class="col-lg-4 col-md-6 footer-about text-white">
                 <a href="index.html" class="d-flex align-items-center">
-                    <span class="sitename">{{ $profileSekolah->nama_sekolah }}</span>
+                    <span class="sitename text-white">{{ $profileSekolah->nama_sekolah }}</span>
                 </a>
                 <div class="footer-contact pt-3">
                     <p>{{ $profileSekolah->alamat }}</p>
@@ -15,22 +15,22 @@
             </div>
 
             <div class="col-lg-4 col-md-6 footer-links">
-                <h4>Useful Links</h4>
+                <h4 class="text-white">Useful Links</h4>
                 <ul class="list-unstyled">
-                    <li><i class="bi bi-chevron-right"></i> <a href="{{ route('landing-page.index') }}#hero">Beranda</a>
+                    <li><i class="bi bi-chevron-right text-white"></i> <a href="{{ route('landing-page.index') }}#hero" class="text-white">Beranda</a>
                     </li>
-                    <li><i class="bi bi-chevron-right"></i> <a href="{{ route('landing-page.index') }}#about">Tentang
+                    <li><i class="bi bi-chevron-right text-white"></i> <a href="{{ route('landing-page.index') }}#about" class="text-white">Tentang
                             Kami</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a href="{{ route('landing-page.index') }}#class">Kelas</a>
+                    <li><i class="bi bi-chevron-right text-white"></i> <a href="{{ route('landing-page.index') }}#class" class="text-white">Kelas</a>
                     </li>
-                    <li><i class="bi bi-chevron-right"></i> <a
-                            href="{{ route('landing-page.index') }}#contact">Kontak</a></li>
+                    <li><i class="bi bi-chevron-right text-white"></i> <a
+                            href="{{ route('landing-page.index') }}#contact" class="text-white">Kontak</a></li>
                 </ul>
             </div>
 
             <div class="col-lg-4 col-md-12 text-lg-end">
-                <h4>Ikuti Kami</h4>
-                <p>Ikuti kami di media sosial untuk mendapatkan informasi terbaru seputar pembelajaran dan update
+                <h4 class="text-white">Ikuti Kami</h4>
+                <p  class="text-white">Ikuti kami di media sosial untuk mendapatkan informasi terbaru seputar pembelajaran dan update
                     e-learning.</p>
                 <div class="social-links d-flex justify-content-lg-end">
                     <a href=""><i class="bi bi-twitter-x"></i></a>
@@ -42,10 +42,10 @@
         </div>
     </div>
 
-    <div class="container copyright text-center mt-4">
+    <div class="container copyright text-center mt-4 text-white">
         <p>© <span>Copyright</span> <strong class="px-1 sitename">Reisye Rema</strong> <span>All Rights Reserved</span></p>
         <div class="credits">
-            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+            Designed by <a href="https://bootstrapmade.com/" class="text-black">BootstrapMade</a>
         </div>
     </div>
 

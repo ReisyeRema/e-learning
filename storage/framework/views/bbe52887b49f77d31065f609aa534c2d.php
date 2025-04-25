@@ -4,23 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Modern UI</title>
+    <title>Login - Siswa</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <?php echo $__env->make('includes.frontend.style-login', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-
 </head>
 
 <body>
-
     <div class="container">
         <!-- Bagian kiri (gambar) -->
         <div class="image-section">
-            <img src="<?php echo e(asset('assets/frontend/landing-page/assets/img/hero-img.png')); ?>" alt="Login Illustration">
+            <!-- Tombol Kembali -->
+            <a href="<?php echo e(route('landing-page.index')); ?>" class="back-to-landing">
+                <i class="fas fa-arrow-left"></i> Kembali ke Beranda
+            </a>
+            <img src="<?php echo e(asset('assets/frontend/landing-page/assets/img/login.png')); ?>" alt="Login Illustration">
         </div>
 
         <!-- Bagian kanan (form login) -->
         <div class="login-section">
+            <div class="logo-wrapper">
+                <img src="<?php echo e(url('storage/logo_sekolah/' . $profilSekolah->foto)); ?>" alt="Logo Sekolah"
+                    class="logo-img">
+            </div>
             <h2>Selamat Datang, Pelajar!</h2>
             <p>Silakan masuk untuk melanjutkan!</p>
             <form class="pt-3" method="POST" action="<?php echo e(route('login-siswa')); ?>">
@@ -44,6 +50,9 @@
 
                 <button type="submit" class="login-btn">Masuk</button>
             </form>
+            <footer class="login-footer">
+                <p>&copy; <?php echo e(date('Y')); ?> <?php echo e($profilSekolah->nama ?? 'Nama Sekolah'); ?>. All rights reserved.</p>
+            </footer>
         </div>
     </div>
 
@@ -84,7 +93,6 @@
             <?php endif; ?>
         });
     </script>
-    
 
 </body>
 

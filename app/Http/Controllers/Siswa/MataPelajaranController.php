@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Siswa;
 use App\Models\Tugas;
 use App\Models\Enrollments;
 use App\Models\Pembelajaran;
+use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use App\Models\ProfilSekolah;
 use App\Http\Controllers\Controller;
@@ -30,6 +31,9 @@ class MataPelajaranController extends Controller
 
     public function index()
     {
+        // Log aktivitas
+        $this->logActivity('Mengakses List Mata Pelajaran', 'User membuka halaman list mata pelajaran');
+
         $siswaId = Auth::id();
 
         $enrollments = Enrollments::where('siswa_id', $siswaId)
@@ -96,6 +100,12 @@ class MataPelajaranController extends Controller
             ])
             ->firstOrFail();
 
+        // Log aktivitas (setelah $pembelajaran ditemukan)
+        $this->logActivity(
+            'Mengakses Mata Pelajaran ' . $pembelajaran->nama_mapel,
+            'User membuka halaman mata pelajaran ' . $pembelajaran->nama_mapel
+        );
+
         $siswaId = Auth::id();
 
         $tugas = Tugas::with(['submitTugas' => function ($query) use ($siswaId) {
@@ -105,5 +115,15 @@ class MataPelajaranController extends Controller
         $profileSekolah = ProfilSekolah::first();
 
         return view('pages.siswa.mataPelajaran.show', compact('pembelajaran', 'tugas', 'profileSekolah'));
+    }
+
+
+    protected function logActivity($activity, $details = '')
+    {
+        UserActivity::create([
+            'user_id' => Auth::id(),
+            'activity' => $activity,
+            'details' => $details,
+        ]);
     }
 }

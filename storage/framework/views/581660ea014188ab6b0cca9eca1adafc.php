@@ -9,6 +9,24 @@
     <meta name="keywords" content="">
 
     <?php echo $__env->make('includes.frontend.style', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <style>
+        .service-item {
+            background-color: #fff;
+            /* agar bayangan terlihat jelas */
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            /* bayangan halus */
+            transition: all 0.3s ease;
+        }
+
+        .service-item:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            /* bayangan lebih besar saat hover */
+            transform: translateY(-5px);
+            /* sedikit naik saat hover */
+        }
+    </style>
 </head>
 
 <body class="index-page">
@@ -28,10 +46,7 @@
                         <p>Akses materi, tugas, dan kuis secara online dengan platform e-learning kami. Tingkatkan
                             pengalaman belajar di mana saja, kapan saja.</p>
                         <div class="d-flex">
-                            <a href="#about" class="btn-get-started">Get Started</a>
-                            <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8"
-                                class="glightbox btn-watch-video d-flex align-items-center"><i
-                                    class="bi bi-play-circle"></i><span>Watch Video</span></a>
+                            <a href="<?php echo e(route('login-siswa')); ?>" class="btn-get-started">Get Started</a>
                         </div>
                     </div>
                     <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="100">
@@ -45,48 +60,45 @@
 
         <!-- Stats Section -->
         <section id="stats" class="stats section">
-
             <div class="container" data-aos="fade-up" data-aos-delay="100">
-
                 <div class="row gy-4">
 
                     <div class="col-lg-3 col-md-6">
                         <div class="stats-item text-center w-100 h-100">
-                            <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1"
-                                class="purecounter"></span>
+                            <span data-purecounter-start="0" data-purecounter-end="<?php echo e($jumlahGuru); ?>"
+                                data-purecounter-duration="1" class="purecounter"></span>
                             <p>Guru</p>
                         </div>
-                    </div><!-- End Stats Item -->
+                    </div>
 
                     <div class="col-lg-3 col-md-6">
                         <div class="stats-item text-center w-100 h-100">
-                            <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1"
-                                class="purecounter"></span>
+                            <span data-purecounter-start="0" data-purecounter-end="<?php echo e($jumlahSiswa); ?>"
+                                data-purecounter-duration="1" class="purecounter"></span>
                             <p>Siswa</p>
                         </div>
-                    </div><!-- End Stats Item -->
+                    </div>
 
                     <div class="col-lg-3 col-md-6">
                         <div class="stats-item text-center w-100 h-100">
-                            <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1"
-                                class="purecounter"></span>
+                            <span data-purecounter-start="0" data-purecounter-end="<?php echo e($jumlahKelas); ?>"
+                                data-purecounter-duration="1" class="purecounter"></span>
                             <p>Kelas</p>
                         </div>
-                    </div><!-- End Stats Item -->
+                    </div>
 
                     <div class="col-lg-3 col-md-6">
                         <div class="stats-item text-center w-100 h-100">
-                            <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1"
-                                class="purecounter"></span>
+                            <span data-purecounter-start="0" data-purecounter-end="<?php echo e($jumlahMapel); ?>"
+                                data-purecounter-duration="1" class="purecounter"></span>
                             <p>Mata Pelajaran</p>
                         </div>
-                    </div><!-- End Stats Item -->
+                    </div>
 
                 </div>
-
             </div>
-
-        </section><!-- /Stats Section -->
+        </section>
+        <!-- /Stats Section -->
 
 
         <!-- Tentang Kami Section -->
@@ -137,8 +149,7 @@
         <section id="class" class="services section light-background">
             <div class="container section-title" data-aos="fade-up">
                 <span>Kelas</span>
-                <h2>Kelas</h2>
-                <p>Daftar kelas yang tersedia dalam sistem</p>
+                <p class="mt-5">Daftar kelas yang tersedia dalam sistem</p>
             </div>
 
             <div class="container">
@@ -146,11 +157,11 @@
                     <?php $__currentLoopData = $kelas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $kls): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
                             <div class="service-item position-relative">
-                                <div class="icon">
+                                <div class="icon" style="background: #48a6a7">
                                     <i class="bi bi-book"></i>
                                 </div>
                                 <a href="<?php echo e(route('kelas.show', $kls->id)); ?>" class="stretched-link">
-                                    <h3><?php echo e($kls->nama_kelas); ?></h3>
+                                    <h3 style="color: #48a6a7"><?php echo e($kls->nama_kelas); ?></h3>
                                 </a>
                                 <p>Kelas ini memiliki sejumlah siswa yang terdaftar.</p>
                             </div>

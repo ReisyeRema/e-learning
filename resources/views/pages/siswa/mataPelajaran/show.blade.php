@@ -11,6 +11,27 @@
     @include('includes.frontend.style-kelas')
 
     <style>
+        body {
+            position: relative;
+            z-index: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url('{{ asset('assets/frontend/landing-page/assets/img/bg.jpg') }}') no-repeat center center;
+            background-size: cover;
+            filter: blur(30px);
+            z-index: -1;
+        }
+
+
         .materi-section {
             background-color: #f0f7ff;
             padding: 10px;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\View\View;
+use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use App\Models\ProfilSekolah;
 use Illuminate\Support\Facades\Auth;
@@ -94,6 +95,8 @@ class ProfileController extends Controller
 
     public function edit_siswa(Request $request): View
     {
+        $this->logActivity('Mengakses Edit Profile', 'User membuka halaman edit profile');
+
         $user = $request->user();
 
         $profile = $user->hasRole('Siswa')
@@ -151,5 +154,15 @@ class ProfileController extends Controller
         }
 
         return Redirect::route('profile-siswa.edit')->with('status', 'profile-updated');
+    }
+
+
+    protected function logActivity($activity, $details = '')
+    {
+        UserActivity::create([
+            'user_id' => Auth::id(),
+            'activity' => $activity,
+            'details' => $details,
+        ]);
     }
 }

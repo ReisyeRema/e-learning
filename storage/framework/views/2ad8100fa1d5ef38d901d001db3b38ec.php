@@ -11,20 +11,22 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        background: #f2ffed;
         padding: 20px;
-        /* Hijau */
+        background: url('<?php echo e(asset('assets/frontend/landing-page/assets/img/bg-login.jpg')); ?>') no-repeat center center;
+        background-size: cover;
     }
 
     .container {
         display: flex;
-        width: 90%;
-        width: 1150px;
-        background: linear-gradient(135deg, #ffffff, #f4f4f4);
+        width: 1000px;
+        background: white;
         border-radius: 15px;
-        min-height: 750px box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
         overflow: hidden;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        align-items: center;
+        position: relative;
+        isolation: isolate;
+        min-height: 400px;
     }
 
     .image-section {
@@ -37,8 +39,8 @@
     }
 
     .image-section img {
-        width: 100%;
-        max-width: 450px;
+        width: 120%;
+        max-width: 500px;
         animation: fadeIn 1.2s ease-in-out;
     }
 
@@ -58,21 +60,39 @@
     /* Bagian kanan (form login) */
     .login-section {
         flex: 1;
-        padding: 5rem;
-        text-align: center;
-        margin-top: 60px
+        padding: 3.5rem 4rem 3rem;
+        background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    /* Tambahkan garis dekoratif horizontal di atas heading */
+    .login-section::before {
+        content: "";
+        position: absolute;
+        top: 2.5rem;
+        left: 4rem;
+        width: 370px;
+        height: 4px;
+        background: #28a745;
+        border-radius: 4px;
     }
 
     .login-section h2 {
-        margin-bottom: 1.5rem;
-        font-size: 1.8rem;
-        color: #28a745;
+        font-size: 2rem;
+        font-weight: 600;
+        color: #0c0c0c;
+        margin-bottom: 0.5rem;
+        text-align: center;
     }
 
     .login-section p {
-        margin-bottom: 2rem;
         font-size: 1rem;
-        color: #555;
+        color: #6c757d;
+        margin-bottom: 2rem;
+        text-align: center;
     }
 
 
@@ -90,10 +110,30 @@
         background: #ffffff;
         color: #333;
         font-size: 1rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+        transition: border 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .logo-wrapper {
+        text-align: center;
+    }
+
+    .logo-img {
+        height: 100px;
+        width: 100px;
+        object-fit: contain;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        animation: zoomIn 0.8s ease-in-out;
     }
 
     .input-group input::placeholder {
         color: #6c757d;
+    }
+
+    .input-group input:focus {
+        border-color: #218838;
+        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
     }
 
     .login-btn {
@@ -214,6 +254,40 @@
 
     .swal-btn-red:hover {
         background-color: #a00 !important;
+    }
+
+    .login-footer {
+        text-align: center;
+        font-size: 0.9rem;
+        color: #777;
+        margin-top: 20px;
+    }
+
+    .image-section {
+        position: relative;
+    }
+
+    .back-to-landing {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 8px 15px;
+        border-radius: 25px;
+        font-weight: 600;
+        color: #48a6a7;
+        text-decoration: none;
+        z-index: 10;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .back-to-landing i {
+        margin-right: 8px;
+    }
+
+    .back-to-landing:hover {
+        background-color: #48a6a7;
+        color: white;
     }
 </style>
 <?php /**PATH D:\DATA MATKUL\SEMESTER 6\TA\PROJECT\e-learn-laravel\resources\views/includes/frontend/style-login.blade.php ENDPATH**/ ?>

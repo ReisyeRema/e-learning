@@ -54,9 +54,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 Route::get('/landing-page', [LandingPageController::class, 'index'])->name('landing-page.index');
 
 Route::middleware('auth')->group(function () {
-    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // //User / Operator
     // Route::get('/users', [UserController::class, 'index'])->name('users.index');
@@ -222,9 +222,9 @@ Route::middleware('auth')->group(function () {
 
 // Super Admin
 Route::middleware(['auth', 'role:Super Admin'])->prefix('superadmin')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //User / Operator
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
@@ -265,9 +265,9 @@ Route::middleware(['auth', 'role:Super Admin'])->prefix('superadmin')->group(fun
 
 // Admin
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //kelas admin
     Route::get('/kelas', [KelasAdminController::class, 'index'])->name('kelas.index');
@@ -323,9 +323,9 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
 
 // Guru
 Route::middleware(['auth', 'role:Guru'])->prefix('guru')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //materi guru
     Route::get('/materi', [MateriController::class, 'index'])->name('materi.index');

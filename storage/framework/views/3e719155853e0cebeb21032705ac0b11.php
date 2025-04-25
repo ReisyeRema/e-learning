@@ -29,7 +29,7 @@
                                 <img src="<?php echo e(asset('storage/covers/' . $pelajaran->cover)); ?>"
                                     alt="Cover <?php echo e($pelajaran->nama_mapel); ?>" class="card-cover">
                             <?php else: ?>
-                                <img src="<?php echo e(asset('assets/img/profil.png')); ?>" alt="Default Cover" class="card-cover">
+                                <img src="<?php echo e(asset('assets/img/e-learning.png')); ?>" alt="Default Cover" height="300px">
                             <?php endif; ?>
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo e($pelajaran->nama_mapel); ?></h5>

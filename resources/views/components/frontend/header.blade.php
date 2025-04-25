@@ -1,10 +1,10 @@
-<header id="header" class="header d-flex align-items-center sticky-top" style="background-color: #fcfbfb">
+<header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list text-white"></i>
 
         <a href="index.html" class="logo d-flex align-items-center me-auto">
-            <h1 class="sitename">{{ $profileSekolah->nama_sekolah }}</h1>
+            <h4 class="sitename text-white">{{ $profileSekolah->nama_sekolah }}</h4>
         </a>
 
         <nav id="navmenu" class="navmenu ml-5">
@@ -24,14 +24,14 @@
         @auth
             @if (Auth::user()->hasRole('Siswa'))
                 <div id="profile-toggle" class="profile-link" style="cursor: pointer;">
-                    <img src="{{ Auth::user()->foto ? asset('storage/foto_user/' . Auth::user()->foto) : asset('assets/img/profil.png') }}"
+                    <img src="{{ Auth::user()->foto ? asset('storage/foto_user/' . Auth::user()->foto) : asset('assets/img/avatar2.jpeg') }}"
                         alt="Foto Profil" class="rounded-circle" style="width: 50px; height: 50px; margin-left:30px;">
                 </div>
             @endif
         @else
             <div class="dropdown">
                 <button class="btn-getstarted dropdown-toggle custom-dropdown-btn" type="button" id="loginDropdown"
-                    data-bs-toggle="dropdown" aria-expanded="false">
+                    data-bs-toggle="dropdown" aria-expanded="false" style="background: white; color:black;">
                     <i class="fas fa-sign-in-alt"></i> Login
                 </button>
                 <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="loginDropdown">
@@ -54,8 +54,7 @@
 
 <style>
     .custom-dropdown-btn {
-        background-color: #10bc69;
-        color: white;
+        color: black;
         border: none;
         padding: 10px 20px;
         font-size: 16px;
@@ -64,7 +63,7 @@
     }
 
     .custom-dropdown-btn:hover {
-        background-color: #0a8c4e;
+        background-color: #48a6a7;
     }
 
     /* Dropdown */
@@ -88,12 +87,76 @@
 
     .custom-dropdown-item i {
         font-size: 16px;
-        color: #10bc69;
+        color: #48a6a7;
     }
 
     .custom-dropdown-item:hover {
         background-color: #f8f9fa;
-        color: #0a8c4e;
+        color: #48a6a7;
+    }
+
+
+    @media (max-width: 768px) {
+        .dropdown {
+            position: absolute;
+            right: 15px;
+            z-index: 1050;
+        }
+    }
+
+    @media (max-width: 1280px) {
+        .dropdown {
+            position: absolute;
+            right: 15px;
+            z-index: 1050;
+        }
+    }
+
+    @media (max-width: 1024px) {
+        .dropdown {
+            position: absolute;
+            right: 15px;
+            z-index: 1050;
+        }
+    }
+    @media (max-width: 480px) {
+        .dropdown {
+            position: absolute;
+            right: 15px;
+            z-index: 1050;
+        }
+    }
+
+
+    @media (max-width: 768px) {
+        .profile-link {
+            position: absolute;
+            right: 15px;
+            z-index: 1050;
+        }
+    }
+
+    @media (max-width: 1280px) {
+        .profile-link {
+            position: absolute;
+            right: 15px;
+            z-index: 1050;
+        }
+    }
+
+    @media (max-width: 1024px) {
+        .profile-link {
+            position: absolute;
+            right: 15px;
+            z-index: 1050;
+        }
+    }
+    @media (max-width: 480px) {
+        .profile-link {
+            position: absolute;
+            right: 15px;
+            z-index: 1050;
+        }
     }
 </style>
 

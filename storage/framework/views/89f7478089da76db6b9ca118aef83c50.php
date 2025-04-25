@@ -11,6 +11,27 @@
     <?php echo $__env->make('includes.frontend.style-kelas', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <style>
+        body {
+            position: relative;
+            z-index: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url('<?php echo e(asset('assets/frontend/landing-page/assets/img/bg.jpg')); ?>') no-repeat center center;
+            background-size: cover;
+            filter: blur(30px);
+            z-index: -1;
+        }
+
+
         .materi-section {
             background-color: #f0f7ff;
             padding: 10px;

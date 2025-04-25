@@ -40,7 +40,7 @@
 
 
             <!-- Garis Abu-abu -->
-            <hr class="profile-divider mb-5">
+            <hr class="profile-divider-2 mb-5">
 
             @yield('content')
 

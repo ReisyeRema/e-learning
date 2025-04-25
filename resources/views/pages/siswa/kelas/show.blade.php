@@ -29,7 +29,7 @@
                                 <img src="{{ asset('storage/covers/' . $pelajaran->cover) }}"
                                     alt="Cover {{ $pelajaran->nama_mapel }}" class="card-cover">
                             @else
-                                <img src="{{ asset('assets/img/profil.png') }}" alt="Default Cover" class="card-cover">
+                                <img src="{{ asset('assets/img/e-learning.png') }}" alt="Default Cover" height="300px">
                             @endif
                             <div class="card-body">
                                 <h5 class="card-title">{{ $pelajaran->nama_mapel }}</h5>

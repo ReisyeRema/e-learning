@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\HasilKuis;
 use App\Models\Enrollments;
 use App\Models\SubmitTugas;
+use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use App\Models\PertemuanKuis;
 use App\Models\ProfilSekolah;
@@ -109,19 +110,23 @@ class DashboardSiswaController extends Controller
         // === STATUS PEMBELAJARAN TERAKHIR ===
 
         // Mendapatkan status pembelajaran terakhir untuk siswa yang terdaftar dan telah di-approve
-        $statusPembelajaran = Enrollments::where('siswa_id', $siswaId)
-            ->where('status', 'approved')
-            ->with(['pembelajaran' => function ($query) {
-                $query->select('id', 'nama_mapel');
-            }])
-            ->orderBy('updated_at', 'desc') // Menampilkan yang terakhir di-update
-            ->get();
+        // $statusPembelajaran = Enrollments::where('siswa_id', $siswaId)
+        //     ->where('status', 'approved')
+        //     ->with(['pembelajaran' => function ($query) {
+        //         $query->select('id', 'nama_mapel');
+        //     }])
+        //     ->orderBy('updated_at', 'desc') // Menampilkan yang terakhir di-update
+        //     ->get();
 
         // Menyaring pembelajaran yang statusnya masih dalam proses atau sudah selesai
-        $statusPembelajaran = $statusPembelajaran->map(function ($status) {
-            $status->status = $status->updated_at->isPast() ? 'selesai' : 'proses';
-            return $status;
-        });
+        // $statusPembelajaran = $statusPembelajaran->map(function ($status) {
+        //     $status->status = $status->updated_at->isPast() ? 'selesai' : 'proses';
+        //     return $status;
+        // });
+        $statusPembelajaran = UserActivity::where('user_id', Auth::id())
+            ->orderBy('performed_at', 'desc')
+            ->limit(10)
+            ->get();
 
 
         // === PROFIL SEKOLAH ===

@@ -56,28 +56,27 @@
 
         <div class="row">
             @foreach ($statusPembelajaran as $status)
-            <div class="col-md-12 mb-3">
-                <div class="card p-3 border-0 shadow-sm bg-white rounded-3">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="icon-container" style="width: 40px; height: 40px; border-radius: 50%; background-color: {{ $status->status == 'selesai' ? '#28a745' : '#ffc107' }}; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas {{ $status->status == 'selesai' ? 'fa-check' : 'fa-clock' }} text-white"></i>
+                <div class="col-md-12 mb-3">
+                    <div class="card p-3 border-0 shadow-sm bg-white rounded-3">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="icon-container"
+                                style="width: 40px; height: 40px; border-radius: 50%; background-color: {{ $status->status == 'selesai' ? '#28a745' : '#ffc107' }}; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-check text-white"></i>
+                            </div>
+                            <div>
+                                <h6 class="ms-3 fw-bold mt-3 text-dark">{{ $status->activity }}</h6>
+                                <p class=" ms-3 text-muted fs-6">{{ $status->details }}</p>
+                            </div>
                         </div>
-                        <h6 class="ms-3 fw-bold mb-0 text-dark">{{ $status->pembelajaran->nama_mapel }}</h6>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        {{-- <small class="text-muted">
-                            Status: 
-                            <span class="{{ $status->status == 'selesai' ? 'text-success' : 'text-warning' }}">
-                                {{ ucfirst($status->status) }}
-                            </span>
-                        </small> --}}
-                        <small class="text-muted">
-                            Terakhir: {{ \Carbon\Carbon::parse($status->updated_at)->translatedFormat('d M Y H:i') }}
-                        </small>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                Terakhir:
+                                {{ \Carbon\Carbon::parse($status->performed_at)->translatedFormat('l, d F Y - H:i') }}
+                            </small>
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
         </div>
     </div>
 

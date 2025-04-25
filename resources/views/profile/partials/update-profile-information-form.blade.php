@@ -57,7 +57,6 @@
                         </div>
                     </div>
 
-
                     <!-- Input untuk Nama -->
                     <div class="form-group row">
                         <label for="name" class="col-sm-3 col-form-label">Name</label>
@@ -78,7 +77,7 @@
                         <x-input-error class="mt-2" :messages="$errors->get('email')" />
                     </div>
 
-                    <!-- Bagian Tambahan Berdasarkan Role -->
+                    <!-- Bagian Tambahan Berdasarkan Role Guru -->
                     @if ($user->hasRole('Guru'))
                         <h4 class="card-title mt-4">Profil Guru</h4>
 
@@ -108,93 +107,6 @@
                             <div class="col-sm-9">
                                 <div class="input-group">
                                     <input id="tanggalLahir" name="tanggal_lahir" type="text" class="form-control"
-                                        value="{{ old('tanggal_lahir', $profile->tanggal_lahir ?? '') }}"
-                                        placeholder="YYYY-MM-DD">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            <i class="fas fa-calendar-alt" id="tanggalLahir"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <x-input-error class="mt-2" :messages="$errors->get('tanggal_lahir')" />
-                            </div>
-                        </div>
-
-
-                        <!-- Jenis Kelamin -->
-                        <div class="form-group row">
-                            <label for="jenis_kelamin" class="col-sm-3 col-form-label">Jenis Kelamin</label>
-                            <div class="col-sm-9">
-                                <select id="jenis_kelamin" name="jenis_kelamin" class="form-control">
-                                    <option value="Laki-laki"
-                                        {{ old('jenis_kelamin', $profile->jenis_kelamin ?? '') == 'Laki-laki' ? 'selected' : '' }}>
-                                        Laki-laki</option>
-                                    <option value="Perempuan"
-                                        {{ old('jenis_kelamin', $profile->jenis_kelamin ?? '') == 'Perempuan' ? 'selected' : '' }}>
-                                        Perempuan</option>
-                                </select>
-                            </div>
-                            <x-input-error class="mt-2" :messages="$errors->get('jenis_kelamin')" />
-                        </div>
-
-                        <!-- Alamat -->
-                        <div class="form-group row">
-                            <label for="alamat" class="col-sm-3 col-form-label">Alamat</label>
-                            <div class="col-sm-9">
-                                <textarea id="alamat" name="alamat" class="form-control">{{ old('alamat', $profile->alamat ?? '') }}</textarea>
-                            </div>
-                            <x-input-error class="mt-2" :messages="$errors->get('alamat')" />
-                        </div>
-                        
-                    @elseif ($user->hasRole('Siswa'))
-                        <h4 class="card-title mt-4">Profil Siswa</h4>
-
-                        <!-- NIS -->
-                        <div class="form-group row">
-                            <label for="nis" class="col-sm-3 col-form-label">NIS</label>
-                            <div class="col-sm-9">
-                                <input id="nis" name="nis" type="text" class="form-control"
-                                    value="{{ old('nis', $profile->nis ?? '') }}">
-                            </div>
-                            <x-input-error class="mt-2" :messages="$errors->get('nis')" />
-                        </div>
-
-                        <!-- Kelas -->
-                        <div class="form-group row">
-                            <label for="kelas_id" class="col-sm-3 col-form-label">Kelas</label>
-                            <div class="col-sm-9">
-                                <select name="kelas_id" class="form-control @error('kelas_id') is-invalid @enderror"
-                                    id="kelas_id">
-                                    <option value="">Pilih Kelas</option>
-                                    @foreach ($kelas as $item)
-                                        <option value="{{ $item->id }}"
-                                            {{ old('kelas_id', $profile->kelas_id ?? '') == $item->id ? 'selected' : '' }}>
-                                            {{ $item->nama_kelas }} - {{ $item->tahun_ajaran }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <x-input-error class="mt-2" :messages="$errors->get('kelas_id')" />
-                            </div>
-                        </div>
-
-
-                        <!-- Tempat Lahir -->
-                        <div class="form-group row">
-                            <label for="tempat_lahir" class="col-sm-3 col-form-label">Tempat Lahir</label>
-                            <div class="col-sm-9">
-                                <input id="tempat_lahir" name="tempat_lahir" type="text" class="form-control"
-                                    value="{{ old('tempat_lahir', $profile->tempat_lahir ?? '') }}">
-                            </div>
-                            <x-input-error class="mt-2" :messages="$errors->get('tempat_lahir')" />
-                        </div>
-
-                        <!-- Tanggal Lahir -->
-                        <div class="form-group row">
-                            <label for="tanggalLahir" class="col-sm-3 col-form-label">Tanggal Lahir</label>
-                            <div class="col-sm-9">
-                                <div class="input-group">
-                                    <input id="tanggalLahir" name="tanggal_lahir" type="text"
-                                        class="form-control"
                                         value="{{ old('tanggal_lahir', $profile->tanggal_lahir ?? '') }}"
                                         placeholder="YYYY-MM-DD">
                                     <div class="input-group-prepend">
