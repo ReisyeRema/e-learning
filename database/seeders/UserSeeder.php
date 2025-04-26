@@ -40,18 +40,5 @@ class UserSeeder extends Seeder
         ]);
         // User::insert($admin);
         $admin->assignRole('Admin');
-
-        $guru = User::create([
-            'name' => 'Guru',
-            'email' => 'hafifsyahputra2506@gmail.com',
-            'username' => 'guru123',
-            'password' => Hash::make('12345'),
-            'email_verified_at' => now(),
-            'remember_token' => null,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-        // User::insert($guru);
-        $guru->assignRole('Guru');
     }
 }

@@ -57,174 +57,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    // //User / Operator
-    // Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    // Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-    // Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
-    // Route::get('/users/{users}/edit', [UserController::class, 'edit'])->name('users.edit');
-    // Route::put('/users/{users}/update', [UserController::class, 'update'])->name('users.update');
-    // Route::delete('/users/{users}/destroy', [UserController::class, 'destroy'])->name('users.destroy');
-
-    // //Admin
-    // Route::get('/admin', [UserController::class, 'index'])->name('admin.index');
-    // Route::get('/admin/create', [UserController::class, 'create'])->name('admin.create');
-    // Route::post('/admin/store', [UserController::class, 'store'])->name('admin.store');
-    // Route::get('/admin/{admin}/edit', [UserController::class, 'edit'])->name('admin.edit');
-    // Route::put('/admin/{admin}/update', [UserController::class, 'update'])->name('admin.update');
-    // Route::delete('/admin/{admin}/destroy', [UserController::class, 'destroy'])->name('admin.destroy');
-    // Route::get('/operator/export/excel', [UserController::class, 'export_excel'])->name('operator.export');
-
-
-    // //Permissions
-    // Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
-    // Route::get('/permissions/create', [PermissionController::class, 'create'])->name('permissions.create');
-    // Route::post('/permissions/store', [PermissionController::class, 'store'])->name('permissions.store');
-    // Route::get('/permissions/{permissions}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
-    // Route::put('/permissions/{permissions}/update', [PermissionController::class, 'update'])->name('permissions.update');
-    // Route::delete('/permissions/{permissions}/destroy', [PermissionController::class, 'destroy'])->name('permissions.destroy');
-
-    // //Roles
-    // Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
-    // Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
-    // Route::post('/roles/store', [RoleController::class, 'store'])->name('roles.store');
-    // Route::get('/roles/{roles}/edit', [RoleController::class, 'edit'])->name('roles.edit');
-    // Route::put('/roles/{roles}/update', [RoleController::class, 'update'])->name('roles.update');
-    // Route::delete('/roles/{roles}/destroy', [RoleController::class, 'destroy'])->name('roles.destroy');
-    // Route::get('roles/{roles}/give-permissions', [RoleController::class, 'addPermissionToRole'])->name('roles.addPermissionToRole');
-    // Route::put('roles/{roles}/give-permissions', [RoleController::class, 'givePermissionToRole'])->name('roles.givePermissionToRole');
-
-    // //kelas admin
-    // Route::get('/kelas', [KelasAdminController::class, 'index'])->name('kelas.index');
-    // Route::post('/kelas/store', [KelasAdminController::class, 'store'])->name('kelas.store');
-    // Route::put('/kelas/{kelas}/update', [KelasAdminController::class, 'update'])->name('kelas.update');
-    // Route::delete('/kelas/{kelas}/destroy', [KelasAdminController::class, 'destroy'])->name('kelas.destroy');
-
-    // //tahun ajaran admin
-    // Route::get('/tahun-ajaran', [TahunAjaranController::class, 'index'])->name('tahun-ajaran.index');
-    // Route::post('/tahun-ajaran/store', [TahunAjaranController::class, 'store'])->name('tahun-ajaran.store');
-    // Route::put('/tahun-ajaran/{tahunAjaran}/update', [TahunAjaranController::class, 'update'])->name('tahun-ajaran.update');
-    // Route::delete('/tahun-ajaran/{tahunAjaran}/destroy', [TahunAjaranController::class, 'destroy'])->name('tahun-ajaran.destroy');
-
-    // // guru admin
-    // Route::get('/guru', [GuruAdminController::class, 'index'])->name('guru.index');
-    // Route::get('/guru/create', [GuruAdminController::class, 'create'])->name('guru.create');
-    // Route::post('/guru/store', [GuruAdminController::class, 'store'])->name('guru.store');
-    // Route::get('/guru/{guru}/edit', [GuruAdminController::class, 'edit'])->name('guru.edit');
-    // Route::put('/guru/{guru}/update', [GuruAdminController::class, 'update'])->name('guru.update');
-    // Route::delete('/guru/{guru}/destroy', [GuruAdminController::class, 'destroy'])->name('guru.destroy');
-    // Route::get('/guru/export/excel', [GuruAdminController::class, 'export_excel'])->name('guru.export');
-
-
-    // // siswa admin
-    // Route::get('/siswa', [SiswaAdminController::class, 'index'])->name('siswa.index');
-    // Route::get('/siswa/create', [SiswaAdminController::class, 'create'])->name('siswa.create');
-    // Route::post('/siswa/store', [SiswaAdminController::class, 'store'])->name('siswa.store');
-    // Route::get('/siswa/{siswa}/edit', [SiswaAdminController::class, 'edit'])->name('siswa.edit');
-    // Route::put('/siswa/{siswa}/update', [SiswaAdminController::class, 'update'])->name('siswa.update');
-    // Route::delete('/siswa/{siswa}/destroy', [SiswaAdminController::class, 'destroy'])->name('siswa.destroy');
-    // Route::get('/siswa/export/excel', [SiswaAdminController::class, 'export_excel'])->name('siswa.export');
-    // Route::get('/siswa-kelas/{mapel}/{kelas}/{tahunAjaran}', [SiswaAdminController::class, 'show'])
-    // ->name('siswa-kelas.show');
-
-    // // profile sekolah admin
-    // Route::get('/profile-sekolah', [ProfileSekolahController::class, 'index'])->name('profilesekolah.index');
-    // Route::get('/profile-sekolah/first', [ProfileSekolahController::class, 'show'])->name('profilesekolah.show');
-    // Route::post('/profile-sekolah', [ProfileSekolahController::class, 'update'])->name('profilesekolah.update');
-
-    // // Kurikulum admin
-    // Route::get('/kurikulum', [KurikulumAdminController::class, 'index'])->name('kurikulum.index');
-    // Route::post('/kurikulum/store', [KurikulumAdminController::class, 'store'])->name('kurikulum.store');
-    // Route::put('/kurikulum/{kurikulum}/update', [KurikulumAdminController::class, 'update'])->name('kurikulum.update');
-    // Route::delete('/kurikulum/{kurikulum}/destroy', [KurikulumAdminController::class, 'destroy'])->name('kurikulum.destroy');
-
-    // // Pembelajaran admin
-    // Route::get('/pembelajaran', [PembelajaranController::class, 'index'])->name('pembelajaran.index');
-    // Route::get('/pembelajaran/create', [PembelajaranController::class, 'create'])->name('pembelajaran.create');
-    // Route::post('/pembelajaran/store', [PembelajaranController::class, 'store'])->name('pembelajaran.store');
-    // Route::get('/pembelajaran/{pembelajaran}/edit', [PembelajaranController::class, 'edit'])->name('pembelajaran.edit');
-    // Route::put('/pembelajaran/{pembelajaran}/update', [PembelajaranController::class, 'update'])->name('pembelajaran.update');
-    // Route::delete('/pembelajaran/{pembelajaran}/destroy', [PembelajaranController::class, 'destroy'])->name('pembelajaran.destroy');
-    // Route::get('/pembelajaran/export/excel', [PembelajaranController::class, 'export_excel'])->name('pembelajaran.export');
-
-    //tahun ajaran admin
-    // Route::get('/enroll-siswa', [EnrollmentController::class, 'index'])->name('enroll-siswa.index');
-    // Route::post('/enroll-siswa/store', [EnrollmentController::class, 'store'])->name('enroll-siswa.store');
-    // Route::put('/enroll-siswa/{enrollments}/update', [EnrollmentController::class, 'update'])->name('enroll-siswa.update');
-    // Route::delete('/enroll-siswa/{enrollments}/destroy', [EnrollmentController::class, 'destroy'])->name('enroll-siswa.destroy');
-
-    // //materi guru
-    // Route::get('/materi', [MateriController::class, 'index'])->name('materi.index');
-    // Route::post('/materi/store', [MateriController::class, 'store'])->name('materi.store');
-    // Route::put('/materi/{materi}/update', [MateriController::class, 'update'])->name('materi.update');
-    // Route::delete('/materi/{materi}/destroy', [MateriController::class, 'destroy'])->name('materi.destroy');
-    // Route::get('/materi/{materi}/download', [MateriController::class, 'download']);
-    // Route::get('/submit-materi/{mapel}/{kelas}/{tahunAjaran}', [MateriController::class, 'show'])
-    //     ->name('submit-materi.show');
-    // Route::get('/materi/{pertemuan_id}', [MateriController::class, 'getMateriByPertemuan']);
-
-
-    // //Kuis guru
-    // Route::get('/kuis', [KuisController::class, 'index'])->name('kuis.index');
-    // Route::post('/kuis/store', [KuisController::class, 'store'])->name('kuis.store');
-    // Route::put('/kuis/{kuis}/update', [KuisController::class, 'update'])->name('kuis.update');
-    // Route::delete('/kuis/{kuis}/destroy', [KuisController::class, 'destroy'])->name('kuis.destroy');
-    // Route::get('/submit-kuis/{mapel}/{kelas}/{tahunAjaran}', [KuisController::class, 'show'])
-    //     ->name('submit-kuis.show');
-    // Route::get('/kuis/{pertemuan_id}', [KuisController::class, 'getKuisByPertemuan']);
-
-
-    // //Soal guru
-    // Route::get('/soal', [SoalKuisController::class, 'index'])->name('soal.index');
-    // Route::get('/soal/create/{kuis_id}', [SoalKuisController::class, 'create'])->name('soal.create');
-    // Route::post('/soal/store/{kuis_id}', [SoalKuisController::class, 'store'])->name('soal.store');
-    // Route::get('/soal/{id}', [SoalKuisController::class, 'show'])->name('soal.show');
-    // Route::get('/soal/{soal}/edit', [SoalKuisController::class, 'edit'])->name('soal.edit');
-    // Route::put('/soal/{soal}', [SoalKuisController::class, 'update'])->name('soal.update');
-    // Route::delete('/soal/{soalKuis}', [SoalKuisController::class, 'destroy'])->name('soal.destroy');
-
-
-    // //Tugas guru
-    // Route::get('/tugas', [TugasController::class, 'index'])->name('tugas.index');
-    // Route::post('/tugas/store', [TugasController::class, 'store'])->name('tugas.store');
-    // Route::put('/tugas/{tugas}/update', [TugasController::class, 'update'])->name('tugas.update');
-    // Route::delete('/tugas/{tugas}/destroy', [TugasController::class, 'destroy'])->name('tugas.destroy');
-    // Route::get('/submit-tugas/{mapel}/{kelas}/{tahunAjaran}', [TugasController::class, 'show'])
-    //     ->name('submit-tugas.show');
-    // Route::get('/tugas/{pertemuan_id}', [TugasController::class, 'getTugasByPertemuan']);
-
-
-    // // Pertemuan Materi guru
-    // Route::get('/pertemuan-materi', [PertemuanMateriController::class, 'index'])->name('pertemuan-materi.index');
-    // Route::post('/pertemuan-materi/store/{pembelajaran_id}', [PertemuanMateriController::class, 'store'])->name('pertemuan-materi.store');
-    // Route::delete('/pertemuan-materi/{id}', [PertemuanMateriController::class, 'destroy'])->name('pertemuan-materi.destroy');
-    // Route::put('/pertemuan-materi/{id}', [PertemuanMateriController::class, 'update'])->name('pertemuan-materi.update');
-
-
-    // // Pertemuan Materi guru
-    // Route::get('/pertemuan-tugas', [PertemuanTugasController::class, 'index'])->name('pertemuan-tugas.index');
-    // Route::post('/pertemuan-tugas/store/{pembelajaran_id}', [PertemuanTugasController::class, 'store'])->name('pertemuan-tugas.store');
-    // Route::delete('/pertemuan-tugas/{id}', [PertemuanTugasController::class, 'destroy'])->name('pertemuan-tugas.destroy');
-
-    // // Pertemuan Kuis guru
-    // Route::get('/pertemuan-kuis', [PertemuanKuisController::class, 'index'])->name('pertemuan-kuis.index');
-    // Route::post('/pertemuan-kuis/store/{pembelajaran_id}', [PertemuanKuisController::class, 'store'])->name('pertemuan-kuis.store');
-    // Route::delete('/pertemuan-kuis/{id}', [PertemuanKuisController::class, 'destroy'])->name('pertemuan-kuis.destroy');
-
-    //  // Approval/Tolak oleh guru
-    // Route::post('/enrollment/{id}/approve', [EnrollController::class, 'approve'])->name('enrollment.approve');
-    // Route::post('/enrollment/{id}/reject', [EnrollController::class, 'reject'])->name('enrollment.reject');
-    // Route::delete('/enrollment/{id}', [EnrollController::class, 'destroy'])->name('enrollment.destroy');
-    // Route::post('/enrollment/batch-update', [EnrollController::class, 'batchUpdate'])->name('enrollment.batchUpdate');
-    // Route::post('/enrollment/batch-delete', [EnrollController::class, 'batchDelete'])->name('enrollment.batchDelete');
-
 });
 
 // Super Admin
 Route::middleware(['auth', 'role:Super Admin'])->prefix('superadmin')->group(function () {
-    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'edit_super_admin'])->name('profile-super-admin.edit');
+    Route::put('/profile', [ProfileController::class, 'update_super_admin'])->name('profile-super-admin.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //User / Operator
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
@@ -265,9 +104,9 @@ Route::middleware(['auth', 'role:Super Admin'])->prefix('superadmin')->group(fun
 
 // Admin
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
-    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'edit_admin'])->name('profile-admin.edit');
+    Route::put('/profile', [ProfileController::class, 'update_admin'])->name('profile-admin.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //kelas admin
     Route::get('/kelas', [KelasAdminController::class, 'index'])->name('kelas.index');
@@ -323,9 +162,9 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
 
 // Guru
 Route::middleware(['auth', 'role:Guru'])->prefix('guru')->group(function () {
-    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'edit_guru'])->name('profile-guru.edit');
+    Route::put('/profile', [ProfileController::class, 'update_guru'])->name('profile-guru.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //materi guru
     Route::get('/materi', [MateriController::class, 'index'])->name('materi.index');

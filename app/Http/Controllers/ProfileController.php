@@ -36,7 +36,7 @@ class ProfileController extends Controller
         $user = $request->user();
 
         // Update data umum (User)
-        $user->fill($request->only('name', 'email','username'));
+        $user->fill($request->only('name', 'email', 'username'));
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
@@ -103,7 +103,7 @@ class ProfileController extends Controller
             ? $user->siswa : null;
 
         $kelas = \App\Models\Kelas::all();
-        $profileSekolah = ProfilSekolah::first(); 
+        $profileSekolah = ProfilSekolah::first();
 
 
         return view('pages.siswa.dataDiri.edit', [
@@ -120,7 +120,7 @@ class ProfileController extends Controller
         $user = $request->user();
 
         // Update data umum (User)
-        $user->fill($request->only('name', 'email','username'));
+        $user->fill($request->only('name', 'email', 'username'));
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
@@ -156,6 +156,183 @@ class ProfileController extends Controller
         return Redirect::route('profile-siswa.edit')->with('status', 'profile-updated');
     }
 
+
+
+
+    public function edit_super_admin(Request $request): View
+    {
+        $this->logActivity('Mengakses Edit Profile', 'User membuka halaman edit profile');
+
+        $user = $request->user();
+
+        $profile = $user->hasRole('Super Admin')
+            ? $user->siswa : null;
+
+        $kelas = \App\Models\Kelas::all();
+        $profileSekolah = ProfilSekolah::first();
+
+
+        return view('profile.edit', [
+            'user' => $user,
+            'profile' => $profile,
+            'kelas' => $kelas,
+            'profileSekolah' => $profileSekolah,
+        ]);
+    }
+
+
+    public function update_super_admin(ProfileUpdateRequest $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        // Update data umum (User)
+        $user->fill($request->only('name', 'email', 'username'));
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        // Update foto jika ada file baru
+        if ($request->hasFile('foto')) {
+            $request->validate([
+                'foto' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Validasi file foto
+            ]);
+
+            $extension = $request->file('foto')->getClientOriginalExtension();
+            $newImage = $user->name . '.' . now()->timestamp . '.' . $extension;
+
+            // Simpan foto baru ke disk public/foto_user
+            $request->file('foto')->storeAs('foto_user', $newImage, 'public');
+
+            // Hapus foto lama jika ada
+            if ($user->foto) {
+                Storage::disk('public')->delete('foto_user/' . $user->foto);
+            }
+
+            // Simpan nama file baru ke database
+            $user->foto = $newImage;
+        }
+
+        $user->save();
+
+        return Redirect::route('profile-super-admin.edit')->with('status', 'profile-updated');
+    }
+
+
+    public function edit_admin(Request $request): View
+    {
+        $this->logActivity('Mengakses Edit Profile', 'User membuka halaman edit profile');
+
+        $user = $request->user();
+
+        $profile = $user->hasRole('Admin')
+            ? $user->siswa : null;
+
+        $kelas = \App\Models\Kelas::all();
+        $profileSekolah = ProfilSekolah::first();
+
+
+        return view('profile.edit', [
+            'user' => $user,
+            'profile' => $profile,
+            'kelas' => $kelas,
+            'profileSekolah' => $profileSekolah,
+        ]);
+    }
+
+
+    public function update_admin(ProfileUpdateRequest $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        // Update data umum (User)
+        $user->fill($request->only('name', 'email', 'username'));
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        // Update foto jika ada file baru
+        if ($request->hasFile('foto')) {
+            $request->validate([
+                'foto' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Validasi file foto
+            ]);
+
+            $extension = $request->file('foto')->getClientOriginalExtension();
+            $newImage = $user->name . '.' . now()->timestamp . '.' . $extension;
+
+            // Simpan foto baru ke disk public/foto_user
+            $request->file('foto')->storeAs('foto_user', $newImage, 'public');
+
+            // Hapus foto lama jika ada
+            if ($user->foto) {
+                Storage::disk('public')->delete('foto_user/' . $user->foto);
+            }
+
+            // Simpan nama file baru ke database
+            $user->foto = $newImage;
+        }
+
+        $user->save();
+
+        return Redirect::route('profile-admin.edit')->with('status', 'profile-updated');
+    }
+
+    public function edit_guru(Request $request): View
+    {
+        $user = $request->user();
+
+        $profile = $user->hasRole('Guru')
+            ? $user->guru
+            : ($user->hasRole('Siswa') ? $user->siswa : null);
+
+        $kelas = \App\Models\Kelas::all();
+
+        return view('profile.edit', [
+            'user' => $user,
+            'profile' => $profile,
+            'kelas' => $kelas,
+        ]);
+    }
+
+
+    public function update_guru(ProfileUpdateRequest $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        // Update data umum (User)
+        $user->fill($request->only('name', 'email', 'username'));
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        // Update foto jika ada file baru
+        if ($request->hasFile('foto')) {
+            $request->validate([
+                'foto' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Validasi file foto
+            ]);
+
+            $extension = $request->file('foto')->getClientOriginalExtension();
+            $newImage = $user->name . '.' . now()->timestamp . '.' . $extension;
+
+            // Simpan foto baru ke disk public/foto_user
+            $request->file('foto')->storeAs('foto_user', $newImage, 'public');
+
+            // Hapus foto lama jika ada
+            if ($user->foto) {
+                Storage::disk('public')->delete('foto_user/' . $user->foto);
+            }
+
+            // Simpan nama file baru ke database
+            $user->foto = $newImage;
+        }
+
+        $user->save();
+
+        if ($user->hasRole('Guru')) {
+            $user->guru->update($request->only('nip', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'alamat', 'status'));
+        }
+
+        return Redirect::route('profile-guru.edit')->with('status', 'profile-updated');
+    }
 
     protected function logActivity($activity, $details = '')
     {

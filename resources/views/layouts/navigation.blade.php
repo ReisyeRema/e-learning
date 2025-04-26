@@ -1,15 +1,22 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="{{ url('storage/logo_sekolah/' . $profilSekolah->foto) }}" class="mr-2"
-                alt="logo" /></a>
-        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{{ url('storage/logo_sekolah/' . $profilSekolah->foto) }}"
-                alt="logo" /></a>
+        <a class="navbar-brand brand-logo mr-5" href="index.html">
+            <img src="{{ url('storage/logo_sekolah/' . $profilSekolah->foto) }}" 
+                 alt="logo" 
+                 style="height: 100px;" />
+        </a>
+        <a class="navbar-brand brand-logo-mini" href="index.html">
+            <img src="{{ url('storage/logo_sekolah/' . $profilSekolah->foto) }}" 
+                 alt="logo" 
+                 style="height: 90px;" />
+        </a>
     </div>
+    
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="icon-menu"></span>
         </button>
-        
+
         <ul class="navbar-nav navbar-nav-right">
             {{-- <li class="nav-item dropdown">
                 <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
@@ -64,26 +71,43 @@
             <li class="nav-item nav-profile dropdown">
                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
                     {{-- <img src="{{ asset('storage/foto_user/' . Auth::user()->foto) }}" alt="profile" /> --}}
-                    <img src="{{ Auth::user()->foto ? asset('storage/foto_user/' . Auth::user()->foto) : asset('assets/img/profil.png') }}" alt="profile" />
+                    <img src="{{ Auth::user()->foto ? asset('storage/foto_user/' . Auth::user()->foto) : asset('assets/img/profil.png') }}"
+                        alt="profile" />
                 </a>
-                <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
-                    aria-labelledby="profileDropdown">
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
 
-                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                    @if (Auth::user()->hasRole('Super Admin'))
+                        <a class="dropdown-item" href="{{ route('profile-super-admin.edit') }}">
+                            <i class="ti-settings text-primary"></i>
+                            {{ __('Superadmin Profile') }}
+                        </a>
+                    @elseif(Auth::user()->hasRole('Admin'))
+                        <a class="dropdown-item" href="{{ route('profile-admin.edit') }}">
+                            <i class="ti-settings text-primary"></i>
+                            {{ __('Admin Profile') }}
+                        </a>
+                    @elseif(Auth::user()->hasRole('Guru'))
+                        <a class="dropdown-item" href="{{ route('profile-guru.edit') }}">
+                            <i class="ti-settings text-primary"></i>
+                            {{ __('Guru Profile') }}
+                        </a>
+                    @endif
+
+                    {{-- <a class="dropdown-item" href="{{ route('profile.edit') }}">
                         <i class="ti-settings text-primary"></i>
                         {{ __('Profile') }}
-                    </a>
-                    
+                    </a> --}}
+
                     <form class="dropdown-item" method="POST" action="{{ route('logout') }}">
                         @csrf
                         <i class="ti-power-off text-primary"></i>
                         <a :href="route('logout')"
-                                onclick="event.preventDefault();
+                            onclick="event.preventDefault();
                                             this.closest('form').submit();">
                             {{ __('Log Out') }}
                         </a>
                     </form>
-                    
+
                 </div>
             </li>
             <li class="nav-item nav-settings d-none d-lg-flex">
