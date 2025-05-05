@@ -116,6 +116,7 @@
 
     .logo-wrapper {
         text-align: center;
+        margin-bottom: 10px;
     }
 
     .logo-img {

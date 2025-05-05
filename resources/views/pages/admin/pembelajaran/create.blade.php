@@ -22,7 +22,7 @@
                                             <input name="nama_mapel"
                                                 class="form-control @error('nama_mapel') is-invalid @enderror"
                                                 value="{{ old('nama_mapel') }}" type="text"
-                                                id="exampleInputnama_mapel1" placeholder="Tempat Lahir">
+                                                id="exampleInputnama_mapel1" placeholder="Nama Mata Pelajaran">
                                             @error('nama_mapel')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

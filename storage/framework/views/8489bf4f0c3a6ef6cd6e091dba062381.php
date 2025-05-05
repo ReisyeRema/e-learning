@@ -29,7 +29,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
                                                 value="<?php echo e(old('nama_mapel')); ?>" type="text"
-                                                id="exampleInputnama_mapel1" placeholder="Tempat Lahir">
+                                                id="exampleInputnama_mapel1" placeholder="Nama Mata Pelajaran">
                                             <?php $__errorArgs = ['nama_mapel'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
