@@ -37,7 +37,7 @@
                                         @foreach ($tugas as $item)
                                             <tr>
                                                 <td style="text-align: center"> {{ $loop->iteration }} </td>
-                                                <td> {{ ($item->materi)->judul }} </td>
+                                                <td> {{ optional($item->materi)->judul ?? '-' }} </td>
                                                 <td> {{ $item->judul }} </td>
                                                 <td> {{ $item->deskripsi }} </td>
                                                 <td>

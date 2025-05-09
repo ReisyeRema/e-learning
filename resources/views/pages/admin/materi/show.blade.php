@@ -161,6 +161,51 @@
         </div>
     </div>
 
+    <!-- Modal Edit Materi -->
+    <div class="modal fade" id="editMateriModal" tabindex="-1" aria-labelledby="editMateriModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <form id="editMateriForm" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editMateriModalLabel">Edit Materi</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="pembelajaran_id" value="{{ $pembelajaran->id }}">
+                        <input type="hidden" name="pertemuan_materi_id" id="editPertemuanMateriId">
+
+                        <div class="form-group">
+                            <label for="editPertemuanSelect">Pertemuan</label>
+                            <select name="pertemuan_id" id="editPertemuanSelect" class="form-control">
+                                @foreach ($pertemuanSemua as $item)
+                                    <option value="{{ $item->id }}">{{ $item->judul }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editMateriSelect">Materi</label>
+                            <select name="materi_id" id="editMateriSelect" class="form-control">
+                                @foreach ($materi as $item)
+                                    <option value="{{ $item->id }}">{{ $item->judul }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -190,22 +235,39 @@
                                     "#";
 
                                 let materiItem = `
-                        <div class="list-group-item d-flex justify-content-between align-items-center border rounded p-2 mb-2 materi-item"
-                            data-id="${item.id}" data-file-url="${fileUrl}">
-                            <div>
-                                <i class="fas fa-file-alt text-primary"></i>
-                                <span class="ml-2">${item.materi.judul}</span>
-                            </div>
-                            <button class="btn btn-danger btn-sm delete-materi" data-id="${item.id}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>`;
+                                    <div class="list-group-item d-flex justify-content-between align-items-center border rounded p-2 mb-2 materi-item"
+                                        data-id="${item.id}" data-file-url="${fileUrl}">
+                                        <div>
+                                            <i class="fas fa-file-alt text-primary"></i>
+                                            <span class="ml-2">${item.materi.judul || '-'}</span>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-warning btn-sm edit-materi" 
+                                                data-toggle="modal" 
+                                                data-target="#editMateriModal" 
+                                                data-id="${item.id}" 
+                                                data-materi-id="${item.materi.id}" 
+                                                data-pertemuan-id="${item.pertemuan_id}">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-sm delete-materi" data-id="${item.id}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>`;
+
 
                                 materiContainer.append(materiItem);
                             });
 
-                            // Event klik untuk membuka file
-                            $(".materi-item").click(function() {
+                            // Gunakan delegation agar klik ke .materi-item bisa dibatalkan dari child-nya
+                            $(document).on("click", ".materi-item", function(e) {
+                                // Kalau yang diklik adalah tombol edit atau delete, jangan buka file
+                                if ($(e.target).closest(".edit-materi, .delete-materi")
+                                    .length > 0) {
+                                    return;
+                                }
+
                                 let fileUrl = $(this).data("file-url");
                                 if (fileUrl !== "#") {
                                     window.open(fileUrl, "_blank");
@@ -213,6 +275,27 @@
                                     alert("File tidak tersedia.");
                                 }
                             });
+
+
+
+                            // Tampilkan data ke dalam modal edit saat tombol edit diklik
+                            $(document).on("click", ".edit-materi", function(e) {
+                                e
+                                    .stopPropagation(); // Penting: mencegah klik masuk ke materi-item dan membuka file
+
+                                let id = $(this).data("id");
+                                let materiId = $(this).data("materi-id");
+                                let pertemuanId = $(this).data("pertemuan-id");
+
+                                $("#editPertemuanMateriId").val(id);
+                                $("#editPertemuanSelect").val(pertemuanId);
+                                $("#editMateriSelect").val(materiId);
+
+                                let actionUrl = `/guru/pertemuan-materi/${id}`;
+                                $("#editMateriForm").attr("action", actionUrl);
+                            });
+
+
 
                             // Event klik untuk hapus materi dengan SweetAlert
                             $(".delete-materi").click(function(e) {

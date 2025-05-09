@@ -43,6 +43,20 @@ class PertemuanTugasController extends Controller
         ])->with('success', 'Data berhasil ditambahkan.');
     }
 
+
+    public function update(PertemuanTugasRequest $request, $id)
+    {
+
+        $data = PertemuanTugas::findOrFail($id);
+        $data->pertemuan_id = $request->pertemuan_id;  
+        $data->tugas_id = $request->tugas_id;          
+        $data->deadline = $request->deadline;          
+        $data->save();
+
+        return redirect()->back()->with('success', 'Tugas berhasil diperbarui.');
+    }
+
+
     public function destroy($id)
     {
         try {

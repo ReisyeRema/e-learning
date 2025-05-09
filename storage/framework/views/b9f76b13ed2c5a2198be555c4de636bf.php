@@ -227,8 +227,78 @@ unset($__errorArgs, $__bag); ?>
         </div>
     </div>
 
+
+    <!-- Modal Edit Materi -->
+    <div class="modal fade" id="editTugasModal" tabindex="-1" aria-labelledby="editTugasModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <form id="editTugasForm" method="POST">
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('PUT'); ?>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editTugasModalLabel">Edit Materi</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="pembelajaran_id" value="<?php echo e($pembelajaran->id); ?>">
+                        <input type="hidden" name="pertemuan_tugas_id" id="editPertemuanTugasId">
+
+                        <div class="form-group">
+                            <label for="editPertemuanSelect">Pertemuan</label>
+                            <select name="pertemuan_id" id="editPertemuanSelect" class="form-control">
+                                <?php $__currentLoopData = $pertemuanSemua; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($item->id); ?>"><?php echo e($item->judul); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editTugasSelect">Tugas</label>
+                            <select name="tugas_id" id="editTugasSelect" class="form-control">
+                                <?php $__currentLoopData = $tugas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($item->id); ?>"><?php echo e($item->judul); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editDeadline">Deadline Tugas</label>
+                            <input type="datetime-local" class="form-control <?php $__errorArgs = ['deadline'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                id="editDeadline" name="deadline" value="<?php echo e(old('deadline')); ?>">
+                            <?php $__errorArgs = ['deadline'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong><?php echo e($message); ?></strong>
+                                </span>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
 
     <script>
         $(document).ready(function() {
@@ -266,6 +336,15 @@ unset($__errorArgs, $__bag); ?>
                                             <button class="btn btn-info btn-sm lihat-siswa" data-id="${item.tugas.id}">
                                                 <i class="fas fa-users"></i> Lihat Siswa
                                             </button>
+                                            <button class="btn btn-warning btn-sm edit-tugas" 
+                                                data-toggle="modal" 
+                                                data-target="#editTugasModal" 
+                                                data-id="${item.id}" 
+                                                data-tugas-id="${item.tugas.id}" 
+                                                data-pertemuan-id="${item.pertemuan_id}" 
+                                                data-deadline="${item.deadline}">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
                                             <button class="btn btn-danger btn-sm delete-tugas" data-id="${item.id}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -276,7 +355,13 @@ unset($__errorArgs, $__bag); ?>
                             });
 
                             // Buka file
-                            $(".tugas-item").click(function() {
+                            $(document).on("click", ".tugas-item", function(e) {
+
+                                if ($(e.target).closest(".edit-tugas, .delete-tugas")
+                                    .length > 0) {
+                                    return;
+                                }
+
                                 let fileUrl = $(this).data("file-url");
                                 if (fileUrl !== "#") {
                                     window.open(fileUrl, "_blank");
@@ -302,6 +387,25 @@ unset($__errorArgs, $__bag); ?>
                                 window.location.href = redirectUrl;
                             });
 
+
+                            // Tampilkan data ke dalam modal edit saat tombol edit diklik
+                            $(document).on("click", ".edit-tugas", function(e) {
+                                e
+                                    .stopPropagation(); // Penting: mencegah klik masuk ke tugas-item dan membuka file
+
+                                let id = $(this).data("id");
+                                let tugasId = $(this).data("tugas-id");
+                                let pertemuanId = $(this).data("pertemuan-id");
+                                let deadline = $(this).data("deadline");
+
+                                $("#editPertemuanTugasId").val(id);
+                                $("#editPertemuanSelect").val(pertemuanId);
+                                $("#editTugasSelect").val(tugasId);
+                                $("#editDeadline").val(deadline);
+
+                                let actionUrl = `/guru/pertemuan-tugas/${id}`;
+                                $("#editTugasForm").attr("action", actionUrl);
+                            });
 
 
                             // Hapus tugas

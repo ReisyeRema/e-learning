@@ -179,6 +179,7 @@
                             'id' => $tugas->tugas->id,
                             'pertemuan_ke' => $tugas->pertemuan->judul,
                             'judul' => $tugas->tugas->judul,
+                            'deskripsi' => $tugas->tugas->deskripsi,
                             'file_path' => $tugas->tugas->file_path,
                             'deadline' => $tugas->deadline,
                             'status' =>
@@ -206,6 +207,8 @@
                             'nama_kelas' => $pembelajaran->kelas->nama_kelas,
                             'tahun_ajaran' => $pembelajaran->tahunAjaran->nama_tahun,
                             'kategori_kuis' => $kategori,
+                            'token' => $kuis->token, 
+                            'deadline' => $kuis->deadline, 
                         ];
                     }
                 @endphp
@@ -239,7 +242,9 @@
                                             {{ $tugas['pertemuan_ke'] }}
                                             - {{ $tugas['judul'] }}</span>
                                         <button class="btn btn-outline-warning btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#modalKumpul" data-tugas-judul="{{ $tugas['judul'] }}"
+                                            data-bs-target="#modalKumpul" 
+                                            data-tugas-judul="{{ $tugas['judul'] }}"
+                                            data-tugas-deskripsi="{{ $tugas['deskripsi'] }}"
                                             data-tugas-id="{{ $tugas['id'] }}"
                                             data-tugas-deadline="{{ $tugas['deadline'] ?? 'Tidak ada deadline' }}"
                                             data-tugas-link="https://drive.google.com/file/d/{{ $tugas['file_path'] ?? '' }}/view"
@@ -266,7 +271,9 @@
                                                 'tahunAjaran' => str_replace('/', '-', $kuis['tahun_ajaran']),
                                                 'judulKuis' => Str::slug($kuis['judul']),
                                             ]) }}"
-                                            data-pertemuan-id="{{ $kuis['id_pertemuan'] }}">
+                                            data-pertemuan-id="{{ $kuis['id_pertemuan'] }}"
+                                            data-token="{{ $kuis['token'] ?? 'Tidak ada token' }}"
+                                            data-deadline="{{ $kuis['deadline'] ?? 'Tidak ada deadline' }}">
                                             Kerjakan
                                         </a>
 
@@ -322,6 +329,10 @@
                                     <strong style="display: table-cell; padding-right: 10px;">Judul Tugas</strong>
                                     <span style="display: table-cell;">: <span id="tugasJudul"></span></span>
                                 </div>
+                                <div style="display: table-row;">
+                                    <strong style="display: table-cell; padding-right: 10px;">Deskripsi</strong>
+                                    <span style="display: table-cell;">: <span id="tugasDeskripsi"></span></span>
+                                </div>                                
                             </div>
 
                             <div class="mb-3">
@@ -349,8 +360,6 @@
 
                             </div>
                         </form>
-
-
                     </div>
                 </div>
             </div>
@@ -366,14 +375,23 @@
                     <input type="hidden" name="redirect_link" id="redirect_link">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Masukkan Token Kuis</h5>
+                            <h5 class="modal-title">Masukkan Token</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Tutup"></button>
                         </div>
                         <div class="modal-body">
-                            <input type="text" name="token" class="form-control" placeholder="Masukkan token"
-                                required>
-                        </div>
+                            <div class="mb-3" style="display: table;">
+                                <div style="display: table-row;">
+                                    <strong style="display: table-cell; padding-right: 10px;">Token</strong>
+                                    <span style="display: table-cell;">: <span id="tokenTampil"></span></span>
+                                </div>
+                                <div style="display: table-row;">
+                                    <strong style="display: table-cell; padding-right: 10px;">Deadline</strong>
+                                    <span style="display: table-cell;">: <span id="kuisDeadline"></span></span>
+                                </div>
+                            </div>
+                            <input type="text" name="token" class="form-control" placeholder="Masukkan token" required>
+                        </div>                        
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Mulai Kuis</button>
                         </div>
@@ -402,6 +420,7 @@
                 let tugasId = button.getAttribute("data-tugas-id") || "";
                 let tugasDeadline = button.getAttribute("data-tugas-deadline") || "Tidak ada deadline";
                 let statusPengumpulan = button.getAttribute("data-tugas-status") || "belum";
+                let tugasDeskripsi = button.getAttribute("data-tugas-deskripsi") || "Tidak ada deskripsi";
 
                 console.log("Tugas ID yang diklik:", tugasId);
 
@@ -414,6 +433,7 @@
                 document.getElementById("tugasLink").href = tugasLink;
                 document.getElementById("tugasId").value = tugasId;
                 document.getElementById("tugasDeadline").textContent = tugasDeadline;
+                document.getElementById("tugasDeskripsi").textContent = tugasDeskripsi;
 
                 let statusElement = document.getElementById("statusPengumpulan");
                 let submitButton = document.getElementById("submitButton");
@@ -552,8 +572,14 @@
                 const pertemuanId = this.dataset.pertemuanId;
                 const link = this.dataset.link;
 
+                let tokenTampil = button.getAttribute("data-token");
+                let kuisDeadline = button.getAttribute("data-deadline");
+
                 document.getElementById('pertemuan_kuis_id').value = pertemuanId;
                 document.getElementById('redirect_link').value = link;
+                document.getElementById("tokenTampil").textContent = tokenTampil;
+                document.getElementById("kuisDeadline").textContent = kuisDeadline;
+
 
                 $('#modalTokenKuis').modal('show');
             });

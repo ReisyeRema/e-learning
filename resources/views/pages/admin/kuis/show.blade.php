@@ -167,12 +167,67 @@
                                 </span>
                             @enderror
                         </div>
-
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+     <!-- Modal Edit Materi -->
+     <div class="modal fade" id="editKuisModal" tabindex="-1" aria-labelledby="editKuisModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <form id="editKuisForm" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editKuisModalLabel">Edit Kuis</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="pembelajaran_id" value="{{ $pembelajaran->id }}">
+                        <input type="hidden" name="pertemuan_kuis_id" id="editPertemuanKuisId">
+
+                        <div class="form-group">
+                            <label for="editPertemuanSelect">Pertemuan</label>
+                            <select name="pertemuan_id" id="editPertemuanSelect" class="form-control">
+                                @foreach ($pertemuanSemua as $item)
+                                    <option value="{{ $item->id }}">{{ $item->judul }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editKuisSelect">Kuis</label>
+                            <select name="kuis_id" id="editTugasSelect" class="form-control">
+                                @foreach ($kuis as $item)
+                                    <option value="{{ $item->id }}">{{ $item->judul }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editDeadlineKuis">Deadline Kuis</label>
+                            <input type="datetime-local" class="form-control @error('deadline') is-invalid @enderror"
+                                id="editDeadlineKuis" name="deadline" value="{{ old('deadline') }}">
+                            @error('deadline')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                     </div>
                 </form>
             </div>
@@ -221,6 +276,15 @@
                                             <button class="btn btn-info btn-sm lihat-siswa" data-id="${item.kuis.id}">
                                                 <i class="fas fa-users"></i> Lihat Siswa
                                             </button>
+                                            <button class="btn btn-warning btn-sm edit-kuis" 
+                                                data-toggle="modal" 
+                                                data-target="#editKuisModal" 
+                                                data-id="${item.id}" 
+                                                data-kuis-id="${item.kuis.id}" 
+                                                data-pertemuan-id="${item.pertemuan_id}" 
+                                                data-deadline="${item.deadline}">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
                                             <button class="btn btn-danger btn-sm delete-kuis" data-id="${item.id}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -232,7 +296,13 @@
                             });
 
                             // Event klik untuk membuka file
-                            $(".kuis-item").click(function() {
+                            $(document).on("click", ".kuis-item", function(e) {
+
+                                if ($(e.target).closest(".edit-kuis, .delete-kuis")
+                                    .length > 0) {
+                                    return;
+                                }
+
                                 let fileUrl = $(this).data("file-url");
                                 if (fileUrl !== "#") {
                                     window.open(fileUrl, "_blank");
@@ -257,6 +327,27 @@
                                     `/guru/submit-kuis/${mapelSlug}/${kelasSlug}/${tahunSlug}/list-kuis?kuis_id=${kuisId}`;
                                 window.location.href = redirectUrl;
                             });
+
+
+                            // Tampilkan data ke dalam modal edit saat tombol edit diklik
+                            $(document).on("click", ".edit-kuis", function(e) {
+                                e
+                                    .stopPropagation(); // Penting: mencegah klik masuk ke kuis-item dan membuka file
+
+                                let id = $(this).data("id");
+                                let kuisId = $(this).data("kuis-id");
+                                let pertemuanId = $(this).data("pertemuan-id");
+                                let deadline = $(this).data("deadline");
+
+                                $("#editPertemuanKuisId").val(id);
+                                $("#editPertemuanSelect").val(pertemuanId);
+                                $("#editKuisSelect").val(kuisId);
+                                $("#editDeadlineKuis").val(deadline);
+
+                                let actionUrl = `/guru/pertemuan-kuis/${id}`;
+                                $("#editKuisForm").attr("action", actionUrl);
+                            });
+
 
                             // Event klik untuk hapus kuis dengan SweetAlert
                             $(".delete-kuis").click(function(e) {

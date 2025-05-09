@@ -37,7 +37,7 @@
                                         <?php $__currentLoopData = $tugas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
                                                 <td style="text-align: center"> <?php echo e($loop->iteration); ?> </td>
-                                                <td> <?php echo e(($item->materi)->judul); ?> </td>
+                                                <td> <?php echo e(optional($item->materi)->judul ?? '-'); ?> </td>
                                                 <td> <?php echo e($item->judul); ?> </td>
                                                 <td> <?php echo e($item->deskripsi); ?> </td>
                                                 <td>

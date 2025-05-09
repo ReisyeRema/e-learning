@@ -191,132 +191,64 @@
         </div>
     </div>
 
+
+    <!-- Modal Edit Materi -->
+    <div class="modal fade" id="editTugasModal" tabindex="-1" aria-labelledby="editTugasModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <form id="editTugasForm" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editTugasModalLabel">Edit Tugas</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="pembelajaran_id" value="{{ $pembelajaran->id }}">
+                        <input type="hidden" name="pertemuan_tugas_id" id="editPertemuanTugasId">
+
+                        <div class="form-group">
+                            <label for="editPertemuanSelect">Pertemuan</label>
+                            <select name="pertemuan_id" id="editPertemuanSelect" class="form-control">
+                                @foreach ($pertemuanSemua as $item)
+                                    <option value="{{ $item->id }}">{{ $item->judul }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editTugasSelect">Tugas</label>
+                            <select name="tugas_id" id="editTugasSelect" class="form-control">
+                                @foreach ($tugas as $item)
+                                    <option value="{{ $item->id }}">{{ $item->judul }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editDeadline">Deadline Tugas</label>
+                            <input type="datetime-local" class="form-control @error('deadline') is-invalid @enderror"
+                                id="editDeadline" name="deadline" value="{{ old('deadline') }}">
+                            @error('deadline')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    {{-- <script>
-        $(document).ready(function() {
-            $(".pertemuan-item").click(function() {
-                let pertemuanId = $(this).data("pertemuan");
-                let pertemuanJudul = $(this).text().trim();
-
-                // Hapus class 'active' dari semua item dan tambahkan ke yang diklik
-                $(".pertemuan-item").removeClass("active");
-                $(this).addClass("active");
-
-                // Update judul pertemuan
-                $("#judul-pertemuan").text(pertemuanJudul);
-
-                $.ajax({
-                    url: "/tugas/" + pertemuanId,
-                    type: "GET",
-                    success: function(response) {
-                        let tugasContainer = $("#tugas-container");
-                        tugasContainer.empty();
-
-                        if (response.length > 0) {
-                            response.forEach(function(item) {
-                                let fileUrl = item.tugas.file_path ?
-                                    `https://drive.google.com/file/d/${item.tugas.file_path}/view` :
-                                    "#";
-
-                                let tugasItem = `
-                        <div class="list-group-item d-flex justify-content-between align-items-center border rounded p-2 mb-2 tugas-item"
-                            data-id="${item.id}" data-file-url="${fileUrl}">
-                            <div>
-                                <i class="fas fa-file-alt text-primary"></i>
-                                <span class="ml-2">${item.tugas.judul}</span>
-                            </div>
-                            <button class="btn btn-danger btn-sm delete-tugas" data-id="${item.id}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>`;
-
-                                tugasContainer.append(tugasItem);
-                            });
-
-                            // Event klik untuk membuka file
-                            $(".tugas-item").click(function() {
-                                let fileUrl = $(this).data("file-url");
-                                if (fileUrl !== "#") {
-                                    window.open(fileUrl, "_blank");
-                                } else {
-                                    alert("File tidak tersedia.");
-                                }
-                            });
-
-                            // Event klik untuk hapus tugas dengan SweetAlert
-                            $(".delete-tugas").click(function(e) {
-                                e.preventDefault();
-                                e
-                                    .stopPropagation(); // Mencegah event bubbling ke elemen .tugas-item
-
-                                let tugasId = $(this).data("id");
-                                let parentItem = $(this).closest(".tugas-item");
-
-                                Swal.fire({
-                                    title: "Apakah Anda yakin?",
-                                    text: "tugas ini akan dihapus secara permanen!",
-                                    icon: "warning",
-                                    showCancelButton: true,
-                                    confirmButtonColor: "#d33",
-                                    cancelButtonColor: "#3085d6",
-                                    confirmButtonText: "Ya, hapus!",
-                                    cancelButtonText: "Batal"
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        $.ajax({
-                                            url: "/pertemuan-tugas/" +
-                                                tugasId,
-                                            type: "DELETE",
-                                            data: {
-                                                _token: "{{ csrf_token() }}"
-                                            },
-                                            success: function(
-                                                response) {
-                                                if (response
-                                                    .success) {
-                                                    parentItem
-                                                        .fadeOut(
-                                                            300,
-                                                            function() {
-                                                                $(this)
-                                                                    .remove();
-                                                            });
-                                                    Swal.fire(
-                                                        "Terhapus!",
-                                                        "tugas telah dihapus.",
-                                                        "success"
-                                                    );
-                                                } else {
-                                                    Swal.fire(
-                                                        "Gagal!",
-                                                        "Gagal menghapus tugas.",
-                                                        "error"
-                                                    );
-                                                }
-                                            },
-                                            error: function() {
-                                                Swal.fire(
-                                                    "Error!",
-                                                    "Terjadi kesalahan saat menghapus tugas.",
-                                                    "error"
-                                                );
-                                            }
-                                        });
-                                    }
-                                });
-                            });
-
-
-                        } else {
-                            tugasContainer.append(
-                                "<p class='text-muted'>Tidak ada materi untuk pertemuan ini.</p>"
-                            );
-                        }
-                    }
-                });
-            });
-        });
-    </script> --}}
 
     <script>
         $(document).ready(function() {
@@ -354,6 +286,15 @@
                                             <button class="btn btn-info btn-sm lihat-siswa" data-id="${item.tugas.id}">
                                                 <i class="fas fa-users"></i> Lihat Siswa
                                             </button>
+                                            <button class="btn btn-warning btn-sm edit-tugas" 
+                                                data-toggle="modal" 
+                                                data-target="#editTugasModal" 
+                                                data-id="${item.id}" 
+                                                data-tugas-id="${item.tugas.id}" 
+                                                data-pertemuan-id="${item.pertemuan_id}" 
+                                                data-deadline="${item.deadline}">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
                                             <button class="btn btn-danger btn-sm delete-tugas" data-id="${item.id}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -364,7 +305,13 @@
                             });
 
                             // Buka file
-                            $(".tugas-item").click(function() {
+                            $(document).on("click", ".tugas-item", function(e) {
+
+                                if ($(e.target).closest(".edit-tugas, .delete-tugas")
+                                    .length > 0) {
+                                    return;
+                                }
+
                                 let fileUrl = $(this).data("file-url");
                                 if (fileUrl !== "#") {
                                     window.open(fileUrl, "_blank");
@@ -390,6 +337,25 @@
                                 window.location.href = redirectUrl;
                             });
 
+
+                            // Tampilkan data ke dalam modal edit saat tombol edit diklik
+                            $(document).on("click", ".edit-tugas", function(e) {
+                                e
+                                    .stopPropagation(); // Penting: mencegah klik masuk ke tugas-item dan membuka file
+
+                                let id = $(this).data("id");
+                                let tugasId = $(this).data("tugas-id");
+                                let pertemuanId = $(this).data("pertemuan-id");
+                                let deadline = $(this).data("deadline");
+
+                                $("#editPertemuanTugasId").val(id);
+                                $("#editPertemuanSelect").val(pertemuanId);
+                                $("#editTugasSelect").val(tugasId);
+                                $("#editDeadline").val(deadline);
+
+                                let actionUrl = `/guru/pertemuan-tugas/${id}`;
+                                $("#editTugasForm").attr("action", actionUrl);
+                            });
 
 
                             // Hapus tugas

@@ -40,24 +40,39 @@ class PertemuanMateriController extends Controller
     }
 
 
+    // public function update(Request $request, $id)
+    // {
+    //     $request->validate([
+    //         'judul' => 'required|string|max:255',
+    //         'pertemuan_id' => 'required|exists:pertemuan,id'
+    //     ]);
+
+    //     try {
+    //         $materi = PertemuanMateri::findOrFail($id);
+    //         $materi->update([
+    //             'materi_id' => $request->judul,
+    //             'pertemuan_id' => $request->pertemuan_id
+    //         ]);
+
+    //         return response()->json(['success' => true, 'message' => 'Materi berhasil diperbarui.']);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['success' => false, 'message' => 'Gagal memperbarui materi.'], 500);
+    //     }
+    // }
+
     public function update(Request $request, $id)
     {
         $request->validate([
-            'judul' => 'required|string|max:255',
-            'pertemuan_id' => 'required|exists:pertemuan,id'
+            'pertemuan_id' => 'required|exists:pertemuan,id',
+            'materi_id' => 'required|exists:materi,id',
         ]);
 
-        try {
-            $materi = PertemuanMateri::findOrFail($id);
-            $materi->update([
-                'materi_id' => $request->judul,
-                'pertemuan_id' => $request->pertemuan_id
-            ]);
+        $data = PertemuanMateri::findOrFail($id);
+        $data->pertemuan_id = $request->pertemuan_id;
+        $data->materi_id = $request->materi_id;
+        $data->save();
 
-            return response()->json(['success' => true, 'message' => 'Materi berhasil diperbarui.']);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Gagal memperbarui materi.'], 500);
-        }
+        return redirect()->back()->with('success', 'Materi berhasil diperbarui.');
     }
 
 
