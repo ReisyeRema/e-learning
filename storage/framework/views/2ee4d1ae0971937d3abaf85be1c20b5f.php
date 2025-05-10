@@ -5,7 +5,7 @@
     }
 
     .container {
-        padding-top: 60px;
+        padding-top: 10px;
     }
 
     h2 {
@@ -80,9 +80,24 @@
         transform: translateY(-3px);
     }
 
+    .list-group-item.active {
+        background-color: #48a6a7 !important;
+        border-color: #48a6a7 !important;
+        color: #fff;
+    }
+
+    .bg-sidebar {
+        background-color: #f2f4f4;
+    }
+    .bg-sidebar h5{
+        color: #48a6a7;
+        font-weight: bold;
+    }
+
     @media (max-width: 768px) {
         .container {
             padding-top: 40px;
         }
     }
-</style><?php /**PATH D:\DATA MATKUL\SEMESTER 6\TA\PROJECT\e-learn-laravel\resources\views/includes/frontend/style-kelas.blade.php ENDPATH**/ ?>
+</style>
+<?php /**PATH D:\DATA MATKUL\SEMESTER 6\TA\PROJECT\e-learn-laravel\resources\views/includes/frontend/style-kelas.blade.php ENDPATH**/ ?>

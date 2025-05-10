@@ -5,7 +5,7 @@
     }
 
     .container {
-        padding-top: 60px;
+        padding-top: 10px;
     }
 
     h2 {
@@ -78,6 +78,20 @@
     .btn-daftar:hover {
         background: linear-gradient(135deg, #198754, #157347);
         transform: translateY(-3px);
+    }
+
+    .list-group-item.active {
+        background-color: #48a6a7 !important;
+        border-color: #48a6a7 !important;
+        color: #fff;
+    }
+
+    .bg-sidebar {
+        background-color: #f2f4f4;
+    }
+    .bg-sidebar h5{
+        color: #48a6a7;
+        font-weight: bold;
     }
 
     @media (max-width: 768px) {

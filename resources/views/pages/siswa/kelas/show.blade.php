@@ -10,7 +10,6 @@
     @include('includes.frontend.style')
     @include('includes.frontend.style-kelas')
 
-
 </head>
 
 <body>
@@ -18,53 +17,86 @@
 
     <div class="overlay" id="overlay"></div>
 
-    <main class="main p-5">
+    <main class="main py-5">
         <div class="container">
-            <h2>Mata Pelajaran - {{ $kelas->nama_kelas }}</h2>
-            <div class="row g-4">
-                @foreach ($pembelajaran as $pelajaran)
-                    <div class="col-lg-4 col-md-6">
-                        <div class="card">
-                            @if ($pelajaran->cover)
-                                <img src="{{ asset('storage/covers/' . $pelajaran->cover) }}"
-                                    alt="Cover {{ $pelajaran->nama_mapel }}" class="card-cover">
-                            @else
-                                <img src="{{ asset('assets/img/e-learning.png') }}" alt="Default Cover" height="300px">
-                            @endif
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $pelajaran->nama_mapel }}</h5>
-                                <p class="card-text">
-                                    <i class="fas fa-calendar-alt"></i> Tahun Ajaran:
-                                    <strong>{{ $pelajaran->tahunAjaran->nama_tahun ?? 'Tidak ada data' }}</strong>
-                                </p>
-                                <p>
-                                    <span class="badge-guru">
-                                        <i class="fas fa-chalkboard-teacher"></i>
-                                        {{ $pelajaran->guru->name ?? 'Tidak ada data' }}
-                                    </span>
-                                </p>
-
-                                <?php
-                                $isEnrolled = isset($enrollments[$pelajaran->id]);
-                                $isPending = $isEnrolled && $enrollments[$pelajaran->id]->status === 'pending';
-                                $isApproved = $isEnrolled && $enrollments[$pelajaran->id]->status === 'approved';
-                                ?>
-
-                                @if (!$isEnrolled)
-                                    <button class="btn-daftar"
-                                        onclick="enrollSiswa({{ $pelajaran->id }})">Daftar</button>
-                                @elseif ($isPending)
-                                    <span class="text-warning">Menunggu persetujuan guru</span>
-                                @elseif ($isApproved)
-                                    <span class="text-success">Anda sudah terdaftar</span>
-                                @endif
-                            </div>
+            <h2 class="mb-5 fw-bold text-center">Mata Pelajaran - {{ $kelas->nama_kelas }}</h2>
+            <div class="row">
+                {{-- Sidebar Tahun Ajaran --}}
+                <div class="col-md-3 mb-4">
+                    <div class="bg-sidebar rounded shadow-sm p-3">
+                        <h5 class="mb-3">Filter Tahun Ajaran</h5>
+                        <div class="list-group">
+                            @foreach ($tahunAjaranList as $tahun)
+                                <a href="{{ route('kelas.show', ['id' => $kelas->id, 'tahun_ajaran_id' => $tahun->id]) }}"
+                                    class="list-group-item list-group-item-action {{ $tahunAjaranDipilih == $tahun->id ? 'active' : '' }}">
+                                    {{ $tahun->nama_tahun }}
+                                </a>
+                            @endforeach
                         </div>
                     </div>
-                @endforeach
+                </div>
+
+                {{-- Daftar Pembelajaran --}}
+                <div class="col-md-9">
+                    <div class="row row-cols-1 row-cols-md-2 g-4">
+                        @forelse ($pembelajaran as $pelajaran)
+                            <div class="col">
+                                <div class="card h-100 shadow-sm border-0">
+                                    @if ($pelajaran->cover)
+                                        <img src="{{ asset('storage/covers/' . $pelajaran->cover) }}"
+                                            alt="Cover {{ $pelajaran->nama_mapel }}" class="card-img-top"
+                                            style="height: 180px; object-fit: cover;">
+                                    @else
+                                        <img src="{{ asset('assets/img/e-learning.png') }}" alt="Default Cover"
+                                            class="card-img-top" style="height: 180px; object-fit: cover;">
+                                    @endif
+
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title">{{ $pelajaran->nama_mapel }}</h5>
+                                        <p class="mb-1 text-muted"><i class="fas fa-calendar-alt me-1"></i> Tahun
+                                            Ajaran: <strong>{{ $pelajaran->tahunAjaran->nama_tahun ?? '-' }}</strong>
+                                        </p>
+                                        <p class="mb-2 text-muted"><i class="fas fa-chalkboard-teacher me-1"></i>
+                                            {{ $pelajaran->guru->name ?? 'Tidak ada data' }}</p>
+
+                                        <div class="mt-auto">
+                                            @php
+                                                $isEnrolled = isset($enrollments[$pelajaran->id]);
+                                                $isPending =
+                                                    $isEnrolled && $enrollments[$pelajaran->id]->status === 'pending';
+                                                $isApproved =
+                                                    $isEnrolled && $enrollments[$pelajaran->id]->status === 'approved';
+                                            @endphp
+
+                                            @if (!$isEnrolled)
+                                                <button class="btn btn-primary w-100"
+                                                    onclick="enrollSiswa({{ $pelajaran->id }})">Daftar</button>
+                                            @elseif ($isPending)
+                                                <span
+                                                    class="bg-warning text-dark d-inline-block px-3 py-1 mt-2 rounded small">Menunggu
+                                                    persetujuan guru</span>
+                                            @elseif ($isApproved)
+                                                <span
+                                                    class="bg-success text-white d-inline-block px-3 py-1 mt-2 rounded small">Anda
+                                                    sudah terdaftar</span>
+                                            @endif
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="col-12">
+                                <div class="alert alert-warning text-center">Tidak ada mata pelajaran untuk tahun ajaran
+                                    ini.</div>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
             </div>
         </div>
     </main>
+
 
     @include('components.frontend.footer')
     @include('includes.frontend.script')
@@ -115,8 +147,6 @@
             });
         }
     </script>
-
-
 
 </body>
 

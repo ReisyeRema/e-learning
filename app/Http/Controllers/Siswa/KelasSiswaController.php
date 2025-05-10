@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Siswa;
 
 use App\Models\Kelas;
 use App\Models\Enrollments;
+use App\Models\TahunAjaran;
 use App\Models\Pembelajaran;
 use Illuminate\Http\Request;
 use App\Models\ProfilSekolah;
@@ -12,20 +13,36 @@ use Illuminate\Support\Facades\Auth;
 
 class KelasSiswaController extends Controller
 {
-    public function show($id)
+    public function show($id, Request $request)
     {
         $kelas = Kelas::findOrFail($id);
-        $pembelajaran = Pembelajaran::where('kelas_id', $id)->get();
         $siswaId = Auth::id();
 
-        // Ambil semua enrollment siswa untuk mata pelajaran dalam kelas ini
+        // Ambil tahun ajaran yang memiliki pembelajaran pada kelas ini
+        $tahunAjaranList = TahunAjaran::whereHas('pembelajaran', function ($query) use ($id) {
+            $query->where('kelas_id', $id);
+        })->get();
+
+        $tahunAjaranDipilih = $request->input('tahun_ajaran_id') ?? $tahunAjaranList->first()?->id;
+
+        $pembelajaran = Pembelajaran::where('kelas_id', $id)
+            ->where('tahun_ajaran_id', $tahunAjaranDipilih)
+            ->get();
+
         $enrollments = Enrollments::where('siswa_id', $siswaId)
             ->whereIn('pembelajaran_id', $pembelajaran->pluck('id'))
             ->get()
             ->keyBy('pembelajaran_id');
 
-        $profileSekolah = ProfilSekolah::first(); 
+        $profileSekolah = ProfilSekolah::first();
 
-        return view('pages.siswa.kelas.show', compact('kelas', 'pembelajaran', 'enrollments','profileSekolah'));
+        return view('pages.siswa.kelas.show', compact(
+            'kelas',
+            'pembelajaran',
+            'enrollments',
+            'profileSekolah',
+            'tahunAjaranList',
+            'tahunAjaranDipilih'
+        ));
     }
 }
