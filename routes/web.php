@@ -13,6 +13,8 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Admin\TugasController;
 use App\Http\Controllers\Admin\MateriController;
 use App\Http\Controllers\Siswa\EnrollController;
+use App\Http\Controllers\Admin\AbsensiController;
+use App\Http\Controllers\Admin\DetailAbsensiController;
 use App\Http\Controllers\Admin\SoalKuisController;
 use App\Http\Controllers\Admin\GuruAdminController;
 use App\Http\Controllers\Admin\PertemuanController;
@@ -137,7 +139,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::put('/siswa/{siswa}/update', [SiswaAdminController::class, 'update'])->name('siswa.update');
     Route::delete('/siswa/{siswa}/destroy', [SiswaAdminController::class, 'destroy'])->name('siswa.destroy');
     Route::get('/siswa/export/excel', [SiswaAdminController::class, 'export_excel'])->name('siswa.export');
-    
+
 
     // profile sekolah admin
     Route::get('/profile-sekolah', [ProfileSekolahController::class, 'index'])->name('profilesekolah.index');
@@ -243,8 +245,25 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->group(function () {
     Route::post('/enrollment/batch-update', [EnrollController::class, 'batchUpdate'])->name('enrollment.batchUpdate');
     Route::post('/enrollment/batch-delete', [EnrollController::class, 'batchDelete'])->name('enrollment.batchDelete');
 
+    // List Siswa
     Route::get('/siswa-kelas/{mapel}/{kelas}/{tahunAjaran}', [SiswaAdminController::class, 'show'])
         ->name('siswa-kelas.show');
+
+    // Absensi
+    Route::get('/absensi/{mapel}/{kelas}/{tahunAjaran}', [AbsensiController::class, 'show'])
+        ->name('absensi.show');
+    Route::post('/absensi/store/{pembelajaran_id}', [AbsensiController::class, 'store'])->name('absensi.store');
+    Route::put('/absensi/update/{id}', [AbsensiController::class, 'update'])->name('absensi.update');
+    Route::delete('/absensi/{id}',[AbsensiController::class,'destroy'])->name('absensi.destroy');
+
+
+    // DetailAbsensi
+    Route::get('/absensi/{mapel}/{kelas}/{tahunAjaran}/detail-absensi', [DetailAbsensiController::class, 'index'])->name('detail-absensi.index');
+    Route::post('/absensi/detail/store-or-update', [DetailAbsensiController::class, 'storeOrUpdate'])
+    ->name('detail-absensi.storeOrUpdate');
+    Route::get('/detail-absensi/export/excel', [DetailAbsensiController::class, 'export_excel'])->name('absensi.export');
+
+
 });
 
 // Siswa
@@ -276,9 +295,6 @@ Route::middleware(PreventBackHistory::class, RedirectIfNotSiswa::class)->prefix(
     Route::post('/kuis/cek-token', [SiswaKuisSessionController::class, 'cekToken'])->name('kuis-siswa.cek-token');
     Route::post('/kuis/kumpulkan', [KuisSiswaController::class, 'kumpulkan'])->name('kuis.kumpulkan');
     Route::get('/list-kuis', [KuisSiswaController::class, 'index'])->name('list-kuis.index');
-
-
-
 });
 
 require __DIR__ . '/auth.php';

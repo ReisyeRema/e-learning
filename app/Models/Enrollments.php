@@ -29,4 +29,5 @@ class Enrollments extends Model
     {
         return $this->belongsTo(Pembelajaran::class, 'pembelajaran_id');
     }
+
 }

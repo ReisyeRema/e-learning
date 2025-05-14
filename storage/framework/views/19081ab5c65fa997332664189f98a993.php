@@ -166,6 +166,8 @@
                     "*submit-tugas/$slugMapel/$slugKelas/$slugTahunAjaran",
                     "*submit-kuis/$slugMapel/$slugKelas/$slugTahunAjaran",
                     "*siswa-kelas/$slugMapel/$slugKelas/$slugTahunAjaran",
+                    "*absensi/$slugMapel/$slugKelas/$slugTahunAjaran",
+                    "*absensi/$slugMapel/$slugKelas/$slugTahunAjaran/detail-absensi",
 
                     // Tambahan route baru:
                     "*submit-tugas/$slugMapel/$slugKelas/$slugTahunAjaran/list-tugas",

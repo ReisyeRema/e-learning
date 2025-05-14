@@ -67,4 +67,9 @@ class Pembelajaran extends Model
     {
         return $this->hasMany(PertemuanKuis::class, 'pembelajaran_id');
     }
+
+    public function absensi()
+    {
+        return $this->hasMany(Absensi::class, 'pembelajaran_id');
+    }
 }

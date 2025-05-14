@@ -60,6 +60,8 @@
             class="btn btn-sm btn-custom <?php echo e(request()->is('*submit-tugas/*') ? 'btn-primary' : 'btn-outline-primary'); ?> mr-3">Tugas</a>
         <a href="<?php echo e(route('submit-kuis.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug])); ?>"
             class="btn btn-sm btn-custom <?php echo e(request()->is('*submit-kuis/*') ? 'btn-primary' : 'btn-outline-primary'); ?> mr-3">Kuis</a>
+        <a href="<?php echo e(route('absensi.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug])); ?>"
+            class="btn btn-sm btn-custom <?php echo e(request()->is('*absensi/*') ? 'btn-primary' : 'btn-outline-primary'); ?> mr-3">Absensi</a>
         <a href="<?php echo e(route('siswa-kelas.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug])); ?>"
             class="btn btn-sm btn-custom <?php echo e(request()->is('*siswa-kelas/*') ? 'btn-primary' : 'btn-outline-primary'); ?> mr-3">Daftar
             Siswa</a>
