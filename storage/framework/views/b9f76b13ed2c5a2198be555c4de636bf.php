@@ -92,7 +92,8 @@
                                     <div class="list-group" id="tugas-container"
                                         data-mapel="<?php echo e(strtolower(str_replace(' ', '-', $pembelajaran->nama_mapel))); ?>"
                                         data-kelas="<?php echo e(strtolower(str_replace(' ', '-', $pembelajaran->kelas->nama_kelas))); ?>"
-                                        data-tahun="<?php echo e(str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun)); ?>">
+                                        data-tahun="<?php echo e(str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun)); ?>"
+                                        data-semester="<?php echo e(strtolower(str_replace(' ', '-', $pembelajaran->semester))); ?>">
                                         <!-- Tugas akan dimasukkan di sini -->
                                     </div>
                                 </div>
@@ -236,7 +237,7 @@ unset($__errorArgs, $__bag); ?>
                     <?php echo csrf_field(); ?>
                     <?php echo method_field('PUT'); ?>
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editTugasModalLabel">Edit Materi</h5>
+                        <h5 class="modal-title" id="editTugasModalLabel">Edit Tugas</h5>
                         <button type="button" class="close" data-dismiss="modal">
                             <span>&times;</span>
                         </button>
@@ -378,12 +379,13 @@ unset($__errorArgs, $__bag); ?>
                                 let mapelSlug = container.data("mapel");
                                 let kelasSlug = container.data("kelas");
                                 let tahunSlug = container.data("tahun");
+                                let semesterSlug = container.data("semester");
 
                                 let tugasId = $(this).data(
                                     "id"); // Ambil ID tugas yg diklik
 
                                 let redirectUrl =
-                                    `/guru/submit-tugas/${mapelSlug}/${kelasSlug}/${tahunSlug}/list-tugas?tugas_id=${tugasId}`;
+                                    `/guru/submit-tugas/${mapelSlug}/${kelasSlug}/${tahunSlug}/${semesterSlug}/list-tugas?tugas_id=${tugasId}`;
                                 window.location.href = redirectUrl;
                             });
 

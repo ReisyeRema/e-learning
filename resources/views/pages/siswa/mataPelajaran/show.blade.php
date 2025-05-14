@@ -206,9 +206,10 @@
                             'nama_mapel' => $pembelajaran->nama_mapel,
                             'nama_kelas' => $pembelajaran->kelas->nama_kelas,
                             'tahun_ajaran' => $pembelajaran->tahunAjaran->nama_tahun,
+                            'semester' => $pembelajaran->semester,
                             'kategori_kuis' => $kategori,
-                            'token' => $kuis->token, 
-                            'deadline' => $kuis->deadline, 
+                            'token' => $kuis->token,
+                            'deadline' => $kuis->deadline,
                         ];
                     }
                 @endphp
@@ -242,8 +243,7 @@
                                             {{ $tugas['pertemuan_ke'] }}
                                             - {{ $tugas['judul'] }}</span>
                                         <button class="btn btn-outline-warning btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#modalKumpul" 
-                                            data-tugas-judul="{{ $tugas['judul'] }}"
+                                            data-bs-target="#modalKumpul" data-tugas-judul="{{ $tugas['judul'] }}"
                                             data-tugas-deskripsi="{{ $tugas['deskripsi'] }}"
                                             data-tugas-id="{{ $tugas['id'] }}"
                                             data-tugas-deadline="{{ $tugas['deadline'] ?? 'Tidak ada deadline' }}"
@@ -269,6 +269,7 @@
                                                 'mapel' => Str::slug($kuis['nama_mapel']),
                                                 'kelas' => Str::slug($kuis['nama_kelas']),
                                                 'tahunAjaran' => str_replace('/', '-', $kuis['tahun_ajaran']),
+                                                'semester' => Str::slug($kuis['semester']),
                                                 'judulKuis' => Str::slug($kuis['judul']),
                                             ]) }}"
                                             data-pertemuan-id="{{ $kuis['id_pertemuan'] }}"
@@ -332,7 +333,7 @@
                                 <div style="display: table-row;">
                                     <strong style="display: table-cell; padding-right: 10px;">Deskripsi</strong>
                                     <span style="display: table-cell;">: <span id="tugasDeskripsi"></span></span>
-                                </div>                                
+                                </div>
                             </div>
 
                             <div class="mb-3">
@@ -390,8 +391,9 @@
                                     <span style="display: table-cell;">: <span id="kuisDeadline"></span></span>
                                 </div>
                             </div>
-                            <input type="text" name="token" class="form-control" placeholder="Masukkan token" required>
-                        </div>                        
+                            <input type="text" name="token" class="form-control" placeholder="Masukkan token"
+                                required>
+                        </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Mulai Kuis</button>
                         </div>

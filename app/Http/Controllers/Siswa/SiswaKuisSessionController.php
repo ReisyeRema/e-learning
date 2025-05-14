@@ -99,6 +99,7 @@ class SiswaKuisSessionController extends Controller
             'mapel' => Str::slug($pertemuan->pembelajaran->nama_mapel),
             'kelas' => Str::slug($pertemuan->pembelajaran->kelas->nama_kelas),
             'tahunAjaran' => str_replace('/', '-', $pertemuan->pembelajaran->tahunAjaran->nama_tahun),
+            'semester' => Str::slug($pertemuan->pembelajaran->semester),
             'judulKuis' => Str::slug($kuis->judul),
         ]);
     }

@@ -81,12 +81,14 @@ class DetailAbsensiController extends Controller
         $namaKelas = $pembelajaran->kelas->nama_kelas ?? 'Kelas';
         $tahunAjaran = $pembelajaran->tahunAjaran->nama_tahun ?? 'TahunAjaran';
         $mapel = $pembelajaran->nama_mapel ?? 'Mapel';
+        $semester = $pembelajaran->semester ?? 'Semester';
 
         $namaKelasSlug = str_replace(' ', '_', $namaKelas);
         $tahunAjaranSlug = str_replace([' ', '/', '\\'], '-', $tahunAjaran);
         $mapelSlug = str_replace(' ', '_', $mapel);
+        $semesterSlug = str_replace(' ', '_', $semester);
 
-        $filename = "absensi_{$namaKelasSlug}_{$tahunAjaranSlug}_{$mapelSlug}.xlsx";
+        $filename = "absensi_{$namaKelasSlug}_{$tahunAjaranSlug}_{$mapelSlug}_{$semesterSlug}.xlsx";
 
         return Excel::download(new ExportAbsensi($pembelajaran->id), $filename);
     }

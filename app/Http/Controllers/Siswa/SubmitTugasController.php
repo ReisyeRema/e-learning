@@ -146,6 +146,7 @@ class SubmitTugasController extends Controller
         $mapelSlug = Str::slug($pembelajaran->nama_mapel);
         $kelasSlug = Str::slug($pembelajaran->kelas->nama_kelas);
         $tahunAjaranSlug = str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun);
+        $semesterSlug = Str::slug($pembelajaran->semester);
 
         // Hapus file dari Google Drive jika ada
         if ($tugas->file_path) {
@@ -159,7 +160,8 @@ class SubmitTugasController extends Controller
         return redirect()->route('mata-pelajaran.show', [
             'mapel' => $mapelSlug,
             'kelas' => $kelasSlug,
-            'tahunAjaran' => $tahunAjaranSlug
+            'tahunAjaran' => $tahunAjaranSlug,
+            'semester' => $semesterSlug
         ])->with('success', 'Tugas Berhasil Dihapus');
     }
 

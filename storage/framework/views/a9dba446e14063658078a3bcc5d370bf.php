@@ -21,9 +21,10 @@
                                 '-',
                                 $enrollment->pembelajaran->tahunAjaran->nama_tahun,
                             );
+                            $slugSemester = Str::slug($enrollment->pembelajaran->semester);
                         ?>
 
-                        <a href="<?php echo e(route('mata-pelajaran.show', ['mapel' => $slugMapel, 'kelas' => $slugKelas, 'tahunAjaran' => $slugTahunAjaran])); ?>"
+                        <a href="<?php echo e(route('mata-pelajaran.show', ['mapel' => $slugMapel, 'kelas' => $slugKelas, 'tahunAjaran' => $slugTahunAjaran, 'semester'=> $slugSemester])); ?>"
                             class="text-decoration-none text-dark">
                             <div class="card shadow-sm border-20 rounded p-3 hover-effect">
                                 <div class="row g-3 align-items-center">
@@ -37,7 +38,7 @@
                                     <!-- Konten (Sebelah Kanan) -->
                                     <div class="col-md-9">
                                         <h5 class="fw-bold text-success"><?php echo e($enrollment->pembelajaran->nama_mapel); ?> -
-                                            <?php echo e($enrollment->pembelajaran->kelas->nama_kelas); ?>
+                                            <?php echo e($enrollment->pembelajaran->kelas->nama_kelas); ?> - <?php echo e($enrollment->pembelajaran->semester); ?>
 
                                         </h5>
                                         <p>

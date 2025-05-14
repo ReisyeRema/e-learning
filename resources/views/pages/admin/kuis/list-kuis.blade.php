@@ -41,7 +41,7 @@
                                                     <th style="text-align: center;">Nilai</th>
                                                     <th style="text-align: center;">Aksi</th>
                                                 </tr>
-                                            </thead>                                            
+                                            </thead>
                                             <tbody>
                                                 @foreach ($enrollments as $i => $enroll)
                                                     @php
@@ -53,16 +53,21 @@
                                                     <tr style="text-align: center">
                                                         <td style="text-align: center;">{{ $i + 1 }}</td>
                                                         <td>{{ $enroll->siswa->name }}</td>
-                                                        
+
                                                         <td>
                                                             @if ($submission)
                                                                 @php
                                                                     $submittedAt = strtotime($submission->created_at);
-                                                                    $deadline = strtotime($kuisTerpilih->pertemuanKuis->where('kuis_id', $kuisTerpilih->id)->first()?->deadline);
+                                                                    $deadline = strtotime(
+                                                                        $kuisTerpilih->pertemuanKuis
+                                                                            ->where('kuis_id', $kuisTerpilih->id)
+                                                                            ->first()?->deadline,
+                                                                    );
                                                                 @endphp
-                                                        
+
                                                                 @if ($submittedAt <= $deadline)
-                                                                    <span class="badge badge-success">Sudah Mengerjakan</span>
+                                                                    <span class="badge badge-success">Sudah
+                                                                        Mengerjakan</span>
                                                                 @else
                                                                     <span class="badge badge-warning">Terlambat</span>
                                                                 @endif
@@ -76,19 +81,21 @@
                                                             @else
                                                                 <span class="text-muted">-</span>
                                                             @endif
-                                                        </td>                                                                                                          
+                                                        </td>
                                                         <td class="text-center">
                                                             <a href="{{ route('hasil-kuis.show', [
                                                                 'mapel' => Str::slug($pembelajaran->nama_mapel, '-'),
                                                                 'kelas' => Str::slug($kelasData->nama_kelas, '-'),
                                                                 'tahunAjaran' => str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun),
+                                                                'semester' => Str::slug($pembelajaran->semester, '-'),
                                                                 'kuis' => $kuisTerpilih->id,
                                                                 'siswa' => $enroll->siswa->id,
-                                                            ]) }}" class="btn btn-sm btn-outline-primary btn-fw">
+                                                            ]) }}"
+                                                                class="btn btn-sm btn-outline-primary btn-fw">
                                                                 Lihat Jawaban
                                                             </a>
                                                         </td>
-                                                        
+
                                                     </tr>
                                                 @endforeach
                                             </tbody>

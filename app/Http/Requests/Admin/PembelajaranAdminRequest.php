@@ -27,6 +27,7 @@ class PembelajaranAdminRequest extends FormRequest
             'kelas_id' => 'required|exists:kelas,id',
             'tahun_ajaran_id' => 'required|exists:tahun_ajaran,id',
             'kurikulum_id' => 'required|exists:kurikulum,id',
+            'semester' => 'required|in:Genap,Ganjil',
             'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240', // Max 10MB
         ];
     }
@@ -46,6 +47,8 @@ class PembelajaranAdminRequest extends FormRequest
             'tahun_ajaran_id.exists' => 'Tahun Ajaran yang dipilih tidak valid.',
             'kurikulum_id.required' => 'Kurikulum harus dipilih.',
             'kurikulum_id.exists' => 'Kurikulum yang dipilih tidak valid.',
+            'semester.required' => 'Jenis kelamin wajib diisi.',
+            'semester.in' => 'Jenis kelamin harus salah satu dari: Genap, Ganjil.',
             'cover.image' => 'File harus berupa gambar.',
             'cover.mimes' => 'Format gambar harus jpeg, png, jpg, atau gif.',
             'cover.max' => 'Ukuran gambar maksimal 10 MB.',

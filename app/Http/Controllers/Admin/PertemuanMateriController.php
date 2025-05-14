@@ -26,6 +26,7 @@ class PertemuanMateriController extends Controller
         $mapelSlug = Str::slug($pembelajaran->nama_mapel);
         $kelasSlug = Str::slug($pembelajaran->kelas->nama_kelas);
         $tahunAjaranSlug = str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun);
+        $semesterSlug = Str::slug($pembelajaran->semester);
 
 
         // Simpan data ke database
@@ -35,7 +36,8 @@ class PertemuanMateriController extends Controller
         return redirect()->route('submit-materi.show', [
             'mapel' => $mapelSlug,
             'kelas' => $kelasSlug,
-            'tahunAjaran' => $tahunAjaranSlug
+            'tahunAjaran' => $tahunAjaranSlug,
+            'semester' => $semesterSlug
         ])->with('success', 'Data berhasil ditambahkan.');
     }
 

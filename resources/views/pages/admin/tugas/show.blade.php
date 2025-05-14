@@ -100,7 +100,8 @@
                                     <div class="list-group" id="tugas-container"
                                         data-mapel="{{ strtolower(str_replace(' ', '-', $pembelajaran->nama_mapel)) }}"
                                         data-kelas="{{ strtolower(str_replace(' ', '-', $pembelajaran->kelas->nama_kelas)) }}"
-                                        data-tahun="{{ str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun) }}">
+                                        data-tahun="{{ str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun) }}"
+                                        data-semester="{{ strtolower(str_replace(' ', '-', $pembelajaran->semester)) }}">
                                         <!-- Tugas akan dimasukkan di sini -->
                                     </div>
                                 </div>
@@ -328,12 +329,13 @@
                                 let mapelSlug = container.data("mapel");
                                 let kelasSlug = container.data("kelas");
                                 let tahunSlug = container.data("tahun");
+                                let semesterSlug = container.data("semester");
 
                                 let tugasId = $(this).data(
                                     "id"); // Ambil ID tugas yg diklik
 
                                 let redirectUrl =
-                                    `/guru/submit-tugas/${mapelSlug}/${kelasSlug}/${tahunSlug}/list-tugas?tugas_id=${tugasId}`;
+                                    `/guru/submit-tugas/${mapelSlug}/${kelasSlug}/${tahunSlug}/${semesterSlug}/list-tugas?tugas_id=${tugasId}`;
                                 window.location.href = redirectUrl;
                             });
 

@@ -14,11 +14,12 @@ use App\Http\Requests\Admin\AbsensiRequest;
 
 class AbsensiController extends Controller
 {
-    public function show($mapel, $kelas, $tahunAjaran)
+    public function show($mapel, $kelas, $tahunAjaran, $semester)
     {
         // Ubah slug kembali ke format nama asli
         $mapelNama = Str::title(str_replace('-', ' ', $mapel));
         $kelasNama = Str::upper(str_replace('-', ' ', $kelas));
+        $semesterNama = Str::upper(str_replace('-', ' ', $semester));
 
         // Ubah "2023-2024" kembali menjadi "2023/2024" agar cocok dengan database
         $tahunAjaranFormatted = str_replace('-', '/', $tahunAjaran);
@@ -29,6 +30,7 @@ class AbsensiController extends Controller
         // Cari pembelajaran yang sesuai
         $pembelajaran = Pembelajaran::whereRaw("LOWER(REPLACE(nama_mapel, ' ', '-')) = ?", [$mapel])
             ->where('kelas_id', $kelasData->id)
+            ->where('semester', $semesterNama)
             ->whereHas('tahunAjaran', function ($query) use ($tahunAjaranFormatted) {
                 $query->where('nama_tahun', $tahunAjaranFormatted);
             })
@@ -97,6 +99,7 @@ class AbsensiController extends Controller
                 'mapel'       => Str::slug($pembelajaran->nama_mapel),
                 'kelas'       => Str::slug($pembelajaran->kelas->nama_kelas),
                 'tahunAjaran' => str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun),
+                'semester'       => Str::slug($pembelajaran->semester),
             ])
             ->with('success', 'Absensi berhasil disimpan.');
     }
@@ -172,6 +175,7 @@ class AbsensiController extends Controller
             'mapel' => Str::slug($pembelajaran->nama_mapel),
             'kelas' => Str::slug($pembelajaran->kelas->nama_kelas),
             'tahunAjaran' => str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun),
+            'semester' => Str::slug($pembelajaran->semester),
         ])->with('success', 'Absensi berhasil dihapus.');
     }
 }

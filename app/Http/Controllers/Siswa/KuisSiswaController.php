@@ -41,7 +41,7 @@ class KuisSiswaController extends Controller
     //     ]);
     // }
 
-    public function action($mapel, $kelas, $tahunAjaran, $judulKuis)
+    public function action($mapel, $kelas, $tahunAjaran, $semester, $judulKuis)
     {
         // Cari pembelajaran berdasarkan URL slug
         $pembelajaran = Pembelajaran::whereRaw("LOWER(REPLACE(nama_mapel, ' ', '-')) = ?", [$mapel])
@@ -51,6 +51,7 @@ class KuisSiswaController extends Controller
             ->whereHas('tahunAjaran', function ($query) use ($tahunAjaran) {
                 $query->whereRaw("REPLACE(nama_tahun, '/', '-') = ?", [$tahunAjaran]);
             })
+            ->where('semester', Str::upper(str_replace('-', ' ', $semester)))
             ->firstOrFail();
 
         // Ambil kuis berdasarkan judul
@@ -75,6 +76,7 @@ class KuisSiswaController extends Controller
                 'mapel' => $mapel,
                 'kelas' => $kelas,
                 'tahunAjaran' => $tahunAjaran,
+                'semester' => $semester,
             ])->with('token_error', 'Silakan masukkan token terlebih dahulu.');
         }
 

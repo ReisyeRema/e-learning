@@ -48,21 +48,24 @@
             ? Str::slug($currentPembelajaran->kelas->nama_kelas)
             : 'default-kelas';
     $tahunAjaranSlug = $tahunAjaranAktif ? str_replace('/', '-', $tahunAjaranAktif) : 'default-tahun';
+    $semesterSlug = $currentPembelajaran && $currentPembelajaran->semester
+        ? Str::slug($currentPembelajaran->semester)
+        : 'default-semester';
 ?>
 
 <div class="container">
     <div class="d-flex justify-content-center gap-3 my-4">
-        <a href="<?php echo e(route('submit-materi.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug])); ?>"
+        <a href="<?php echo e(route('submit-materi.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug, 'semester' => $semesterSlug])); ?>"
             class="btn btn-sm btn-custom <?php echo e(request()->is('*submit-materi/*') ? 'btn-primary' : 'btn-outline-primary'); ?> mr-3">
             Materi
         </a>
-        <a href="<?php echo e(route('submit-tugas.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug])); ?>"
+        <a href="<?php echo e(route('submit-tugas.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug, 'semester' => $semesterSlug])); ?>"
             class="btn btn-sm btn-custom <?php echo e(request()->is('*submit-tugas/*') ? 'btn-primary' : 'btn-outline-primary'); ?> mr-3">Tugas</a>
-        <a href="<?php echo e(route('submit-kuis.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug])); ?>"
+        <a href="<?php echo e(route('submit-kuis.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug, 'semester' => $semesterSlug])); ?>"
             class="btn btn-sm btn-custom <?php echo e(request()->is('*submit-kuis/*') ? 'btn-primary' : 'btn-outline-primary'); ?> mr-3">Kuis</a>
-        <a href="<?php echo e(route('absensi.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug])); ?>"
+        <a href="<?php echo e(route('absensi.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug, 'semester' => $semesterSlug])); ?>"
             class="btn btn-sm btn-custom <?php echo e(request()->is('*absensi/*') ? 'btn-primary' : 'btn-outline-primary'); ?> mr-3">Absensi</a>
-        <a href="<?php echo e(route('siswa-kelas.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug])); ?>"
+        <a href="<?php echo e(route('siswa-kelas.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug, 'semester' => $semesterSlug])); ?>"
             class="btn btn-sm btn-custom <?php echo e(request()->is('*siswa-kelas/*') ? 'btn-primary' : 'btn-outline-primary'); ?> mr-3">Daftar
             Siswa</a>
     </div>

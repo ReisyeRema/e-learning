@@ -113,6 +113,26 @@
                                         </div>
 
                                         <div class="form-group">
+                                            <label for="semester">Semester</label>
+                                            <select name="semester"
+                                                class="form-control @error('semester') is-invalid @enderror"
+                                                id="semester">
+                                                <option value="">Pilih Semester</option>
+                                                <option value="Ganjil"
+                                                    {{ old('semester', $pembelajaran->semester) == 'Ganjil' ? 'selected' : '' }}>
+                                                    Ganjil</option>
+                                                <option value="Genap"
+                                                    {{ old('semester', $pembelajaran->semester) == 'Genap' ? 'selected' : '' }}>
+                                                    Genap</option>
+                                            </select>
+                                            @error('semester')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group">
                                             <label for="cover">Cover</label>
                                             <div class="upload-box">
                                                 <input type="file" id="cover" name="cover" class="file-input">

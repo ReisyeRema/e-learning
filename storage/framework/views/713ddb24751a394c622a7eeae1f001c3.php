@@ -17,6 +17,7 @@
                         $slugMapel = Str::slug($pertemuanKuis->pembelajaran->nama_mapel);
                         $slugKelas = Str::slug($pertemuanKuis->pembelajaran->kelas->nama_kelas);
                         $slugTahunAjaran = str_replace('/', '-', $pertemuanKuis->pembelajaran->tahunAjaran->nama_tahun);
+                        $slugSemester = Str::slug($pertemuanKuis->pembelajaran->semester);
                     ?>
 
                     <div class="col-12 mb-4">
@@ -75,7 +76,7 @@
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#modalDetailKuis<?php echo e($kuis->id); ?>">Lihat</a>
                                         <?php else: ?>
-                                            <a href="<?php echo e(route('mata-pelajaran.show', ['mapel' => $slugMapel, 'kelas' => $slugKelas, 'tahunAjaran' => $slugTahunAjaran])); ?>"
+                                            <a href="<?php echo e(route('mata-pelajaran.show', ['mapel' => $slugMapel, 'kelas' => $slugKelas, 'tahunAjaran' => $slugTahunAjaran, 'semester' => $slugSemester])); ?>"
                                                 class="text-decoration-none fw-bold">Kerjakan</a>
                                         <?php endif; ?>
                                     </div>

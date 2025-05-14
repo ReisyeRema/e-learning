@@ -1,7 +1,7 @@
 <h3 style="text-align: center;">ABSENSI</h3>
 <br>
 <p><strong>Mata Pelajaran:</strong> <?php echo e($pembelajaran->nama_mapel); ?></p>
-<p><strong>Kelas:</strong> <?php echo e($pembelajaran->kelas->nama_kelas ?? '-'); ?></p>
+<p><strong>Kelas:</strong> <?php echo e($pembelajaran->kelas->nama_kelas ?? '-'); ?> TA. <?php echo e($pembelajaran->tahunAjaran->nama_tahun); ?> ( <?php echo e($pembelajaran->semester); ?> )</p>
 <br>
 
 <table border="1" cellspacing="0" cellpadding="5">
@@ -23,7 +23,7 @@
         </tr>
         <tr>
             <?php $__currentLoopData = $pertemuanList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pertemuan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <th style="font-size: 4px;">
+                <th style="font-size: 7px;">
                     <?php echo e(\Carbon\Carbon::parse($pertemuan->tanggal)->format('d/m/Y')); ?>
 
                 </th>

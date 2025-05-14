@@ -21,9 +21,10 @@
                                 '-',
                                 $enrollment->pembelajaran->tahunAjaran->nama_tahun,
                             );
+                            $slugSemester = Str::slug($enrollment->pembelajaran->semester);
                         @endphp
 
-                        <a href="{{ route('mata-pelajaran.show', ['mapel' => $slugMapel, 'kelas' => $slugKelas, 'tahunAjaran' => $slugTahunAjaran]) }}"
+                        <a href="{{ route('mata-pelajaran.show', ['mapel' => $slugMapel, 'kelas' => $slugKelas, 'tahunAjaran' => $slugTahunAjaran, 'semester'=> $slugSemester]) }}"
                             class="text-decoration-none text-dark">
                             <div class="card shadow-sm border-20 rounded p-3 hover-effect">
                                 <div class="row g-3 align-items-center">
@@ -37,7 +38,7 @@
                                     <!-- Konten (Sebelah Kanan) -->
                                     <div class="col-md-9">
                                         <h5 class="fw-bold text-success">{{ $enrollment->pembelajaran->nama_mapel }} -
-                                            {{ $enrollment->pembelajaran->kelas->nama_kelas }}
+                                            {{ $enrollment->pembelajaran->kelas->nama_kelas }} - {{ $enrollment->pembelajaran->semester }}
                                         </h5>
                                         <p>
                                             <span

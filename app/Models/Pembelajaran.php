@@ -24,6 +24,7 @@ class Pembelajaran extends Model
         'kelas_id',
         'tahun_ajaran_id',
         'kurikulum_id',
+        'semester',
         'cover',
     ];
 

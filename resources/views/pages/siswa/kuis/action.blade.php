@@ -93,6 +93,7 @@
                     'mapel' => Str::slug($pembelajaran->nama_mapel),
                     'kelas' => Str::slug($pembelajaran->kelas->nama_kelas),
                     'tahunAjaran' => str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun),
+                    'semester' => Str::slug($pembelajaran->semester),
                 ]) }}"
                     class="btn btn-light shadow-sm">
                     <i class="fas fa-arrow-left"></i> Kembali

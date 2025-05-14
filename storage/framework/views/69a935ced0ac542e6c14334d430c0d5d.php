@@ -2,6 +2,8 @@
 <br>
 <p><strong>Mata Pelajaran:</strong> <?php echo e($pembelajaran->nama_mapel); ?></p>
 <p><strong>Kelas:</strong> <?php echo e($pembelajaran->kelas->nama_kelas ?? '-'); ?></p>
+<p><strong>Semester:</strong> <?php echo e($pembelajaran->semester); ?></p>
+
 <br>
 
 <table>

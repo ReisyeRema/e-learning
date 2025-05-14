@@ -24,7 +24,7 @@
                                             <th style="text-align: center">No</th>
                                             <th>Cover</th>
                                             <th>Mata Pelajaran</th>
-                                            <th>Kelas</th>
+                                            <th>Kelas - Tahun Ajaran - Semester</th>
                                             <th>Guru</th>
                                             <th width="15%">
                                                 <center>Aksi</center>
@@ -44,7 +44,7 @@
                                                     @endif
                                                 </td>
                                                 <td> {{ $item->nama_mapel }} </td>
-                                                <td> {{ optional($item->kelas)->nama_kelas}} - {{ optional($item->tahunAjaran)->nama_tahun}}</td>
+                                                <td> {{ optional($item->kelas)->nama_kelas}} - {{ optional($item->tahunAjaran)->nama_tahun}} - {{ $item->semester }}</td>
                                                 <td> {{ optional($item->guru)->name}} </td>
                                                 <td>
                                                     <div class="d-flex align-items-center">

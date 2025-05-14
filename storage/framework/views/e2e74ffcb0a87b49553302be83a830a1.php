@@ -20,10 +20,11 @@
                             Tambahkan
                         </button>
                     </div>
-                    <a href="<?php echo e(route('absensi.export', ['pembelajaran_id' => $pembelajaran->id])); ?>" class="btn btn-sm btn-success mb-3">
+                    <a href="<?php echo e(route('absensi.export', ['pembelajaran_id' => $pembelajaran->id])); ?>"
+                        class="btn btn-sm btn-success mb-3">
                         <i class="fa fa-download"></i> Export Absensi Kelas <?php echo e($kelasData->nama_kelas); ?>
 
-                    </a>    
+                    </a>
                     <div class="table-responsive">
                         <table id="myTable" class="display expandable-table" style="width:100%">
                             <thead>
@@ -50,6 +51,7 @@
                                                     'mapel' => Str::slug($pembelajaran->nama_mapel, '-'),
                                                     'kelas' => Str::slug($kelasData->nama_kelas, '-'),
                                                     'tahunAjaran' => str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun),
+                                                    'semester' => Str::slug($pembelajaran->semester, '-'),
                                                     'absensi_id' => $item->id,
                                                 ])); ?>"
                                                     class="btn btn-sm btn-outline-primary btn-fw mr-3">Isi Absensi</a>

@@ -88,7 +88,8 @@
                                     <div class="list-group" id="kuis-container"
                                         data-mapel="{{ strtolower(str_replace(' ', '-', $pembelajaran->nama_mapel)) }}"
                                         data-kelas="{{ strtolower(str_replace(' ', '-', $pembelajaran->kelas->nama_kelas)) }}"
-                                        data-tahun="{{ str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun) }}">
+                                        data-tahun="{{ str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun) }}"
+                                        data-semester="{{ strtolower(str_replace(' ', '-', $pembelajaran->semester)) }}">
                                         <!-- Materi akan dimasukkan di sini -->
                                     </div>
                                 </div>
@@ -319,12 +320,13 @@
                                 let mapelSlug = container.data("mapel");
                                 let kelasSlug = container.data("kelas");
                                 let tahunSlug = container.data("tahun");
+                                let semesterSlug = container.data("semester");
 
                                 let kuisId = $(this).data(
                                 "id"); // Ambil ID tugas yg diklik
 
                                 let redirectUrl =
-                                    `/guru/submit-kuis/${mapelSlug}/${kelasSlug}/${tahunSlug}/list-kuis?kuis_id=${kuisId}`;
+                                    `/guru/submit-kuis/${mapelSlug}/${kelasSlug}/${tahunSlug}/${semesterSlug}/list-kuis?kuis_id=${kuisId}`;
                                 window.location.href = redirectUrl;
                             });
 

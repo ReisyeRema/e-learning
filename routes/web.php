@@ -174,7 +174,7 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->group(function () {
     Route::put('/materi/{materi}/update', [MateriController::class, 'update'])->name('materi.update');
     Route::delete('/materi/{materi}/destroy', [MateriController::class, 'destroy'])->name('materi.destroy');
     Route::get('/materi/{materi}/download', [MateriController::class, 'download']);
-    Route::get('/submit-materi/{mapel}/{kelas}/{tahunAjaran}', [MateriController::class, 'show'])
+    Route::get('/submit-materi/{mapel}/{kelas}/{tahunAjaran}/{semester}', [MateriController::class, 'show'])
         ->name('submit-materi.show');
     Route::get('/materi/{pertemuan_id}', [MateriController::class, 'getMateriByPertemuan']);
 
@@ -184,7 +184,7 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->group(function () {
     Route::post('/kuis/store', [KuisController::class, 'store'])->name('kuis.store');
     Route::put('/kuis/{kuis}/update', [KuisController::class, 'update'])->name('kuis.update');
     Route::delete('/kuis/{kuis}/destroy', [KuisController::class, 'destroy'])->name('kuis.destroy');
-    Route::get('/submit-kuis/{mapel}/{kelas}/{tahunAjaran}', [KuisController::class, 'show'])
+    Route::get('/submit-kuis/{mapel}/{kelas}/{tahunAjaran}/{semester}', [KuisController::class, 'show'])
         ->name('submit-kuis.show');
     Route::get('/kuis/{pertemuan_id}', [KuisController::class, 'getKuisByPertemuan']);
 
@@ -204,7 +204,7 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->group(function () {
     Route::post('/tugas/store', [TugasController::class, 'store'])->name('tugas.store');
     Route::put('/tugas/{tugas}/update', [TugasController::class, 'update'])->name('tugas.update');
     Route::delete('/tugas/{tugas}/destroy', [TugasController::class, 'destroy'])->name('tugas.destroy');
-    Route::get('/submit-tugas/{mapel}/{kelas}/{tahunAjaran}', [TugasController::class, 'show'])
+    Route::get('/submit-tugas/{mapel}/{kelas}/{tahunAjaran}/{semester}', [TugasController::class, 'show'])
         ->name('submit-tugas.show');
     Route::get('/tugas/{pertemuan_id}', [TugasController::class, 'getTugasByPertemuan']);
 
@@ -221,7 +221,7 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->group(function () {
     Route::post('/pertemuan-tugas/store/{pembelajaran_id}', [PertemuanTugasController::class, 'store'])->name('pertemuan-tugas.store');
     Route::delete('/pertemuan-tugas/{id}', [PertemuanTugasController::class, 'destroy'])->name('pertemuan-tugas.destroy');
     Route::put('/pertemuan-tugas/{id}', [PertemuanTugasController::class, 'update'])->name('pertemuan-tugas.update');
-    Route::get('/submit-tugas/{mapel}/{kelas}/{tahunAjaran}/list-tugas', [PertemuanTugasController::class, 'listTugas'])->name('list-pertemuan-tugas.index');
+    Route::get('/submit-tugas/{mapel}/{kelas}/{tahunAjaran}/{semester}/list-tugas', [PertemuanTugasController::class, 'listTugas'])->name('list-pertemuan-tugas.index');
     Route::put('/submit-tugas/{id}/update-skor', [PertemuanTugasController::class, 'updateSkor'])->name('submit-tugas.updateSkor');
     Route::get('/tugas/export/excel', [PertemuanTugasController::class, 'export_excel'])->name('tugas.export');
 
@@ -232,8 +232,8 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->group(function () {
     Route::post('/pertemuan-kuis/store/{pembelajaran_id}', [PertemuanKuisController::class, 'store'])->name('pertemuan-kuis.store');
     Route::delete('/pertemuan-kuis/{id}', [PertemuanKuisController::class, 'destroy'])->name('pertemuan-kuis.destroy');
     Route::put('/pertemuan-kuis/{id}', [PertemuanKuisController::class, 'update'])->name('pertemuan-kuis.update');
-    Route::get('/submit-kuis/{mapel}/{kelas}/{tahunAjaran}/list-kuis', [PertemuanKuisController::class, 'listKuis'])->name('list-pertemuan-kuis.index');
-    Route::get('/pertemuan-kuis/{mapel}/{kelas}/{tahunAjaran}/hasil-kuis/{kuis}/{siswa}', [PertemuanKuisController::class, 'show'])->name('hasil-kuis.show');
+    Route::get('/submit-kuis/{mapel}/{kelas}/{tahunAjaran}/{semester}/list-kuis', [PertemuanKuisController::class, 'listKuis'])->name('list-pertemuan-kuis.index');
+    Route::get('/pertemuan-kuis/{mapel}/{kelas}/{tahunAjaran}/{semester}/hasil-kuis/{kuis}/{siswa}', [PertemuanKuisController::class, 'show'])->name('hasil-kuis.show');
     Route::post('/pertemuan-kuis/hasil-kuis/{kuis}/{siswa}', [PertemuanKuisController::class, 'updateEssay'])->name('hasil-kuis.updateEssay');
     Route::get('/nilai/export/excel', [PertemuanKuisController::class, 'export_excel'])->name('nilai.export');
 
@@ -246,11 +246,11 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->group(function () {
     Route::post('/enrollment/batch-delete', [EnrollController::class, 'batchDelete'])->name('enrollment.batchDelete');
 
     // List Siswa
-    Route::get('/siswa-kelas/{mapel}/{kelas}/{tahunAjaran}', [SiswaAdminController::class, 'show'])
+    Route::get('/siswa-kelas/{mapel}/{kelas}/{tahunAjaran}/{semester}', [SiswaAdminController::class, 'show'])
         ->name('siswa-kelas.show');
 
     // Absensi
-    Route::get('/absensi/{mapel}/{kelas}/{tahunAjaran}', [AbsensiController::class, 'show'])
+    Route::get('/absensi/{mapel}/{kelas}/{tahunAjaran}/{semester}', [AbsensiController::class, 'show'])
         ->name('absensi.show');
     Route::post('/absensi/store/{pembelajaran_id}', [AbsensiController::class, 'store'])->name('absensi.store');
     Route::put('/absensi/update/{id}', [AbsensiController::class, 'update'])->name('absensi.update');
@@ -258,7 +258,7 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->group(function () {
 
 
     // DetailAbsensi
-    Route::get('/absensi/{mapel}/{kelas}/{tahunAjaran}/detail-absensi', [DetailAbsensiController::class, 'index'])->name('detail-absensi.index');
+    Route::get('/absensi/{mapel}/{kelas}/{tahunAjaran}/{semester}/detail-absensi', [DetailAbsensiController::class, 'index'])->name('detail-absensi.index');
     Route::post('/absensi/detail/store-or-update', [DetailAbsensiController::class, 'storeOrUpdate'])
     ->name('detail-absensi.storeOrUpdate');
     Route::get('/detail-absensi/export/excel', [DetailAbsensiController::class, 'export_excel'])->name('absensi.export');
@@ -281,7 +281,7 @@ Route::middleware(PreventBackHistory::class, RedirectIfNotSiswa::class)->prefix(
 
     // mata pelajaran
     Route::get('/mata-pelajaran', [MataPelajaranController::class, 'index'])->name('mata-pelajaran.index');
-    Route::get('/mata-pelajaran/{mapel}/{kelas}/{tahunAjaran}', [MataPelajaranController::class, 'show'])->name('mata-pelajaran.show');
+    Route::get('/mata-pelajaran/{mapel}/{kelas}/{tahunAjaran}/{semester}', [MataPelajaranController::class, 'show'])->name('mata-pelajaran.show');
 
     //submit tugas
     Route::post('/submit-tugas-siswa', [SubmitTugasController::class, 'store'])->name('submit-tugas-siswa.store');
@@ -291,7 +291,7 @@ Route::middleware(PreventBackHistory::class, RedirectIfNotSiswa::class)->prefix(
     Route::get('/list-tugas', [TugasSiswaController::class, 'index'])->name('list-tugas.index');
 
     // kuis siswa
-    Route::get('/mata-pelajaran/{mapel}/{kelas}/{tahunAjaran}/kuis/{judulKuis}/action', [KuisSiswaController::class, 'action'])->name('kuis-siswa.action');
+    Route::get('/mata-pelajaran/{mapel}/{kelas}/{tahunAjaran}/{semester}/kuis/{judulKuis}/action', [KuisSiswaController::class, 'action'])->name('kuis-siswa.action');
     Route::post('/kuis/cek-token', [SiswaKuisSessionController::class, 'cekToken'])->name('kuis-siswa.cek-token');
     Route::post('/kuis/kumpulkan', [KuisSiswaController::class, 'kumpulkan'])->name('kuis.kumpulkan');
     Route::get('/list-kuis', [KuisSiswaController::class, 'index'])->name('list-kuis.index');

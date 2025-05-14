@@ -68,11 +68,12 @@ class KuisController extends Controller
         return redirect()->route('kuis.index')->with('success', 'Kuis Berhasil Dihapus');
     }
 
-    public function show($mapel, $kelas, $tahunAjaran)
+    public function show($mapel, $kelas, $tahunAjaran, $semester)
     {
         // Ubah slug kembali ke format nama asli
         $mapelNama = Str::title(str_replace('-', ' ', $mapel));
         $kelasNama = Str::upper(str_replace('-', ' ', $kelas));
+        $semesterNama = Str::upper(str_replace('-', ' ', $semester));
 
          // Ubah "2023-2024" kembali menjadi "2023/2024" agar cocok dengan database
          $tahunAjaranFormatted = str_replace('-', '/', $tahunAjaran);
@@ -83,6 +84,7 @@ class KuisController extends Controller
         // Cari pembelajaran yang sesuai
         $pembelajaran = Pembelajaran::whereRaw("LOWER(REPLACE(nama_mapel, ' ', '-')) = ?", [$mapel])
             ->where('kelas_id', $kelasData->id)
+            ->where('semester', $semesterNama)
             ->whereHas('tahunAjaran', function ($query) use ($tahunAjaranFormatted) {
                 $query->where('nama_tahun', $tahunAjaranFormatted);
             })

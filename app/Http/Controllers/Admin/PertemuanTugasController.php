@@ -31,6 +31,7 @@ class PertemuanTugasController extends Controller
         $mapelSlug = Str::slug($pembelajaran->nama_mapel);
         $kelasSlug = Str::slug($pembelajaran->kelas->nama_kelas);
         $tahunAjaranSlug = str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun);
+        $semesterSlug = Str::slug($pembelajaran->semester);
 
         // Simpan data ke database
         PertemuanTugas::create($validatedData);
@@ -39,7 +40,8 @@ class PertemuanTugasController extends Controller
         return redirect()->route('submit-tugas.show', [
             'mapel' => $mapelSlug,
             'kelas' => $kelasSlug,
-            'tahunAjaran' => $tahunAjaranSlug
+            'tahunAjaran' => $tahunAjaranSlug,
+            'semester' => $semesterSlug
         ])->with('success', 'Data berhasil ditambahkan.');
     }
 
@@ -70,16 +72,18 @@ class PertemuanTugasController extends Controller
     }
 
 
-    public function listTugas($mapel, $kelas, $tahunAjaran, Request $request)
+    public function listTugas($mapel, $kelas, $tahunAjaran, $semester, Request $request)
     {
         $mapelNama = Str::title(str_replace('-', ' ', $mapel));
         $kelasNama = Str::upper(str_replace('-', ' ', $kelas));
         $tahunAjaranFormatted = str_replace('-', '/', $tahunAjaran);
+        $semesterNama = Str::upper(str_replace('-', ' ', $semester));
 
         $kelasData = Kelas::whereRaw("LOWER(REPLACE(nama_kelas, ' ', '-')) = ?", [$kelas])->firstOrFail();
 
         $pembelajaran = Pembelajaran::whereRaw("LOWER(REPLACE(nama_mapel, ' ', '-')) = ?", [$mapel])
             ->where('kelas_id', $kelasData->id)
+            ->where('semester', $semesterNama)
             ->whereHas('tahunAjaran', function ($query) use ($tahunAjaranFormatted) {
                 $query->where('nama_tahun', $tahunAjaranFormatted);
             })
@@ -178,12 +182,14 @@ class PertemuanTugasController extends Controller
         $namaKelas = $pembelajaran->kelas->nama_kelas ?? 'Kelas';
         $tahunAjaran = $pembelajaran->tahunAjaran->nama_tahun ?? 'TahunAjaran';
         $mapel = $pembelajaran->nama_mapel ?? 'Mapel';
+        $semester = $pembelajaran->semester ?? 'Kelas';
 
         $namaKelasSlug = str_replace(' ', '_', $namaKelas);
         $tahunAjaranSlug = str_replace([' ', '/', '\\'], '-', $tahunAjaran);
         $mapelSlug = str_replace(' ', '_', $mapel);
+        $semesterSlug = str_replace(' ', '_', $semester);
 
-        $filename = "nilai_tugas_{$namaKelasSlug}_{$tahunAjaranSlug}_{$mapelSlug}.xlsx";
+        $filename = "nilai_tugas_{$namaKelasSlug}_{$tahunAjaranSlug}_{$mapelSlug}_{$semesterSlug}.xlsx";
 
         return Excel::download(
             new \App\Exports\ExportNilaiTugasMultiSheet($guruId, $pembelajaran->id),

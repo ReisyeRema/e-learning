@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Siswa;
 
 use App\Models\Tugas;
 use App\Models\Enrollments;
+use Illuminate\Support\Str;
 use App\Models\Pembelajaran;
 use App\Models\UserActivity;
 use Illuminate\Http\Request;
@@ -84,7 +85,7 @@ class MataPelajaranController extends Controller
     }
 
 
-    public function show($mapel, $kelas, $tahunAjaran)
+    public function show($mapel, $kelas, $tahunAjaran, $semester)
     {
         $pembelajaran = Pembelajaran::whereRaw("LOWER(REPLACE(nama_mapel, ' ', '-')) = ?", [$mapel])
             ->whereHas('kelas', function ($query) use ($kelas) {
@@ -93,6 +94,7 @@ class MataPelajaranController extends Controller
             ->whereHas('tahunAjaran', function ($query) use ($tahunAjaran) {
                 $query->whereRaw("REPLACE(nama_tahun, '/', '-') = ?", [$tahunAjaran]);
             })
+            ->where('semester', Str::upper(str_replace('-', ' ', $semester)))
             ->with([
                 'pertemuanMateri.materi',
                 'pertemuanTugas.tugas',

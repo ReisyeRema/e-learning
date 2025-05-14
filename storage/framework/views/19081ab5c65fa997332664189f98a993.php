@@ -156,23 +156,23 @@
                 $slugKelas = Str::slug(optional($mapel->kelas)->nama_kelas ?? '');
                 $tahunAjaranRaw = optional($mapel->tahunAjaran)->nama_tahun ?? '';
                 $slugTahunAjaran = $tahunAjaranRaw ? str_replace('/', '-', $tahunAjaranRaw) : '';
+                $slugSemester = Str::slug($mapel->semester);
 
                 // Ambil full path saat ini (tanpa domain)
                 $currentPath = request()->path(); // contoh: 'guru/submit-materi/ipa-7/a/2023-2024'
 
                 // Buat pattern pencarian yang fleksibel (support prefix)
                 $activePatterns = [
-                    "*submit-materi/$slugMapel/$slugKelas/$slugTahunAjaran",
-                    "*submit-tugas/$slugMapel/$slugKelas/$slugTahunAjaran",
-                    "*submit-kuis/$slugMapel/$slugKelas/$slugTahunAjaran",
-                    "*siswa-kelas/$slugMapel/$slugKelas/$slugTahunAjaran",
-                    "*absensi/$slugMapel/$slugKelas/$slugTahunAjaran",
-                    "*absensi/$slugMapel/$slugKelas/$slugTahunAjaran/detail-absensi",
+                    "*submit-materi/$slugMapel/$slugKelas/$slugTahunAjaran/$slugSemester",
+                    "*submit-tugas/$slugMapel/$slugKelas/$slugTahunAjaran/$slugSemester",
+                    "*submit-kuis/$slugMapel/$slugKelas/$slugTahunAjaran/$slugSemester",
+                    "*siswa-kelas/$slugMapel/$slugKelas/$slugTahunAjaran/$slugSemester",
+                    "*absensi/$slugMapel/$slugKelas/$slugTahunAjaran/$slugSemester",
+                    "*absensi/$slugMapel/$slugKelas/$slugTahunAjaran/$slugSemester/detail-absensi",
 
-                    // Tambahan route baru:
-                    "*submit-tugas/$slugMapel/$slugKelas/$slugTahunAjaran/list-tugas",
-                    "*submit-kuis/$slugMapel/$slugKelas/$slugTahunAjaran/list-kuis",
-                    "*pertemuan-kuis/$slugMapel/$slugKelas/$slugTahunAjaran/hasil-kuis/*/*",
+                    "*submit-tugas/$slugMapel/$slugKelas/$slugTahunAjaran/$slugSemester/list-tugas",
+                    "*submit-kuis/$slugMapel/$slugKelas/$slugTahunAjaran/$slugSemester/list-kuis",
+                    "*pertemuan-kuis/$slugMapel/$slugKelas/$slugTahunAjaran/$slugSemester/hasil-kuis/*/*",
                 ];
 
                 $isActive = false;
@@ -187,13 +187,14 @@
             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('menu-submit-materi')): ?>
                 <li class="nav-items <?php echo e($isActive ? 'active' : ''); ?>">
                     <a class="nav-link"
-                        href="<?php echo e(route('submit-materi.show', ['mapel' => $slugMapel, 'kelas' => $slugKelas, 'tahunAjaran' => $slugTahunAjaran])); ?>">
+                        href="<?php echo e(route('submit-materi.show', ['mapel' => $slugMapel, 'kelas' => $slugKelas, 'tahunAjaran' => $slugTahunAjaran, 'semester' => $slugSemester])); ?>">
                         <div class="menu-item">
                             <i class="fas fa-clipboard-check menu-icon mr-3"></i>
                             <span class="menu-title">
                                 <?php echo e($mapel->nama_mapel); ?> <br>
                                 <span class="d-block mt-1">- <?php echo e(optional($mapel->kelas)->nama_kelas); ?></span>
                                 <span class="d-block mt-1">- <?php echo e(optional($mapel->tahunAjaran)->nama_tahun); ?></span>
+                                <span class="d-block mt-1">- <?php echo e($mapel->semester); ?></span>
                             </span>
                         </div>
                     </a>

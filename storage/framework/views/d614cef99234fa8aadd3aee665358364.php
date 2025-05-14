@@ -43,7 +43,7 @@
                                                     <th style="text-align: center;">Nilai</th>
                                                     <th style="text-align: center;">Aksi</th>
                                                 </tr>
-                                            </thead>                                            
+                                            </thead>
                                             <tbody>
                                                 <?php $__currentLoopData = $enrollments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $enroll): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                     <?php
@@ -55,16 +55,21 @@
                                                     <tr style="text-align: center">
                                                         <td style="text-align: center;"><?php echo e($i + 1); ?></td>
                                                         <td><?php echo e($enroll->siswa->name); ?></td>
-                                                        
+
                                                         <td>
                                                             <?php if($submission): ?>
                                                                 <?php
                                                                     $submittedAt = strtotime($submission->created_at);
-                                                                    $deadline = strtotime($kuisTerpilih->pertemuanKuis->where('kuis_id', $kuisTerpilih->id)->first()?->deadline);
+                                                                    $deadline = strtotime(
+                                                                        $kuisTerpilih->pertemuanKuis
+                                                                            ->where('kuis_id', $kuisTerpilih->id)
+                                                                            ->first()?->deadline,
+                                                                    );
                                                                 ?>
-                                                        
+
                                                                 <?php if($submittedAt <= $deadline): ?>
-                                                                    <span class="badge badge-success">Sudah Mengerjakan</span>
+                                                                    <span class="badge badge-success">Sudah
+                                                                        Mengerjakan</span>
                                                                 <?php else: ?>
                                                                     <span class="badge badge-warning">Terlambat</span>
                                                                 <?php endif; ?>
@@ -78,19 +83,21 @@
                                                             <?php else: ?>
                                                                 <span class="text-muted">-</span>
                                                             <?php endif; ?>
-                                                        </td>                                                                                                          
+                                                        </td>
                                                         <td class="text-center">
                                                             <a href="<?php echo e(route('hasil-kuis.show', [
                                                                 'mapel' => Str::slug($pembelajaran->nama_mapel, '-'),
                                                                 'kelas' => Str::slug($kelasData->nama_kelas, '-'),
                                                                 'tahunAjaran' => str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun),
+                                                                'semester' => Str::slug($pembelajaran->semester, '-'),
                                                                 'kuis' => $kuisTerpilih->id,
                                                                 'siswa' => $enroll->siswa->id,
-                                                            ])); ?>" class="btn btn-sm btn-outline-primary btn-fw">
+                                                            ])); ?>"
+                                                                class="btn btn-sm btn-outline-primary btn-fw">
                                                                 Lihat Jawaban
                                                             </a>
                                                         </td>
-                                                        
+
                                                     </tr>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </tbody>
