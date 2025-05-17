@@ -22,7 +22,8 @@ return new class extends Migration
             $table->time('jam_selesai');
             $table->boolean('is_multisession')->default(false);
             $table->json('ulangi_pada')->nullable();
-            $table->date('ulangi_sampai')->nullable(); 
+            $table->date('ulangi_sampai')->nullable();
+            $table->boolean('aktif')->default(false); 
             $table->timestamps();
             $table->softDeletes();
         });

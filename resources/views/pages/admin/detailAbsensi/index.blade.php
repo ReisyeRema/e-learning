@@ -30,6 +30,7 @@
                                         <th width="3%">Izin</th>
                                         <th width="3%">Sakit</th>
                                         <th width="3%">Alfa</th>
+                                        <th width="13%" style="text-align: center">Dokumen</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -53,7 +54,16 @@
                                                     </div>
                                                 </td>
                                             @endforeach
-
+                                            <td style="text-align: center">
+                                                @if ($detail && in_array($detail->keterangan, ['Izin', 'Sakit']) && $detail->surat)
+                                                    <a href="https://drive.google.com/file/d/{{ $detail->surat }}/view"
+                                                        target="_self" class="btn btn-sm btn-outline-success">
+                                                        <i class="fas fa-file-alt me-1"></i> Lihat Surat
+                                                    </a>
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

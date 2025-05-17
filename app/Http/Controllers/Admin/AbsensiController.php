@@ -178,4 +178,13 @@ class AbsensiController extends Controller
             'semester' => Str::slug($pembelajaran->semester),
         ])->with('success', 'Absensi berhasil dihapus.');
     }
+
+    public function toggleAktif(Request $request, $id)
+    {
+        $absensi = Absensi::findOrFail($id);
+        $absensi->aktif = !$absensi->aktif;
+        $absensi->save();
+
+        return back()->with('status', 'Status absensi diperbarui.');
+    }
 }

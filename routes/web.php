@@ -14,7 +14,6 @@ use App\Http\Controllers\Admin\TugasController;
 use App\Http\Controllers\Admin\MateriController;
 use App\Http\Controllers\Siswa\EnrollController;
 use App\Http\Controllers\Admin\AbsensiController;
-use App\Http\Controllers\Admin\DetailAbsensiController;
 use App\Http\Controllers\Admin\SoalKuisController;
 use App\Http\Controllers\Admin\GuruAdminController;
 use App\Http\Controllers\Admin\PertemuanController;
@@ -27,6 +26,7 @@ use App\Http\Controllers\Siswa\TugasSiswaController;
 use App\Http\Controllers\Admin\TahunAjaranController;
 use App\Http\Controllers\Siswa\SubmitTugasController;
 use App\Http\Controllers\Admin\PembelajaranController;
+use App\Http\Controllers\Admin\DetailAbsensiController;
 use App\Http\Controllers\Admin\PertemuanKuisController;
 use App\Http\Controllers\Siswa\MataPelajaranController;
 use App\Http\Controllers\Admin\KurikulumAdminController;
@@ -255,6 +255,7 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->group(function () {
     Route::post('/absensi/store/{pembelajaran_id}', [AbsensiController::class, 'store'])->name('absensi.store');
     Route::put('/absensi/update/{id}', [AbsensiController::class, 'update'])->name('absensi.update');
     Route::delete('/absensi/{id}',[AbsensiController::class,'destroy'])->name('absensi.destroy');
+    Route::put('/absensi/{id}/toggle-aktif', [AbsensiController::class, 'toggleAktif'])->name('absensi.toggleAktif');
 
 
     // DetailAbsensi
@@ -282,6 +283,9 @@ Route::middleware(PreventBackHistory::class, RedirectIfNotSiswa::class)->prefix(
     // mata pelajaran
     Route::get('/mata-pelajaran', [MataPelajaranController::class, 'index'])->name('mata-pelajaran.index');
     Route::get('/mata-pelajaran/{mapel}/{kelas}/{tahunAjaran}/{semester}', [MataPelajaranController::class, 'show'])->name('mata-pelajaran.show');
+    Route::post('/absensi/{id}/lakukan', [MataPelajaranController::class, 'lakukanAbsensi'])->name('absensi.lakukan');
+    Route::get('/absensi/{pertemuan_id}', [MataPelajaranController::class, 'getAbsensiByPertemuan']);
+
 
     //submit tugas
     Route::post('/submit-tugas-siswa', [SubmitTugasController::class, 'store'])->name('submit-tugas-siswa.store');
@@ -295,6 +299,7 @@ Route::middleware(PreventBackHistory::class, RedirectIfNotSiswa::class)->prefix(
     Route::post('/kuis/cek-token', [SiswaKuisSessionController::class, 'cekToken'])->name('kuis-siswa.cek-token');
     Route::post('/kuis/kumpulkan', [KuisSiswaController::class, 'kumpulkan'])->name('kuis.kumpulkan');
     Route::get('/list-kuis', [KuisSiswaController::class, 'index'])->name('list-kuis.index');
+
 });
 
 require __DIR__ . '/auth.php';

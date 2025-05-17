@@ -2,6 +2,67 @@
 
 @section('title', 'Data Absensi')
 
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 26px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked+.slider {
+        background-color: #4caf50;
+    }
+
+    input:checked+.slider:before {
+        transform: translateX(24px);
+    }
+
+    .center-toggle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        margin-top: 15px;
+    }
+
+    .center-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+</style>
 
 @section('content')
     <div class="row">
@@ -31,9 +92,12 @@
                                     <th style="text-align: center">No</th>
                                     <th>Pertemuan</th>
                                     <th>Tanggal</th>
-                                    <th>Jam Mulai - Jam Selesai</th>
-                                    <th width="15%">
+                                    <th width="25%">Jam Mulai - Jam Selesai</th>
+                                    <th>
                                         <center>Aksi</center>
+                                    </th>
+                                    <th width="15%">
+                                        <center>Aktifkan ke Siswa</center>
                                     </th>
                                 </tr>
                             </thead>
@@ -45,7 +109,7 @@
                                         <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y') }}</td>
                                         <td>{{ $item->jam_mulai }} - {{ $item->jam_selesai }}</td>
                                         <td>
-                                            <div class="d-flex align-items-center">
+                                            <div class="center-button">
                                                 <a href="{{ route('detail-absensi.index', [
                                                     'mapel' => Str::slug($pembelajaran->nama_mapel, '-'),
                                                     'kelas' => Str::slug($kelasData->nama_kelas, '-'),
@@ -67,6 +131,22 @@
                                                     style="display: none;">
                                                     @csrf
                                                     @method('DELETE')
+                                                </form>
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <!-- Radio Aktif -->
+                                            <div class="center-toggle">
+                                                <form action="{{ route('absensi.toggleAktif', $item->id) }}" method="POST"
+                                                    style="display: inline;">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <label class="switch">
+                                                        <input type="checkbox" name="aktif" onchange="this.form.submit()"
+                                                            {{ $item->aktif ? 'checked' : '' }}>
+                                                        <span class="slider"></span>
+                                                    </label>
                                                 </form>
                                             </div>
                                         </td>
@@ -144,8 +224,8 @@
                         {{-- Tanggal --}}
                         <div class="form-group">
                             <label for="tanggal">Tanggal</label>
-                            <input type="date" name="tanggal" class="form-control @error('tanggal') is-invalid @enderror"
-                                value="{{ old('tanggal') }}">
+                            <input type="date" name="tanggal"
+                                class="form-control @error('tanggal') is-invalid @enderror" value="{{ old('tanggal') }}">
                             @error('tanggal')
                                 <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror

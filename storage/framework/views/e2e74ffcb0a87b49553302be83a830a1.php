@@ -2,6 +2,67 @@
 
 <?php $__env->startSection('title', 'Data Absensi'); ?>
 
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 26px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked+.slider {
+        background-color: #4caf50;
+    }
+
+    input:checked+.slider:before {
+        transform: translateX(24px);
+    }
+
+    .center-toggle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        margin-top: 15px;
+    }
+
+    .center-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+</style>
 
 <?php $__env->startSection('content'); ?>
     <div class="row">
@@ -32,9 +93,12 @@
                                     <th style="text-align: center">No</th>
                                     <th>Pertemuan</th>
                                     <th>Tanggal</th>
-                                    <th>Jam Mulai - Jam Selesai</th>
-                                    <th width="15%">
+                                    <th width="25%">Jam Mulai - Jam Selesai</th>
+                                    <th>
                                         <center>Aksi</center>
+                                    </th>
+                                    <th width="15%">
+                                        <center>Aktifkan ke Siswa</center>
                                     </th>
                                 </tr>
                             </thead>
@@ -46,7 +110,7 @@
                                         <td><?php echo e(\Carbon\Carbon::parse($item->tanggal)->format('d M Y')); ?></td>
                                         <td><?php echo e($item->jam_mulai); ?> - <?php echo e($item->jam_selesai); ?></td>
                                         <td>
-                                            <div class="d-flex align-items-center">
+                                            <div class="center-button">
                                                 <a href="<?php echo e(route('detail-absensi.index', [
                                                     'mapel' => Str::slug($pembelajaran->nama_mapel, '-'),
                                                     'kelas' => Str::slug($kelasData->nama_kelas, '-'),
@@ -68,6 +132,22 @@
                                                     style="display: none;">
                                                     <?php echo csrf_field(); ?>
                                                     <?php echo method_field('DELETE'); ?>
+                                                </form>
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <!-- Radio Aktif -->
+                                            <div class="center-toggle">
+                                                <form action="<?php echo e(route('absensi.toggleAktif', $item->id)); ?>" method="POST"
+                                                    style="display: inline;">
+                                                    <?php echo csrf_field(); ?>
+                                                    <?php echo method_field('PUT'); ?>
+                                                    <label class="switch">
+                                                        <input type="checkbox" name="aktif" onchange="this.form.submit()"
+                                                            <?php echo e($item->aktif ? 'checked' : ''); ?>>
+                                                        <span class="slider"></span>
+                                                    </label>
                                                 </form>
                                             </div>
                                         </td>
@@ -145,15 +225,15 @@
                         
                         <div class="form-group">
                             <label for="tanggal">Tanggal</label>
-                            <input type="date" name="tanggal" class="form-control <?php $__errorArgs = ['tanggal'];
+                            <input type="date" name="tanggal"
+                                class="form-control <?php $__errorArgs = ['tanggal'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>"
-                                value="<?php echo e(old('tanggal')); ?>">
+unset($__errorArgs, $__bag); ?>" value="<?php echo e(old('tanggal')); ?>">
                             <?php $__errorArgs = ['tanggal'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :

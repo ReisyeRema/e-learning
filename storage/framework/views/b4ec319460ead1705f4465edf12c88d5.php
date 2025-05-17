@@ -30,6 +30,7 @@
                                         <th width="3%">Izin</th>
                                         <th width="3%">Sakit</th>
                                         <th width="3%">Alfa</th>
+                                        <th width="13%" style="text-align: center">Dokumen</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -53,6 +54,16 @@
                                                     </div>
                                                 </td>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <td style="text-align: center">
+                                                <?php if($detail && in_array($detail->keterangan, ['Izin', 'Sakit']) && $detail->surat): ?>
+                                                    <a href="https://drive.google.com/file/d/<?php echo e($detail->surat); ?>/view"
+                                                        target="_self" class="btn btn-sm btn-outline-success">
+                                                        <i class="fas fa-file-alt me-1"></i> Lihat Surat
+                                                    </a>
+                                                <?php else: ?>
+                                                    -
+                                                <?php endif; ?>
+                                            </td>
 
                                         </tr>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

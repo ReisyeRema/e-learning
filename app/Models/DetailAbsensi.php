@@ -15,6 +15,7 @@ class DetailAbsensi extends Model
         'absensi_id',
         'siswa_id',
         'keterangan',
+        'surat',
     ];
 
     // Relasi ke absensi

@@ -139,6 +139,18 @@
             left: 0;
             top: 0;
         }
+
+        /* Tab aktif dengan teks hijau */
+        .nav-tabs .nav-link.active {
+            color: #198754 !important;
+            border-color: #dee2e6 #dee2e6 #fff;
+            font-weight: 600;
+        }
+
+        /* Tab tidak aktif tetap hitam */
+        .nav-tabs .nav-link {
+            color: #000;
+        }
     </style>
 
 </head>
@@ -148,7 +160,7 @@
 
     <div class="overlay" id="overlay"></div>
 
-    <main class="main p-3">
+    {{-- <main class="main p-3">
         <div class="container">
             <!-- Tombol Kembali -->
             <div class="mb-3">
@@ -290,7 +302,291 @@
             </div>
         </div>
 
-        {{-- @include('pages.siswa.mataPelajaran.modal') --}}
+        <!-- Modal Kumpul Tugas -->
+        <div class="modal fade" id="modalKumpul" tabindex="-1" aria-labelledby="modalKumpulLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalKumpulLabel" style="color: #000000">Kumpulkan Tugas</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="{{ route('submit-tugas-siswa.store') }}"
+                            enctype="multipart/form-data">
+
+                            @csrf
+                            <input type="hidden" name="tugas_id" id="tugasId" value="">
+                            <input type="hidden" name="siswa_id" value="{{ auth()->id() }}">
+
+                            <div class="mb-3" style="display: table;">
+                                <div style="display: table-row;">
+                                    <strong style="display: table-cell; padding-right: 10px;">Status
+                                        Pengumpulan</strong>
+                                    <span style="display: table-cell;">
+                                        : <span id="statusPengumpulan" class="badge bg-secondary">Belum
+                                            dikumpulkan</span>
+                                    </span>
+                                </div>
+                                <div style="display: table-row;">
+                                    <strong style="display: table-cell; padding-right: 10px;">Detail Tugas</strong>
+                                    <span style="display: table-cell;">: <a id="tugasLink" href="#"
+                                            target="_blank">Lihat Tugas</a></span>
+                                </div>
+                                <div style="display: table-row;">
+                                    <strong style="display: table-cell; padding-right: 10px;">Deadline</strong>
+                                    <span style="display: table-cell;">: <span id="tugasDeadline"></span></span>
+                                </div>
+                                <div style="display: table-row;">
+                                    <strong style="display: table-cell; padding-right: 10px;">Judul Tugas</strong>
+                                    <span style="display: table-cell;">: <span id="tugasJudul"></span></span>
+                                </div>
+                                <div style="display: table-row;">
+                                    <strong style="display: table-cell; padding-right: 10px;">Deskripsi</strong>
+                                    <span style="display: table-cell;">: <span id="tugasDeskripsi"></span></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="fileTugas" class="form-label">Upload Tugas</label>
+                                <div class="upload-box">
+                                    <input type="file" id="fileTugas" name="file_path" class="file-input">
+                                    <div class="upload-area">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <p>Drag your file(s) or <span class="browse-text">browse</span></p>
+                                        <small>Max 10 MB files are allowed</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="urlTugas" class="form-label">URL (Opsional)</label>
+                                <input type="text" class="form-control" name="url" id="urlTugas">
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-success" id="submitButton">Kumpulkan</button>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Input Token -->
+        <div class="modal fade" id="modalTokenKuis" tabindex="-1" aria-labelledby="modalTokenLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <form method="POST" action="{{ route('kuis-siswa.cek-token') }}" id="formTokenKuis">
+                    @csrf
+                    <input type="hidden" name="pertemuan_kuis_id" id="pertemuan_kuis_id">
+                    <input type="hidden" name="redirect_link" id="redirect_link">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Masukkan Token</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Tutup"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3" style="display: table;">
+                                <div style="display: table-row;">
+                                    <strong style="display: table-cell; padding-right: 10px;">Token</strong>
+                                    <span style="display: table-cell;">: <span id="tokenTampil"></span></span>
+                                </div>
+                                <div style="display: table-row;">
+                                    <strong style="display: table-cell; padding-right: 10px;">Deadline</strong>
+                                    <span style="display: table-cell;">: <span id="kuisDeadline"></span></span>
+                                </div>
+                            </div>
+                            <input type="text" name="token" class="form-control" placeholder="Masukkan token"
+                                required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Mulai Kuis</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+    </main> --}}
+
+    <main class="main p-3">
+        <div class="container">
+            <!-- Tombol Kembali -->
+            <div class="mb-3">
+                <a href="{{ route('mata-pelajaran.index') }}" class="btn btn-light">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Halaman Mata Pelajaran
+                </a>
+            </div>
+
+            <div class="card shadow-sm border-20 p-3">
+                <h5 class="fw-bold">{{ $pembelajaran->nama_mapel }} - {{ $pembelajaran->kelas->nama_kelas }}</h5>
+
+                <!-- Nav Tabs -->
+                <ul class="nav nav-tabs mt-3 mb-3" id="contentTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="materi-tab" data-bs-toggle="tab"
+                            data-bs-target="#materi-content" type="button" role="tab"
+                            aria-controls="materi-content" aria-selected="true">
+                            Materi & Tugas & Kuis
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="absensi-tab" data-bs-toggle="tab" data-bs-target="#absensi-content"
+                            type="button" role="tab" aria-controls="absensi-content" aria-selected="false">
+                            Absensi
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content" id="contentTabsContent">
+                    <!-- Materi, Tugas, Kuis -->
+                    <div class="tab-pane fade show active" id="materi-content" role="tabpanel"
+                        aria-labelledby="materi-tab">
+                        @php
+                            $groupedData = [];
+
+                            // Mengelompokkan Materi
+                            foreach ($pembelajaran->pertemuanMateri as $materi) {
+                                $groupedData[$materi->materi->judul]['materi'][] = [
+                                    'judul' => $materi->materi->judul,
+                                    'file_path' => $materi->materi->file_path ?? null,
+                                ];
+                            }
+
+                            // Mengelompokkan Tugas berdasarkan Materi
+                            foreach ($pembelajaran->pertemuanTugas as $tugas) {
+                                $judulMateri = $tugas->tugas->materi->judul ?? 'Materi Tidak Diketahui';
+                                $groupedData[$judulMateri]['tugas'][] = [
+                                    // 'pertemuan_ke' => $tugas->pertemuan_ke,
+                                    'id' => $tugas->tugas->id,
+                                    'pertemuan_ke' => $tugas->pertemuan->judul,
+                                    'judul' => $tugas->tugas->judul,
+                                    'deskripsi' => $tugas->tugas->deskripsi,
+                                    'file_path' => $tugas->tugas->file_path,
+                                    'deadline' => $tugas->deadline,
+                                    'status' =>
+                                        optional($tugas->tugas->submitTugas->where('siswa_id', auth()->id())->last())
+                                            ->status ?? 'Belum Dikumpulkan',
+                                ];
+                            }
+
+                            // Mengelompokkan Kuis berdasarkan Materi
+                            foreach ($pembelajaran->pertemuanKuis as $kuis) {
+                                $kategori = $kuis->kuis->kategori;
+
+                                if (in_array($kategori, ['Ujian Mid', 'Ujian Akhir'])) {
+                                    $judulGroup = $kategori; // Jadi "Ujian Mid" atau "Ujian Akhir"
+                                } else {
+                                    $judulGroup = $kuis->kuis->materi->judul ?? 'Materi Tidak Diketahui';
+                                }
+
+                                $groupedData[$judulGroup]['kuis'][] = [
+                                    'id_pertemuan' => $kuis->id,
+                                    'id' => $kuis->kuis->id,
+                                    'pertemuan_ke' => $kuis->pertemuan->judul,
+                                    'judul' => $kuis->kuis->judul,
+                                    'nama_mapel' => $pembelajaran->nama_mapel,
+                                    'nama_kelas' => $pembelajaran->kelas->nama_kelas,
+                                    'tahun_ajaran' => $pembelajaran->tahunAjaran->nama_tahun,
+                                    'semester' => $pembelajaran->semester,
+                                    'kategori_kuis' => $kategori,
+                                    'token' => $kuis->token,
+                                    'deadline' => $kuis->deadline,
+                                ];
+                            }
+                        @endphp
+
+                        @if (empty($groupedData))
+                            <p class="text-muted">Belum ada materi, tugas, atau kuis.</p>
+                        @else
+                            @foreach ($groupedData as $judul => $data)
+                                <div class="materi-section">{{ $judul }}</div>
+                                <div>
+                                    @if (!empty($data['materi']))
+                                        @foreach ($data['materi'] as $materi)
+                                            <div class="materi-item">
+                                                <span><i class="fas fa-book text-primary me-3"></i>
+                                                    {{ $materi['judul'] }}</span>
+                                                @if (!empty($materi['file_path']))
+                                                    <a href="https://drive.google.com/file/d/{{ $materi['file_path'] }}/view"
+                                                        target="_blank" class="btn btn-outline-success btn-sm">
+                                                        Lihat Materi
+                                                    </a>
+                                                @endif
+                                            </div>
+                                        @endforeach
+                                    @endif
+
+
+                                    @if (!empty($data['tugas']))
+                                        @foreach ($data['tugas'] as $tugas)
+                                            <div class="materi-item">
+                                                <span><i class="fas fa-file-alt text-warning me-3"></i> Tugas
+                                                    {{ $tugas['pertemuan_ke'] }}
+                                                    - {{ $tugas['judul'] }}</span>
+                                                <button class="btn btn-outline-warning btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target="#modalKumpul"
+                                                    data-tugas-judul="{{ $tugas['judul'] }}"
+                                                    data-tugas-deskripsi="{{ $tugas['deskripsi'] }}"
+                                                    data-tugas-id="{{ $tugas['id'] }}"
+                                                    data-tugas-deadline="{{ $tugas['deadline'] ?? 'Tidak ada deadline' }}"
+                                                    data-tugas-link="https://drive.google.com/file/d/{{ $tugas['file_path'] ?? '' }}/view"
+                                                    data-tugas-status="{{ $tugas['status'] }}">
+                                                    Kumpul
+                                                </button>
+
+                                            </div>
+                                        @endforeach
+                                    @endif
+
+                                    @if (!empty($data['kuis']))
+                                        @foreach ($data['kuis'] as $kuis)
+                                            <div class="materi-item">
+                                                <span><i class="fas fa-question-circle text-info me-3"></i>
+                                                    {{ $kuis['pertemuan_ke'] }} - {{ $kuis['kategori_kuis'] }} -
+                                                    {{ $kuis['judul'] }}</span>
+
+                                                <!-- Tombol Kerjakan Kuis -->
+                                                <a href="#"
+                                                    class="btn btn-outline-primary btn-sm btn-kerjakan-kuis"
+                                                    data-link="{{ route('kuis-siswa.action', [
+                                                        'mapel' => Str::slug($kuis['nama_mapel']),
+                                                        'kelas' => Str::slug($kuis['nama_kelas']),
+                                                        'tahunAjaran' => str_replace('/', '-', $kuis['tahun_ajaran']),
+                                                        'semester' => Str::slug($kuis['semester']),
+                                                        'judulKuis' => Str::slug($kuis['judul']),
+                                                    ]) }}"
+                                                    data-pertemuan-id="{{ $kuis['id_pertemuan'] }}"
+                                                    data-token="{{ $kuis['token'] ?? 'Tidak ada token' }}"
+                                                    data-deadline="{{ $kuis['deadline'] ?? 'Tidak ada deadline' }}">
+                                                    Kerjakan
+                                                </a>
+
+
+                                            </div>
+                                        @endforeach
+                                    @endif
+
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+
+                    <!-- Absensi -->
+                    <div class="tab-pane fade" id="absensi-content" role="tabpanel" aria-labelledby="absensi-tab">
+                        {{-- Letakkan blade absensi di sini --}}
+                        @include('pages.siswa.mataPelajaran.absensi')
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
         <!-- Modal Kumpul Tugas -->
         <div class="modal fade" id="modalKumpul" tabindex="-1" aria-labelledby="modalKumpulLabel" aria-hidden="true">
@@ -356,7 +652,6 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary"
                                     data-bs-dismiss="modal">Batal</button>
-                                {{-- <button type="submit" class="btn btn-success">Kumpulkan</button> --}}
                                 <button type="submit" class="btn btn-success" id="submitButton">Kumpulkan</button>
 
                             </div>
@@ -403,7 +698,65 @@
         </div>
 
 
+        <!-- Modal Absensi -->
+        @if ($absensiAktif && !$detailAbsensi)
+            <div class="modal fade" id="modalAbsensi" tabindex="-1" aria-labelledby="modalAbsensiLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <form action="{{ route('absensi.lakukan', $absensiAktif->id) }}" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-content shadow-lg">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalAbsensiLabel">Lakukan Absensi</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Tutup"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong>Jam Mulai:</strong>
+                                    {{ \Carbon\Carbon::parse($absensiAktif->jam_mulai)->format('H:i') }}</p>
+                                <p><strong>Jam Selesai:</strong>
+                                    {{ \Carbon\Carbon::parse($absensiAktif->jam_selesai)->format('H:i') }}</p>
+                                <p>Silakan pilih keterangan absensi:</p>
+
+                                <div class="mb-3">
+                                    <label for="keterangan" class="form-label">Keterangan</label>
+                                    <select name="keterangan" id="keterangan" class="form-select" required
+                                        onchange="toggleSuratInput(this.value)">
+                                        <option value="Hadir">Hadir</option>
+                                        <option value="Izin">Izin</option>
+                                        <option value="Sakit">Sakit</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3" id="suratField" style="display: none;">
+                                    <label for="surat" class="form-label">Upload Surat (PDF/JPG/PNG)</label>
+                                    <input type="file" name="surat" id="surat" class="form-control"
+                                        accept=".pdf,.jpg,.jpeg,.png">
+                                    <small class="text-muted">Wajib jika memilih Izin atau Sakit.</small>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Konfirmasi Absen</button>
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Batal</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <script>
+                function toggleSuratInput(value) {
+                    const suratField = document.getElementById('suratField');
+                    suratField.style.display = (value === 'Izin' || value === 'Sakit') ? 'block' : 'none';
+                }
+            </script>
+        @endif
+
+
     </main>
+
     <!-- Tambahkan ini sebelum </body> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

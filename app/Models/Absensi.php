@@ -20,6 +20,7 @@ class Absensi extends Model
         'is_multisession',
         'ulangi_pada',
         'ulangi_sampai',
+        'aktif',
     ];
 
     protected $casts = [
@@ -29,6 +30,7 @@ class Absensi extends Model
         'is_multisession'=> 'boolean',
         'ulangi_pada'    => 'array',
         'ulangi_sampai'  => 'date',
+        'aktif'  => 'boolean',
     ];
     
 
@@ -48,5 +50,22 @@ class Absensi extends Model
     public function detailAbsensi()
     {
         return $this->hasMany(DetailAbsensi::class);
+    }
+
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($absensi) {
+            foreach ($absensi->detailAbsensi as $absensiDetail) {
+                $absensiDetail->delete(); // Soft delete kuisPertemuan terkait
+            }
+        });
+
+        static::restoring(function ($absensi) {
+            // Restore semua absensiPertemuan absensi yang terkait saat absensi di-restore
+            $absensi->detailAbsensi()->restore();
+        });
     }
 }
