@@ -64,8 +64,7 @@ unset($__errorArgs, $__bag); ?>"
 
                                         <div class="form-group">
                                             <label for="exampleInputName1">Email</label>
-                                            <input name="email"
-                                                class="form-control <?php $__errorArgs = ['email'];
+                                            <input name="email" class="form-control <?php $__errorArgs = ['email'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -82,8 +81,7 @@ unset($__errorArgs, $__bag); ?>"
 
                                         <div class="form-group">
                                             <label for="exampleInputName1">NO HP</label>
-                                            <input name="no_hp"
-                                                class="form-control <?php $__errorArgs = ['no_hp'];
+                                            <input name="no_hp" class="form-control <?php $__errorArgs = ['no_hp'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -116,6 +114,41 @@ unset($__errorArgs, $__bag); ?>" accept="image/*"
                                             <?php endif; ?>
                                             <small class="text-muted">Maximum file size: 2 MB</small>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="latitude">Latitude</label>
+                                            <input name="latitude" type="text" step="any"
+                                                class="form-control <?php $__errorArgs = ['latitude'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                                value="<?php echo e(old('latitude')); ?>" placeholder="-6.200000">
+                                            <?php if($errors->has('latitude')): ?>
+                                                <div class="text-danger"><?php echo e($errors->first('latitude')); ?></div>
+                                            <?php endif; ?>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="longitude">Longitude</label>
+                                            <input name="longitude" type="text" step="any"
+                                                class="form-control <?php $__errorArgs = ['longitude'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                                value="<?php echo e(old('longitude')); ?>" placeholder="106.816666">
+                                            <?php if($errors->has('longitude')): ?>
+                                                <div class="text-danger"><?php echo e($errors->first('longitude')); ?></div>
+                                            <?php endif; ?>
+                                        </div>
+
 
                                         <div class="form-group d-flex justify-content-end">
                                             <button type="submit" class="btn btn-primary mr-2">Submit</button>
@@ -169,6 +202,9 @@ unset($__errorArgs, $__bag); ?>" accept="image/*"
                     $('[name=no_hp]').val(response.no_hp);
                     $('.tampil-foto').html(
                         `<img src="<?php echo e(url('storage/logo_sekolah/')); ?>/${response.foto}" width="100">`);
+                    $('[name=latitude]').val(response.latitude);
+                    $('[name=longitude]').val(response.longitude);
+
                 })
                 .fail(errors => {
                     alert('Tidak dapat menampilkan data');

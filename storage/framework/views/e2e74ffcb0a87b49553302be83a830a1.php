@@ -185,6 +185,28 @@
                                                                 value="<?php echo e(old('jam_selesai', $item->jam_selesai)); ?>"
                                                                 class="form-control">
                                                         </div>
+                                                        <div class="form-group row align-items-center">
+                                                            <label class="col-md-3 col-form-label font-weight-bold">Gunakan
+                                                                Lokasi</label>
+                                                            <div class="col-md-9">
+                                                                <div class="form-check">
+                                                                    
+                                                                    <input type="hidden" name="gunakan_koordinat"
+                                                                        value="0">
+
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        name="gunakan_koordinat" value="1"
+                                                                        id="gunakanKoordinatCheck<?php echo e($item->id); ?>"
+                                                                        <?php echo e(old('gunakan_koordinat', $item->gunakan_koordinat) ? 'checked' : ''); ?>>
+
+                                                                    <label class="form-check-label"
+                                                                        for="gunakanKoordinatCheck<?php echo e($item->id); ?>">
+                                                                        Hanya izinkan absen jika siswa berada di dekat
+                                                                        sekolah
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-light"
@@ -368,6 +390,23 @@ $message = $__bag->first($__errorArgs[0]); ?>
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+                        
+                        <div class="form-group row align-items-center">
+                            <label class="col-md-2 col-form-label font-weight-bold">Gunakan Lokasi</label>
+                            <div class="col-md-10">
+                                <div class="form-check">
+                                    <input type="hidden" name="gunakan_koordinat" value="0">
+                                    <input class="form-check-input" type="checkbox" name="gunakan_koordinat"
+                                        value="1" id="gunakanKoordinatCheck"
+                                        <?php echo e(old('gunakan_koordinat') ? 'checked' : ''); ?>>
+                                    <label class="form-check-label" for="gunakanKoordinatCheck">
+                                        Hanya izinkan absen jika siswa berada di dekat sekolah
+                                    </label>
                                 </div>
                             </div>
                         </div>

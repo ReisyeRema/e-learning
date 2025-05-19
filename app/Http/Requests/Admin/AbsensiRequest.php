@@ -31,6 +31,7 @@ class AbsensiRequest extends FormRequest
             'ulangi_pada'      => ['nullable', 'array'],
             'ulangi_pada.*'    => ['in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu'],
             'ulangi_sampai'    => ['nullable', 'date', 'after_or_equal:tanggal'],
+            'gunakan_koordinat'  => ['boolean'],
         ];
         
     }

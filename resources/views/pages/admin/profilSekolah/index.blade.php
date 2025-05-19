@@ -50,8 +50,7 @@
 
                                         <div class="form-group">
                                             <label for="exampleInputName1">Email</label>
-                                            <input name="email"
-                                                class="form-control @error('email') is-invalid @enderror"
+                                            <input name="email" class="form-control @error('email') is-invalid @enderror"
                                                 value="{{ old('email') }}" type="email" id="exampleInputemail1"
                                                 placeholder="Alamat">
                                             @if ($errors->has('email'))
@@ -61,8 +60,7 @@
 
                                         <div class="form-group">
                                             <label for="exampleInputName1">NO HP</label>
-                                            <input name="no_hp"
-                                                class="form-control @error('no_hp') is-invalid @enderror"
+                                            <input name="no_hp" class="form-control @error('no_hp') is-invalid @enderror"
                                                 value="{{ old('no_hp') }}" type="text" id="exampleInputno_hp1"
                                                 placeholder="Alamat">
                                             @if ($errors->has('no_hp'))
@@ -81,6 +79,27 @@
                                             @endif
                                             <small class="text-muted">Maximum file size: 2 MB</small>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="latitude">Latitude</label>
+                                            <input name="latitude" type="text" step="any"
+                                                class="form-control @error('latitude') is-invalid @enderror"
+                                                value="{{ old('latitude') }}" placeholder="-6.200000">
+                                            @if ($errors->has('latitude'))
+                                                <div class="text-danger">{{ $errors->first('latitude') }}</div>
+                                            @endif
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="longitude">Longitude</label>
+                                            <input name="longitude" type="text" step="any"
+                                                class="form-control @error('longitude') is-invalid @enderror"
+                                                value="{{ old('longitude') }}" placeholder="106.816666">
+                                            @if ($errors->has('longitude'))
+                                                <div class="text-danger">{{ $errors->first('longitude') }}</div>
+                                            @endif
+                                        </div>
+
 
                                         <div class="form-group d-flex justify-content-end">
                                             <button type="submit" class="btn btn-primary mr-2">Submit</button>
@@ -134,6 +153,9 @@
                     $('[name=no_hp]').val(response.no_hp);
                     $('.tampil-foto').html(
                         `<img src="{{ url('storage/logo_sekolah/') }}/${response.foto}" width="100">`);
+                    $('[name=latitude]').val(response.latitude);
+                    $('[name=longitude]').val(response.longitude);
+
                 })
                 .fail(errors => {
                     alert('Tidak dapat menampilkan data');

@@ -46,6 +46,10 @@ class ProfileSekolahController extends Controller
             'foto.image' => 'Foto harus berupa gambar.',
             'foto.mimes' => 'Foto harus berupa file dengan format: jpeg, png, jpg, gif.',
             'foto.max' => 'Foto tidak boleh lebih dari 2048 kilobyte.',
+            'latitude.numeric' => 'Latitude harus berupa angka.',
+            'latitude.between' => 'Latitude harus antara -90 dan 90 derajat.',
+            'longitude.numeric' => 'Longitude harus berupa angka.',
+            'longitude.between' => 'Longitude harus antara -180 dan 180 derajat.',
         ];
 
         $request->validate([
@@ -55,6 +59,8 @@ class ProfileSekolahController extends Controller
             'no_hp' => 'required|numeric|digits_between:10,15',
             'email' => 'required|email|max:255',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
         ], $messages);
 
         $profilSekolah = ProfilSekolah::first();
@@ -63,6 +69,8 @@ class ProfileSekolahController extends Controller
         $profilSekolah->akreditas = $request->akreditas;
         $profilSekolah->no_hp = $request->no_hp;
         $profilSekolah->email = $request->email;
+        $profilSekolah->latitude = $request->latitude;
+        $profilSekolah->longitude = $request->longitude;
 
 
         if ($request->hasFile('foto')) {

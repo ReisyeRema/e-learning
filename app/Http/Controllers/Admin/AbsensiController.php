@@ -53,6 +53,7 @@ class AbsensiController extends Controller
 
         $data['pembelajaran_id'] = $pembelajaran_id;
         $data['is_multisession'] = $request->boolean('is_multisession');
+        $data['gunakan_koordinat'] = $request->boolean('gunakan_koordinat');
 
         // Set default null untuk field opsional
         $data['ulangi_pada']   = $data['ulangi_pada'] ?? null;
@@ -140,6 +141,7 @@ class AbsensiController extends Controller
             'is_multisession' => $data['is_multisession'],
             'ulangi_pada'     => $data['ulangi_pada'],
             'ulangi_sampai'   => $data['ulangi_sampai'],
+            'gunakan_koordinat'   => $data['gunakan_koordinat'],
         ]);
 
         return $pertemuan->id;
@@ -150,17 +152,21 @@ class AbsensiController extends Controller
     {
         $absensi = Absensi::findOrFail($id);
 
-        $input = $request->only(['tanggal', 'jam_mulai', 'jam_selesai']);
+        $input = $request->only(['tanggal', 'jam_mulai', 'jam_selesai', 'gunakan_koordinat']);
 
         // Gunakan nilai lama jika field kosong
         $input['tanggal'] = $input['tanggal'] ?: $absensi->tanggal;
         $input['jam_mulai'] = $input['jam_mulai'] ?: $absensi->jam_mulai;
         $input['jam_selesai'] = $input['jam_selesai'] ?: $absensi->jam_selesai;
 
+        // Pastikan gunakan_koordinat selalu 0 atau 1 (karena hidden input & checkbox)
+        $input['gunakan_koordinat'] = $request->boolean('gunakan_koordinat');
+
         $absensi->update($input);
 
         return redirect()->back()->with('success', 'Absensi berhasil diperbarui.');
     }
+
 
 
     public function destroy($id)

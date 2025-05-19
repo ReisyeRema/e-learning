@@ -23,7 +23,8 @@ return new class extends Migration
             $table->boolean('is_multisession')->default(false);
             $table->json('ulangi_pada')->nullable();
             $table->date('ulangi_sampai')->nullable();
-            $table->boolean('aktif')->default(false); 
+            $table->boolean('aktif')->default(false);
+            $table->boolean('gunakan_koordinat')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

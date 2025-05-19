@@ -21,6 +21,7 @@ class Absensi extends Model
         'ulangi_pada',
         'ulangi_sampai',
         'aktif',
+        'gunakan_koordinat',
     ];
 
     protected $casts = [
@@ -31,6 +32,7 @@ class Absensi extends Model
         'ulangi_pada'    => 'array',
         'ulangi_sampai'  => 'date',
         'aktif'  => 'boolean',
+        'gunakan_koordinat'  => 'boolean',
     ];
     
 

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('no_hp');
             $table->string('email');
             $table->string('foto')->nullable();
+            $table->decimal('latitude', 20, 16)->nullable();
+            $table->decimal('longitude', 20, 16)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

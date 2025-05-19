@@ -12,11 +12,12 @@ use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use App\Models\DetailAbsensi;
 use App\Models\ProfilSekolah;
+use Illuminate\Support\Facades\DB;
+use Google\Client as Google_Client;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Google\Service\Drive as Google_Service_Drive;
 use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
-use Google\Client as Google_Client;
 
 
 class MataPelajaranController extends Controller
@@ -159,28 +160,94 @@ class MataPelajaranController extends Controller
     }
 
 
+    // public function lakukanAbsensi(Request $request, $id)
+    // {
+    //     $request->validate([
+    //         'keterangan' => 'required|in:Hadir,Izin,Sakit,Alfa',
+    //         'surat' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+    //     ]);
+
+    //     $absensi = Absensi::findOrFail($id);
+    //     $fileId = null;
+
+    //     if (in_array($request->keterangan, ['Izin', 'Sakit']) && $request->hasFile('surat')) {
+    //         $uploadedFile = $request->file('surat');
+    //         $extension = $uploadedFile->getClientOriginalExtension();
+    //         $newFileName = 'Surat-' . Auth::user()->name . '-' . now()->format('YmdHis') . '.' . $extension;
+
+    //         // Ambil ID folder utama dari .env, misal: GOOGLE_DRIVE_FOLDER=ID_FOLDER_UTAMA
+    //         $parentFolderId = env('GOOGLE_DRIVE_FOLDER');
+
+    //         // Buat atau cari folder "Surat Absensi" di dalam folder utama
+    //         $folderId = $this->getOrCreateFolder('Surat Absensi', $parentFolderId);
+
+    //         // Upload file ke Google Drive
+    //         $fileId = $this->uploadFileToDrive($uploadedFile, $newFileName, $folderId);
+
+    //         if (!$fileId) {
+    //             return redirect()->back()->withErrors(['surat' => 'Gagal mengunggah surat ke Google Drive.']);
+    //         }
+    //     }
+
+    //     DetailAbsensi::updateOrCreate(
+    //         [
+    //             'absensi_id' => $absensi->id,
+    //             'siswa_id' => Auth::id(),
+    //         ],
+    //         [
+    //             'keterangan' => $request->keterangan,
+    //             'surat' => $fileId, // Simpan file ID Google Drive
+    //         ]
+    //     );
+
+    //     return redirect()->back()->with('success', 'Absensi berhasil dilakukan.');
+    // }
+
     public function lakukanAbsensi(Request $request, $id)
     {
         $request->validate([
             'keterangan' => 'required|in:Hadir,Izin,Sakit,Alfa',
             'surat' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
         ]);
 
         $absensi = Absensi::findOrFail($id);
         $fileId = null;
 
+        // ✅ Jika absensi aktif dan gunakan koordinat, validasi lokasi siswa
+        if ($absensi->aktif && $absensi->gunakan_koordinat && $request->keterangan === 'Hadir') {
+            // Ambil koordinat dari tabel profile_sekolah
+            $sekolah = DB::table('profile_sekolah')->first();
+
+            // Jika lokasi tidak dikirim
+            if (!$request->filled(['latitude', 'longitude'])) {
+                session()->flash('lokasi_error', 'Lokasi tidak tersedia. Aktifkan GPS.');
+                return redirect()->back();
+            }
+
+            // Hitung jarak antara lokasi siswa dan sekolah
+            $jarak = $this->hitungJarakMeter(
+                $sekolah->latitude,
+                $sekolah->longitude,
+                $request->latitude,
+                $request->longitude
+            );
+
+            // Jika jarak lebih dari 15 meter
+            if ($jarak > 15) {
+                session()->flash('lokasi_error', 'Anda berada di luar radius 15 meter dari sekolah.');
+                return redirect()->back();
+            }
+        }
+
+        // ✅ Upload surat jika Izin atau Sakit
         if (in_array($request->keterangan, ['Izin', 'Sakit']) && $request->hasFile('surat')) {
             $uploadedFile = $request->file('surat');
             $extension = $uploadedFile->getClientOriginalExtension();
             $newFileName = 'Surat-' . Auth::user()->name . '-' . now()->format('YmdHis') . '.' . $extension;
-
-            // Ambil ID folder utama dari .env, misal: GOOGLE_DRIVE_FOLDER=ID_FOLDER_UTAMA
             $parentFolderId = env('GOOGLE_DRIVE_FOLDER');
-
-            // Buat atau cari folder "Surat Absensi" di dalam folder utama
             $folderId = $this->getOrCreateFolder('Surat Absensi', $parentFolderId);
-
-            // Upload file ke Google Drive
             $fileId = $this->uploadFileToDrive($uploadedFile, $newFileName, $folderId);
 
             if (!$fileId) {
@@ -188,6 +255,7 @@ class MataPelajaranController extends Controller
             }
         }
 
+        // ✅ Simpan ke detail_absensi
         DetailAbsensi::updateOrCreate(
             [
                 'absensi_id' => $absensi->id,
@@ -195,12 +263,28 @@ class MataPelajaranController extends Controller
             ],
             [
                 'keterangan' => $request->keterangan,
-                'surat' => $fileId, // Simpan file ID Google Drive
+                'surat' => $fileId,
             ]
         );
 
         return redirect()->back()->with('success', 'Absensi berhasil dilakukan.');
     }
+
+    // ✅ Fungsi bantu hitung jarak antara dua titik koordinat (dalam meter)
+    private function hitungJarakMeter($lat1, $lon1, $lat2, $lon2)
+    {
+        $earthRadius = 6371000; // meter
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+            sin($dLon / 2) * sin($dLon / 2);
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        return $earthRadius * $c;
+    }
+
 
 
     private function uploadFileToDrive($file, $fileName, $parentFolderId)

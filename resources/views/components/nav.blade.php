@@ -63,8 +63,8 @@
             class="btn btn-sm btn-custom {{ request()->is('*submit-tugas/*') ? 'btn-primary' : 'btn-outline-primary' }} mr-3">Tugas</a>
         <a href="{{ route('submit-kuis.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug, 'semester' => $semesterSlug]) }}"
             class="btn btn-sm btn-custom {{ request()->is('*submit-kuis/*') ? 'btn-primary' : 'btn-outline-primary' }} mr-3">Kuis</a>
-        <a href="{{ route('absensi.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug, 'semester' => $semesterSlug]) }}"
-            class="btn btn-sm btn-custom {{ request()->is('*absensi/*') ? 'btn-primary' : 'btn-outline-primary' }} mr-3">Absensi</a>
+        {{-- <a href="{{ route('absensi.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug, 'semester' => $semesterSlug]) }}"
+            class="btn btn-sm btn-custom {{ request()->is('*absensi/*') ? 'btn-primary' : 'btn-outline-primary' }} mr-3">Absensi</a> --}}
         <a href="{{ route('siswa-kelas.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug, 'semester' => $semesterSlug]) }}"
             class="btn btn-sm btn-custom {{ request()->is('*siswa-kelas/*') ? 'btn-primary' : 'btn-outline-primary' }} mr-3">Daftar
             Siswa</a>

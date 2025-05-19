@@ -435,12 +435,12 @@
                             Materi & Tugas & Kuis
                         </button>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    {{-- <li class="nav-item" role="presentation">
                         <button class="nav-link" id="absensi-tab" data-bs-toggle="tab" data-bs-target="#absensi-content"
                             type="button" role="tab" aria-controls="absensi-content" aria-selected="false">
                             Absensi
                         </button>
-                    </li>
+                    </li> --}}
                 </ul>
 
                 <!-- Tab Content -->
@@ -735,7 +735,13 @@
                                         accept=".pdf,.jpg,.jpeg,.png">
                                     <small class="text-muted">Wajib jika memilih Izin atau Sakit.</small>
                                 </div>
+
+
+                                <!-- Tambahkan input tersembunyi koordinat di sini -->
+                                <input type="hidden" name="latitude" id="latitude">
+                                <input type="hidden" name="longitude" id="longitude">
                             </div>
+
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-success">Konfirmasi Absen</button>
                                 <button type="button" class="btn btn-secondary"
@@ -941,12 +947,36 @@
         });
     </script>
 
+    <script>
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                document.getElementById('latitude').value = position.coords.latitude;
+                document.getElementById('longitude').value = position.coords.longitude;
+            }, function(error) {
+                console.warn("Geolocation gagal: " + error.message);
+            });
+        } else {
+            console.warn("Geolocation tidak didukung.");
+        }
+    </script>
+
     @if (session('token_error'))
         <script>
             Swal.fire({
                 icon: 'error',
                 title: 'Token Salah',
                 text: '{{ session('token_error') }}',
+            });
+        </script>
+    @endif
+
+    @if (session('lokasi_error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal Melakukan Absensi',
+                text: '{{ session('lokasi_error') }}',
+                confirmButtonText: 'OK'
             });
         </script>
     @endif

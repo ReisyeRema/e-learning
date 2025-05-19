@@ -26,5 +26,7 @@ class ProfilSekolah extends Model
         'email',
         'no_hp',
         'foto',
+        'latitude',
+        'longitude',
     ];
 }
