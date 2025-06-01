@@ -151,6 +151,31 @@
         .nav-tabs .nav-link {
             color: #000;
         }
+
+        .chat-button {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: #27548A;
+            color: white;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 22px;
+            z-index: 1000;
+            transition: background-color 0.3s, color 0.3s;
+            text-decoration: none;
+        }
+
+        .chat-button:hover,
+        .chat-button:hover i {
+            background-color: #0056b3;
+            color: white;
+        }
     </style>
 
 </head>
@@ -980,6 +1005,18 @@
             });
         </script>
     @endif
+
+
+    <!-- Floating Chat Button -->
+    {{-- <a href="{{ route('forum-diskusi.index', [
+        'mapel' => Str::slug($pembelajaran->nama_mapel),
+        'kelas' => Str::slug($pembelajaran->kelas->nama_kelas),
+        'tahunAjaran' => str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun),
+        'semester' => Str::slug($pembelajaran->semester),
+    ]) }}"
+        class="chat-button" title="Forum Diskusi">
+        <i class="fas fa-comments"></i>
+    </a> --}}
 
 </body>
 

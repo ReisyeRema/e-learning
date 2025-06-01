@@ -187,6 +187,40 @@ unset($__errorArgs, $__bag); ?>
                                         </div>
 
                                         <div class="form-group">
+                                            <label for="semester">Semester</label>
+                                            <select name="semester"
+                                                class="form-control <?php $__errorArgs = ['semester'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                                id="semester">
+                                                <option value="">Pilih Semester</option>
+                                                <option value="Ganjil"
+                                                    <?php echo e(old('semester', $pembelajaran->semester) == 'Ganjil' ? 'selected' : ''); ?>>
+                                                    Ganjil</option>
+                                                <option value="Genap"
+                                                    <?php echo e(old('semester', $pembelajaran->semester) == 'Genap' ? 'selected' : ''); ?>>
+                                                    Genap</option>
+                                            </select>
+                                            <?php $__errorArgs = ['semester'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong><?php echo e($message); ?></strong>
+                                                </span>
+                                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                        </div>
+
+                                        <div class="form-group">
                                             <label for="cover">Cover</label>
                                             <div class="upload-box">
                                                 <input type="file" id="cover" name="cover" class="file-input">

@@ -83,69 +83,94 @@
      }
  </style>
 
-<style>
-    .sidebar .nav-items {
-        position: relative;
-        list-style: none;
-        transition: background 0.3s ease-in-out;
-        border-radius: 8px;
-        margin: 2px;
-    }
+ <style>
+     .sidebar .nav-items {
+         position: relative;
+         list-style: none;
+         transition: background 0.3s ease-in-out;
+         border-radius: 8px;
+         margin: 2px;
+     }
 
-    .sidebar .nav-items:hover,
-    .sidebar .nav-items.active {
-        background: #4B49AC;
-    }
+     .sidebar .nav-items:hover,
+     .sidebar .nav-items.active {
+         background: #4B49AC;
+     }
 
-    .sidebar .nav-items.active .nav-link {
-        background: #4B49AC;
-        color: white;
-        border-radius: 8px;
-    }
+     .sidebar .nav-items.active .nav-link {
+         background: #4B49AC;
+         color: white;
+         border-radius: 8px;
+     }
 
-    .sidebar .nav-items .nav-link {
-        display: flex;
-        align-items: center;
-        padding: 10px 15px;
-        color: #333;
-        text-decoration: none;
-        transition: color 0.3s ease-in-out, background 0.3s ease-in-out;
-        border-radius: 8px;
-    }
+     .sidebar .nav-items .nav-link {
+         display: flex;
+         align-items: center;
+         padding: 10px 15px;
+         color: #333;
+         text-decoration: none;
+         transition: color 0.3s ease-in-out, background 0.3s ease-in-out;
+         border-radius: 8px;
+     }
 
-    .sidebar .nav-items .nav-link:hover {
-        color: #ffffff;
-    }
+     .sidebar .nav-items .nav-link:hover {
+         color: #ffffff;
+     }
 
-    .sidebar .nav-items.active .menu-icon {
-        color: white;
-    }
+     .sidebar .nav-items.active .menu-icon {
+         color: white;
+     }
 
-    .sidebar .nav-items .menu-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        width: 100%;
-    }
+     .sidebar .nav-items .menu-item {
+         display: flex;
+         align-items: center;
+         gap: 12px;
+         width: 100%;
+     }
 
-    .sidebar .nav-items .menu-title {
-        font-size: 14px;
-        font-weight: 500;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+     .sidebar .nav-items .menu-title {
+         font-size: 14px;
+         font-weight: 500;
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+     }
 
-    .sidebar .menu-icon {
-        font-size: 18px;
-        min-width: 30px;
-        text-align: center;
-        color: #555;
-        transition: color 0.3s ease-in-out;
-    }
+     .sidebar .menu-icon {
+         font-size: 18px;
+         min-width: 30px;
+         text-align: center;
+         color: #555;
+         transition: color 0.3s ease-in-out;
+     }
 
-    .sidebar .nav-items .nav-link:hover .menu-icon {
-        color: #ffffff;
-    }
-</style>
+     .sidebar .nav-items .nav-link:hover .menu-icon {
+         color: #ffffff;
+     }
+
+     .chat-button {
+         position: fixed;
+         bottom: 25px;
+         right: 25px;
+         background-color: #27548A;
+         color: white;
+         border-radius: 50%;
+         width: 55px;
+         height: 55px;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+         font-size: 22px;
+         z-index: 1000;
+         transition: background-color 0.3s, color 0.3s;
+         text-decoration: none;
+     }
+
+     .chat-button:hover,
+     .chat-button:hover i {
+         background-color: #0056b3;
+         color: white;
+     }
+ </style>
 <?php /**PATH D:\DATA MATKUL\SEMESTER 6\TA\PROJECT\e-learn-laravel\resources\views/includes/backend/css/style.blade.php ENDPATH**/ ?>

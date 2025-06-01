@@ -49,6 +49,8 @@
 
     <?php echo $__env->make('components.frontend.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <?php echo $__env->make('includes.frontend.script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
     <?php echo $__env->yieldPushContent('scripts'); ?>
 

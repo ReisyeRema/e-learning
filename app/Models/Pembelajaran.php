@@ -73,4 +73,8 @@ class Pembelajaran extends Model
     {
         return $this->hasMany(Absensi::class, 'pembelajaran_id');
     }
+
+    public function forum() {
+        return $this->hasMany(Forum::class);
+    }
 }

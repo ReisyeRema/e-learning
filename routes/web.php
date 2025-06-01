@@ -35,6 +35,7 @@ use App\Http\Controllers\Admin\ProfileSekolahController;
 use App\Http\Controllers\Frontend\LandingPageController;
 use App\Http\Controllers\Siswa\DashboardSiswaController;
 use App\Http\Controllers\Admin\PertemuanMateriController;
+use App\Http\Controllers\Siswa\ForumController;
 use App\Http\Controllers\Siswa\SiswaKuisSessionController;
 
 Route::get('/', function () {
@@ -254,15 +255,24 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->group(function () {
         ->name('absensi.show');
     Route::post('/absensi/store/{pembelajaran_id}', [AbsensiController::class, 'store'])->name('absensi.store');
     Route::put('/absensi/update/{id}', [AbsensiController::class, 'update'])->name('absensi.update');
-    Route::delete('/absensi/{id}',[AbsensiController::class,'destroy'])->name('absensi.destroy');
+    Route::delete('/absensi/{id}', [AbsensiController::class, 'destroy'])->name('absensi.destroy');
     Route::put('/absensi/{id}/toggle-aktif', [AbsensiController::class, 'toggleAktif'])->name('absensi.toggleAktif');
 
 
     // DetailAbsensi
     Route::get('/absensi/{mapel}/{kelas}/{tahunAjaran}/{semester}/detail-absensi', [DetailAbsensiController::class, 'index'])->name('detail-absensi.index');
     Route::post('/absensi/detail/store-or-update', [DetailAbsensiController::class, 'storeOrUpdate'])
-    ->name('detail-absensi.storeOrUpdate');
+        ->name('detail-absensi.storeOrUpdate');
     Route::get('/detail-absensi/export/excel', [DetailAbsensiController::class, 'export_excel'])->name('absensi.export');
+
+    // Forum
+    Route::get('/forum-diskusi/{mapel}/{kelas}/{tahunAjaran}/{semester}', [ForumController::class, 'forumDiskusiIndex'])->name('forum-diskusi-guru.index');
+    Route::get('/forum-diskusi/{mapel}/{kelas}/{tahunAjaran}/{semester}/{forum}/view', [ForumController::class, 'forumDiskusiView'])->name('forum-diskusi-guru.view');
+    Route::post('/forum/create', [ForumController::class, 'create'])->name('guru.forum.store');
+    Route::put('/forum/{id}', [ForumController::class, 'update'])->name('guru.forum.update');
+    Route::delete('/forum/{id}', [ForumController::class, 'destroy'])->name('guru.forum.destroy');
+    // Komentar
+    Route::post('/forum-diskusi/{mapel}/{kelas}/{tahunAjaran}/{semester}/{forum}/view', [ForumController::class, 'postKomentar'])->name('komentar.store');
 
 
 });
@@ -299,6 +309,19 @@ Route::middleware(PreventBackHistory::class, RedirectIfNotSiswa::class)->prefix(
     Route::post('/kuis/cek-token', [SiswaKuisSessionController::class, 'cekToken'])->name('kuis-siswa.cek-token');
     Route::post('/kuis/kumpulkan', [KuisSiswaController::class, 'kumpulkan'])->name('kuis.kumpulkan');
     Route::get('/list-kuis', [KuisSiswaController::class, 'index'])->name('list-kuis.index');
+
+    // Forum
+    Route::get('/forum', [ForumController::class, 'index'])->name('forum.index');
+    Route::post('/forum/create', [ForumController::class, 'create'])->name('siswa.forum.store');
+    Route::get('/forum/{forum}/view', [ForumController::class, 'view'])->name('forum.view');
+
+    // Forum
+    Route::get('/forum-diskusi/{mapel}/{kelas}/{tahunAjaran}/{semester}', [ForumController::class, 'forumDiskusiIndex'])->name('forum-diskusi.index');
+    Route::get('/forum-diskusi/{mapel}/{kelas}/{tahunAjaran}/{semester}/{forum}/view', [ForumController::class, 'forumDiskusiView'])->name('forum-diskusi.view');
+    Route::put('/forum/{id}', [ForumController::class, 'update'])->name('siswa.forum.update');
+    Route::delete('/forum/{id}', [ForumController::class, 'destroy'])->name('siswa.forum.destroy');
+    // Komentar
+    Route::post('/forum-diskusi/{mapel}/{kelas}/{tahunAjaran}/{semester}/{forum}/view', [ForumController::class, 'postKomentar'])->name('komentar.store');
 
 });
 
