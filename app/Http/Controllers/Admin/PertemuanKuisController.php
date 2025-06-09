@@ -17,6 +17,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ExportNilaiKuisMultiSheet;
+use App\Notifications\PertemuanKuisNotification;
 use App\Http\Requests\Admin\PertemuanKuisRequest;
 
 
@@ -38,9 +39,21 @@ class PertemuanKuisController extends Controller
             $validatedData['token'] = $generatedToken;
         }
 
-        // Ambil data pembelajaran berdasarkan ID
-        $pembelajaran = Pembelajaran::with(['kelas', 'tahunAjaran'])->findOrFail($pembelajaran_id);
+        // Simpan data tugas
+        $pertemuanKuis = PertemuanKuis::create($validatedData);
 
+        // Ambil data pembelajaran berdasarkan ID
+        $pembelajaran = Pembelajaran::with(['enrollments.siswa', 'kelas', 'tahunAjaran'])->findOrFail($pembelajaran_id);
+
+        // Kirim notifikasi ke semua siswa yang enroll
+        foreach ($pembelajaran->enrollments as $enrollment) {
+            if ($enrollment->status === 'approved') {
+                $siswa = $enrollment->siswa;
+                if ($siswa && $siswa->email) {
+                    $siswa->notify(new PertemuanKuisNotification($pertemuanKuis));
+                }
+            }
+        }
         // Buat slug untuk mapel dan kelas
         $mapelSlug = Str::slug($pembelajaran->nama_mapel);
         $kelasSlug = Str::slug($pembelajaran->kelas->nama_kelas);
@@ -49,7 +62,7 @@ class PertemuanKuisController extends Controller
 
 
         // Simpan data ke database
-        PertemuanKuis::create($validatedData);
+        // PertemuanKuis::create($validatedData);
 
         // Redirect ke route yang sesuai dengan slug
         return redirect()->route('submit-kuis.show', [
@@ -64,9 +77,9 @@ class PertemuanKuisController extends Controller
     {
 
         $data = PertemuanKuis::findOrFail($id);
-        $data->pertemuan_id = $request->pertemuan_id;  
-        $data->kuis_id = $request->kuis_id;          
-        $data->deadline = $request->deadline;          
+        $data->pertemuan_id = $request->pertemuan_id;
+        $data->kuis_id = $request->kuis_id;
+        $data->deadline = $request->deadline;
         $data->save();
 
         return redirect()->back()->with('success', 'Kuis berhasil diperbarui.');
@@ -107,6 +120,7 @@ class PertemuanKuisController extends Controller
 
         $enrollments = Enrollments::with('siswa')
             ->where('pembelajaran_id', $pembelajaran->id)
+            ->where('status', 'approved')
             ->get()
             ->sortBy(fn($enroll) => strtolower($enroll->siswa->name ?? '')) // urutkan berdasarkan nama siswa
             ->values(); // reset key

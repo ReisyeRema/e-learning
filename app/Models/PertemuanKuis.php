@@ -26,6 +26,10 @@ class PertemuanKuis extends Model
         // 'kategori_kuis',
     ];
 
+    protected $casts = [
+        'deadline' => 'datetime',
+    ];
+
 
     public function pembelajaran()
     {

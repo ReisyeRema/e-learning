@@ -187,10 +187,37 @@ class AbsensiController extends Controller
 
     public function toggleAktif(Request $request, $id)
     {
-        $absensi = Absensi::findOrFail($id);
+        $absensi = Absensi::with('pembelajaran.enrollments.siswa')->findOrFail($id);
+
+        // Ubah status aktif
         $absensi->aktif = !$absensi->aktif;
         $absensi->save();
 
-        return back()->with('status', 'Status absensi diperbarui.');
+        // Kirim notifikasi HANYA jika aktif = true
+        if ($absensi->aktif) {
+            $pembelajaran = $absensi->pembelajaran;
+            $tanggal = $absensi->tanggal;
+
+            foreach ($pembelajaran->enrollments as $enrollment) {
+                if ($enrollment->status === 'approved') {
+                    $siswa = $enrollment->siswa;
+                    if ($siswa && $siswa->email) {
+                        $tanggalAbsensi = \Carbon\Carbon::parse($tanggal)->setTime(7, 0);
+                        $sekarang = \Carbon\Carbon::now();
+                        $notifikasi = new \App\Notifications\AbsensiNotification($pembelajaran, $tanggal);
+
+                        if ($tanggalAbsensi->toDateString() === $sekarang->toDateString()) {
+                            // Kirim langsung jika hari ini
+                            $siswa->notify($notifikasi);
+                        } else {
+                            // Kirim terjadwal
+                            $siswa->notify($notifikasi->delay($tanggalAbsensi));
+                        }
+                    }
+                }
+            }
+        }
+
+        return back()->with('success', 'Status absensi diperbarui.');
     }
 }

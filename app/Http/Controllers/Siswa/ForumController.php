@@ -12,6 +12,7 @@ use App\Models\ProfilSekolah;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use App\Notifications\ForumDiskusiNotification;
 
 class ForumController extends Controller
 {
@@ -78,13 +79,33 @@ class ForumController extends Controller
         $konten = $dom->saveHTML();
 
         // Simpan forum
-        Forum::create([
+        $forum = Forum::create([
             'user_id' => $request->user_id,
             'pembelajaran_id' => $request->pembelajaran_id,
             'judul' => $request->judul,
             'slug' => Str::slug($request->judul),
             'konten' => $konten,
         ]);
+
+        // Kirim notifikasi ke siswa dan guru yang terkait
+        $pembelajaran = $forum->pembelajaran()->with(['enrollments.siswa', 'guru'])->first();
+
+        // Kirim ke siswa yang enroll
+        foreach ($pembelajaran->enrollments as $enrollment) {
+            if ($enrollment->status === 'approved') {
+                $siswa = $enrollment->siswa;
+                if ($siswa && $siswa->email) {
+                    $siswa->notify(new ForumDiskusiNotification($forum));
+                }
+            }
+        }
+
+        // Kirim ke guru pembelajaran
+        $guru = $pembelajaran->guru;
+        if ($guru && $guru->email) {
+            $guru->notify(new ForumDiskusiNotification($forum));
+        }
+
 
         return redirect()->back()->with('success', 'Forum berhasil ditambahkan');
     }

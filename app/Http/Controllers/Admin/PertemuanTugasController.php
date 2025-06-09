@@ -12,6 +12,7 @@ use App\Models\PertemuanTugas;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Notifications\PertemuanTugasNotification;
 use App\Http\Requests\Admin\PertemuanTugasRequest;
 
 
@@ -24,8 +25,21 @@ class PertemuanTugasController extends Controller
         $validatedData = $request->validated();
         $validatedData['pembelajaran_id'] = $pembelajaran_id;
 
+        // Simpan data tugas
+        $pertemuanTugas = PertemuanTugas::create($validatedData);
+
         // Ambil data pembelajaran berdasarkan ID
-        $pembelajaran = Pembelajaran::with(['kelas', 'tahunAjaran'])->findOrFail($pembelajaran_id);
+        $pembelajaran = Pembelajaran::with(['enrollments.siswa', 'kelas', 'tahunAjaran'])->findOrFail($pembelajaran_id);
+
+        // Kirim notifikasi ke semua siswa yang enroll
+        foreach ($pembelajaran->enrollments as $enrollment) {
+            if ($enrollment->status === 'approved') {
+                $siswa = $enrollment->siswa;
+                if ($siswa && $siswa->email) {
+                    $siswa->notify(new PertemuanTugasNotification($pertemuanTugas));
+                }
+            }
+        }
 
         // Buat slug untuk mapel dan kelas
         $mapelSlug = Str::slug($pembelajaran->nama_mapel);
@@ -34,7 +48,7 @@ class PertemuanTugasController extends Controller
         $semesterSlug = Str::slug($pembelajaran->semester);
 
         // Simpan data ke database
-        PertemuanTugas::create($validatedData);
+        // PertemuanTugas::create($validatedData);
 
         // Redirect ke route yang sesuai dengan slug
         return redirect()->route('submit-tugas.show', [
@@ -50,9 +64,9 @@ class PertemuanTugasController extends Controller
     {
 
         $data = PertemuanTugas::findOrFail($id);
-        $data->pertemuan_id = $request->pertemuan_id;  
-        $data->tugas_id = $request->tugas_id;          
-        $data->deadline = $request->deadline;          
+        $data->pertemuan_id = $request->pertemuan_id;
+        $data->tugas_id = $request->tugas_id;
+        $data->deadline = $request->deadline;
         $data->save();
 
         return redirect()->back()->with('success', 'Tugas berhasil diperbarui.');
@@ -94,6 +108,7 @@ class PertemuanTugasController extends Controller
 
         $enrollments = Enrollments::with('siswa')
             ->where('pembelajaran_id', $pembelajaran->id)
+            ->where('status', 'approved')
             ->get()
             ->sortBy(fn($enroll) => strtolower($enroll->siswa->name ?? '')) // urutkan berdasarkan nama siswa
             ->values(); // reset key

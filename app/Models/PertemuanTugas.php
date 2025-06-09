@@ -24,6 +24,11 @@ class PertemuanTugas extends Model
         'deadline',
     ];
 
+    protected $casts = [
+        'deadline' => 'datetime',
+    ];
+    
+
 
     public function pembelajaran()
     {

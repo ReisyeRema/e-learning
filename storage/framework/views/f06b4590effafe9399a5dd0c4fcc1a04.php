@@ -36,32 +36,7 @@
 
 
     <!-- Floating Chat Button -->
-    <?php
-        $showChatRoutes = [
-            'submit-materi.show',
-            'submit-kuis.show',
-            'submit-tugas.show',
-            'siswa-kelas.show',
-            'absensi.show',
-            'detail-absensi.index',
-            'list-pertemuan-kuis.index',
-            'hasil-kuis.show',
-            'list-pertemuan-tugas.index',
-        ];
-    ?>
-
-    <?php if(in_array(Route::currentRouteName(), $showChatRoutes)): ?>
-        <!-- Floating Chat Button -->
-        <a href="<?php echo e(route('forum-diskusi-guru.index', [
-            'mapel' => Str::slug($pembelajaran->nama_mapel),
-            'kelas' => Str::slug($pembelajaran->kelas->nama_kelas),
-            'tahunAjaran' => str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun),
-            'semester' => Str::slug($pembelajaran->semester),
-        ])); ?>"
-            class="chat-button" title="Forum Diskusi">
-            <i class="fas fa-comments"></i>
-        </a>
-    <?php endif; ?>
+    
 
 </body>
 
