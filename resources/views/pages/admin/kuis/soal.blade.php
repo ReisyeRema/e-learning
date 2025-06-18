@@ -76,7 +76,8 @@
 
                                                     <div class="modal-body">
                                                         <div class="form-group">
-                                                            <label for="teks_soal">Teks Soal</label>
+                                                            <label for="teks_soal">Teks Soal <span
+                                                                    class="text-danger">*</span></label>
                                                             <textarea class="form-control" name="teks_soal" required>{{ $item->teks_soal }}</textarea>
                                                         </div>
 
@@ -98,7 +99,8 @@
                                                         </div>
 
                                                         <div class="form-group">
-                                                            <label for="type_soal">Tipe Soal</label>
+                                                            <label for="type_soal">Tipe Soal <span
+                                                                    class="text-danger">*</span></label>
                                                             <select name="type_soal" class="form-control type-soal"
                                                                 data-id="{{ $item->id }}">
                                                                 <option value="Objective"
@@ -115,9 +117,10 @@
 
                                                         <div class="soal-fields" id="soal_fields_{{ $item->id }}">
                                                             @if ($item->type_soal == 'Objective')
-                                                            @php $choices = $item->pilihan_jawaban; @endphp
-                                                            <div class="form-group">
-                                                                    <label>Pilihan Jawaban</label>
+                                                                @php $choices = $item->pilihan_jawaban; @endphp
+                                                                <div class="form-group">
+                                                                    <label>Pilihan Jawaban <span
+                                                                            class="text-danger">*</span></label>
                                                                     <input type="text" name="pilihan_jawaban[A]"
                                                                         class="form-control mb-2" placeholder="Jawaban A"
                                                                         value="{{ $choices['A'] ?? '' }}">
@@ -133,7 +136,8 @@
                                                                 </div>
 
                                                                 <div class="form-group">
-                                                                    <label>Jawaban Benar</label>
+                                                                    <label>Jawaban Benar <span
+                                                                            class="text-danger">*</span></label>
                                                                     <select name="jawaban_benar" class="form-control">
                                                                         <option value="A"
                                                                             {{ $item->jawaban_benar == 'A' ? 'selected' : '' }}>
@@ -208,7 +212,7 @@
 
 
                         <div class="form-group">
-                            <label for="teks_soal">Teks Soal</label>
+                            <label for="teks_soal">Teks Soal <span class="text-danger">*</span></label>
                             <textarea class="form-control" name="teks_soal">{{ old('teks_soal') }}</textarea>
                         </div>
 
@@ -224,7 +228,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleSelectGender">Tipe Soal</label>
+                            <label for="exampleSelectGender">Tipe Soal <span class="text-danger">*</span></label>
                             <select name="type_soal" class="form-control  @error('type_soal') is-invalid @enderror"
                                 value="{{ old('type_soal') }}" id="type_soal">
                                 <option value="">Pilih Type Soal</option>
@@ -265,7 +269,7 @@
                 if (this.value === 'Objective') {
                     fieldContainer.innerHTML = `
                     <div class="form-group">
-                        <label>Pilihan Jawaban</label>
+                        <label>Pilihan Jawaban <span class="text-danger">*</span></label>
                         <input type="text" name="pilihan_jawaban[A]" class="form-control mb-2" placeholder="Jawaban A">
                         <input type="text" name="pilihan_jawaban[B]" class="form-control mb-2" placeholder="Jawaban B">
                         <input type="text" name="pilihan_jawaban[C]" class="form-control mb-2" placeholder="Jawaban C">
@@ -273,7 +277,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Jawaban Benar</label>
+                        <label>Jawaban Benar <span class="text-danger">*</span></label>
                         <select name="jawaban_benar" class="form-control">
                             <option value="">Pilih Jawaban Benar</option>
                             <option value="A">A</option>
@@ -285,13 +289,18 @@
                 `;
                 } else if (this.value === 'Essay') {
                     fieldContainer.innerHTML =
-                        `<textarea name="jawaban_benar" class="form-control" rows="3" placeholder="Jawaban Essay"></textarea>`;
+                        `<div class="form-group">
+                        <label>Jawaban Benar <span class="text-danger">*</span></label>
+                        <textarea name="jawaban_benar" class="form-control" rows="3" placeholder="Jawaban Essay"></textarea></div>`;
                 } else if (this.value === 'TrueFalse') {
                     fieldContainer.innerHTML = `
+                    <div class="form-group">
+                    <label>Jawaban Benar <span class="text-danger">*</span></label>
                     <select name="jawaban_benar" class="form-control">
                         <option value="true">Benar</option>
                         <option value="false">Salah</option>
                     </select>
+                    </div>
                 `;
                 }
             });

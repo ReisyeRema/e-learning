@@ -71,7 +71,7 @@
                                                             @method('PUT')
                                                             <div class="modal-body">
                                                                 <div class="form-group">
-                                                                    <label for="nama_kelas">Nama Kelas</label>
+                                                                    <label for="nama_kelas">Nama Kelas <span class="text-danger">*</span></label>
                                                                     <input type="text" class="form-control @error('nama_kelas') is-invalid @enderror"
                                                                         id="nama_kelas" name="nama_kelas" value="{{ old('nama_kelas', $item->nama_kelas) }}">
                                                                     @error('nama_kelas')
@@ -115,7 +115,7 @@
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="nama_kelas">Nama Kelas</label>
+                            <label for="nama_kelas">Nama Kelas <span class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('nama_kelas') is-invalid @enderror"
                                 id="nama_kelas" name="nama_kelas" value="{{ old('nama_kelas') }}">
                             @error('nama_kelas')

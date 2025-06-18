@@ -1,9 +1,8 @@
 <h3 style="text-align: center;"><?php echo e($tugas->judul); ?></h3>
 <br>
 <p><strong>Mata Pelajaran:</strong> <?php echo e($pembelajaran->nama_mapel); ?></p>
-<p><strong>Kelas:</strong> <?php echo e($pembelajaran->kelas->nama_kelas ?? '-'); ?></p>
-<p><strong>Semester:</strong> <?php echo e($pembelajaran->semester); ?></p>
-
+<p><strong>Kelas:</strong> <?php echo e($pembelajaran->kelas->nama_kelas ?? '-'); ?> TA. <?php echo e($pembelajaran->tahunAjaran->nama_tahun); ?> ( <?php echo e($pembelajaran->semester); ?> )</p>
+<p><strong>Pertemuan:</strong> <?php echo e($pertemuan->judul ?? '-'); ?></p>
 <br>
 
 <table>

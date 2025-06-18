@@ -123,7 +123,7 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="exampleSelectKelas">Pertemuan</label>
+                            <label for="exampleSelectKelas">Pertemuan <span class="text-danger">*</span></label>
                             <select name="pertemuan_id" class="form-control <?php $__errorArgs = ['pertemuan_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -159,7 +159,7 @@ unset($__errorArgs, $__bag); ?>
                         <input type="hidden" name="pembelajaran_id" value="<?php echo e($pembelajaran->id); ?>">
 
                         <div class="form-group">
-                            <label for="exampleSelectKelas">Tugas</label>
+                            <label for="exampleSelectKelas">Tugas <span class="text-danger">*</span></label>
                             <select name="tugas_id" class="form-control <?php $__errorArgs = ['tugas_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -193,7 +193,7 @@ unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <div class="form-group">
-                            <label for="deadline">Deadline Tugas</label>
+                            <label for="deadline">Deadline Tugas <span class="text-danger">*</span></label>
                             <input type="datetime-local" class="form-control <?php $__errorArgs = ['deadline'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -247,7 +247,7 @@ unset($__errorArgs, $__bag); ?>
                         <input type="hidden" name="pertemuan_tugas_id" id="editPertemuanTugasId">
 
                         <div class="form-group">
-                            <label for="editPertemuanSelect">Pertemuan</label>
+                            <label for="editPertemuanSelect">Pertemuan <span class="text-danger">*</span></label>
                             <select name="pertemuan_id" id="editPertemuanSelect" class="form-control">
                                 <?php $__currentLoopData = $pertemuanSemua; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($item->id); ?>"><?php echo e($item->judul); ?></option>
@@ -256,7 +256,7 @@ unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <div class="form-group">
-                            <label for="editTugasSelect">Tugas</label>
+                            <label for="editTugasSelect">Tugas <span class="text-danger">*</span></label>
                             <select name="tugas_id" id="editTugasSelect" class="form-control">
                                 <?php $__currentLoopData = $tugas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($item->id); ?>"><?php echo e($item->judul); ?></option>
@@ -265,7 +265,7 @@ unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <div class="form-group">
-                            <label for="editDeadline">Deadline Tugas</label>
+                            <label for="editDeadline">Deadline Tugas <span class="text-danger">*</span></label>
                             <input type="datetime-local" class="form-control <?php $__errorArgs = ['deadline'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :

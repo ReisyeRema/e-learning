@@ -35,7 +35,8 @@ class GuruAdminRequest extends FormRequest
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
 
             // Validasi untuk guru
-            'nip' => 'nullable|string|unique:guru,nip,' . $guruId,
+            'nip' => 'nullable|string|max:18|regex:/^\d{1,18}$/|unique:guru,nip,' . $guruId,
+            'nuptk' => 'nullable|string|max:18|regex:/^\d{1,18}$/|unique:guru,nuptk,' . $guruId,
             'tempat_lahir' => 'required|string|max:100',
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
@@ -71,9 +72,10 @@ class GuruAdminRequest extends FormRequest
 
             // Pesan error untuk guru
             'user_id.exists' => 'ID pengguna tidak valid.',
-            'nip.string' => 'NIP harus berupa teks.',
-            'nip.unique' => 'NIP sudah digunakan.',
-            'nip.max' => 'NIP maksimal 20 karakter.',
+            'nip.max' => 'NIP maksimal 18 digit.',
+            'nip.regex' => 'NIP hanya boleh terdiri dari angka.',
+            'nuptk.max' => 'NUPTK maksimal 18 digit.',
+            'nuptk.regex' => 'NUPTK hanya boleh terdiri dari angka.',
             'tempat_lahir.required' => 'Tempat lahir wajib diisi.',
             'tempat_lahir.string' => 'Tempat lahir harus berupa teks.',
             'tempat_lahir.max' => 'Tempat lahir maksimal 100 karakter.',

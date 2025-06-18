@@ -23,7 +23,7 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleInputUsername">Username</label>
+                                                    <label for="exampleInputUsername">Username <span class="text-danger">*</span></label>
                                                     <input name="username"
                                                         class="form-control @error('username') is-invalid @enderror"
                                                         value="{{ old('username', $siswa->user->username) }}" type="text"
@@ -37,7 +37,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleInputPassword">Password</label>
+                                                    <label for="exampleInputPassword">Password <span class="text-danger">*</span></label>
                                                     <input name="password"
                                                         class="form-control @error('password') is-invalid @enderror"
                                                         type="password" id="exampleInputPassword" placeholder="Password">
@@ -51,7 +51,7 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="exampleInputPasswordConfirmation">Konfirmasi
-                                                        Password</label>
+                                                        Password <span class="text-danger">*</span></label>
                                                     <input name="password_confirmation"
                                                         class="form-control @error('password_confirmation') is-invalid @enderror"
                                                         type="password" id="exampleInputPasswordConfirmation"
@@ -73,7 +73,7 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleInputName1">Nama Lengkap</label>
+                                                    <label for="exampleInputName1">Nama Lengkap <span class="text-danger">*</span></label>
                                                     <input name="name"
                                                         class="form-control @error('name') is-invalid @enderror"
                                                         value="{{ old('name', $siswa->user->name) }}" type="text"
@@ -101,7 +101,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleInputEmail3">Email address</label>
+                                                    <label for="exampleInputEmail3">Email address <span class="text-danger">*</span></label>
                                                     <input name="email"
                                                         class="form-control @error('email') is-invalid @enderror"
                                                         value="{{ old('email', $siswa->user->email) }}" type="email"
@@ -118,7 +118,7 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleInputName1">Tempat Lahir</label>
+                                                    <label for="exampleInputName1">Tempat Lahir <span class="text-danger">*</span></label>
                                                     <input name="tempat_lahir"
                                                         class="form-control @error('tempat_lahir') is-invalid @enderror"
                                                         value="{{ old('tempat_lahir', $siswa->tempat_lahir) }}"
@@ -133,7 +133,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="tanggalLahir">Tanggal Lahir</label>
+                                                    <label for="tanggalLahir">Tanggal Lahir <span class="text-danger">*</span></label>
                                                     <div class="input-group">
                                                         <input name="tanggal_lahir" id="tanggalLahir"
                                                             class="form-control @error('tanggal_lahir') is-invalid @enderror"
@@ -155,7 +155,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleSelectGender">Jenis Kelamin</label>
+                                                    <label for="exampleSelectGender">Jenis Kelamin <span class="text-danger">*</span></label>
                                                     <select name="jenis_kelamin"
                                                         class="form-control  @error('jenis_kelamin') is-invalid @enderror"
                                                         id="exampleSelectGender">
@@ -180,7 +180,7 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleInputName1">Alamat</label>
+                                                    <label for="exampleInputName1">Alamat <span class="text-danger">*</span></label>
                                                     <input name="alamat"
                                                         class="form-control @error('alamat') is-invalid @enderror"
                                                         value="{{ old('alamat', $siswa->alamat) }}" type="text"
@@ -195,7 +195,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleSelectKelas">Kelas</label>
+                                                    <label for="exampleSelectKelas">Kelas <span class="text-danger">*</span></label>
                                                     <select name="kelas_id"
                                                         class="form-control @error('kelas_id') is-invalid @enderror"
                                                         id="exampleSelectKelas">

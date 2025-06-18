@@ -18,7 +18,7 @@
                                         @csrf
 
                                         <div class="form-group">
-                                            <label for="exampleInputName1">Nama Mata Pelajaran</label>
+                                            <label for="exampleInputName1">Nama Mata Pelajaran <span class="text-danger">*</span></label>
                                             <input name="nama_mapel"
                                                 class="form-control @error('nama_mapel') is-invalid @enderror"
                                                 value="{{ old('nama_mapel') }}" type="text"
@@ -31,7 +31,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="exampleSelectKelas">Guru</label>
+                                            <label for="exampleSelectKelas">Guru <span class="text-danger">*</span></label>
                                             <select name="guru_id"
                                                 class="form-control @error('guru_id') is-invalid @enderror"
                                                 id="exampleSelectguru">
@@ -51,7 +51,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="exampleSelectKelas">Kelas</label>
+                                            <label for="exampleSelectKelas">Kelas <span class="text-danger">*</span></label>
                                             <select name="kelas_id"
                                                 class="form-control @error('kelas_id') is-invalid @enderror"
                                                 id="exampleSelectKelas">
@@ -71,7 +71,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="exampleSelectKelas">Tahun Ajaran</label>
+                                            <label for="exampleSelectKelas">Tahun Ajaran <span class="text-danger">*</span></label>
                                             <select name="tahun_ajaran_id"
                                                 class="form-control @error('tahun_ajaran_id') is-invalid @enderror"
                                                 id="exampleSelectKelas">
@@ -91,7 +91,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="exampleSelectKelas">Kurikulum</label>
+                                            <label for="exampleSelectKelas">Kurikulum <span class="text-danger">*</span></label>
                                             <select name="kurikulum_id"
                                                 class="form-control @error('kurikulum_id') is-invalid @enderror"
                                                 id="exampleSelectkurikulum">
@@ -111,7 +111,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="exampleSelectGender">Semester</label>
+                                            <label for="exampleSelectGender">Semester <span class="text-danger">*</span></label>
                                             <select name="semester"
                                                 class="form-control  @error('semester') is-invalid @enderror"
                                                 value="{{ old('semester') }}" id="exampleSelectGender">

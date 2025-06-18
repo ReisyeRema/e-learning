@@ -2,6 +2,7 @@
 <br>
 <p><strong>Mata Pelajaran:</strong> {{ $pembelajaran->nama_mapel }}</p>
 <p><strong>Kelas:</strong> {{ $pembelajaran->kelas->nama_kelas ?? '-' }} TA. {{ $pembelajaran->tahunAjaran->nama_tahun }} ( {{ $pembelajaran->semester }} )</p>
+<p><strong>Pertemuan:</strong> {{ $pertemuan->judul ?? '-' }}</p>
 <br>
 
 <table>

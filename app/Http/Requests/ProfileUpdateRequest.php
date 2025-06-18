@@ -26,6 +26,7 @@ class ProfileUpdateRequest extends FormRequest
         if ($user->hasRole('Guru')) {
             $rules += [
                 'nip' => ['required', 'string', 'max:20'],
+                'nuptk' => ['required', 'string', 'max:20'],
                 'tempat_lahir' => ['required', 'string', 'max:255'],
                 'tanggal_lahir' => ['required', 'date'],
                 'jenis_kelamin' => ['required', 'in:Laki-laki,Perempuan'],

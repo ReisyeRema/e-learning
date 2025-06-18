@@ -19,7 +19,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="username">Username</label>
+                                    <label for="username">Username <span class="text-danger">*</span></label>
                                     <input name="username" class="form-control @error('username') is-invalid @enderror"
                                         value="{{ old('username', $guru->user->username) }}" type="text" id="username"
                                         placeholder="Username">
@@ -61,10 +61,11 @@
 
                         <!-- Informasi Pribadi -->
                         <h6 class="card-title">Informasi Pribadi</h6>
+
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="name">Nama Lengkap</label>
+                                    <label for="name">Nama Lengkap <span class="text-danger">*</span></label>
                                     <input name="name" class="form-control @error('name') is-invalid @enderror"
                                         value="{{ old('name', $guru->user->name) }}" type="text" id="name"
                                         placeholder="Nama Lengkap">
@@ -75,7 +76,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="nip">NIP</label>
                                     <input name="nip" class="form-control @error('nip') is-invalid @enderror"
@@ -88,9 +89,25 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="email">Email</label>
+                                    <label for="nuptk">NUPTK</label>
+                                    <input name="nuptk" class="form-control @error('nuptk') is-invalid @enderror"
+                                        value="{{ old('nuptk', $guru->nuptk) }}" type="text" id="nuptk"
+                                        placeholder="NUPTK">
+                                    @error('nuptk')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="email">Email <span class="text-danger">*</span></label>
                                     <input name="email" class="form-control @error('email') is-invalid @enderror"
                                         value="{{ old('email', $guru->user->email) }}" type="email" id="email"
                                         placeholder="Email">
@@ -104,9 +121,9 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="tempat_lahir">Tempat Lahir</label>
+                                    <label for="tempat_lahir">Tempat Lahir <span class="text-danger">*</span></label>
                                     <input name="tempat_lahir"
                                         class="form-control @error('tempat_lahir') is-invalid @enderror"
                                         value="{{ old('tempat_lahir', $guru->tempat_lahir) }}" type="text"
@@ -118,9 +135,9 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="tanggalLahir">Tanggal Lahir</label>
+                                    <label for="tanggalLahir">Tanggal Lahir <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <input name="tanggal_lahir" id="tanggalLahir"
                                             class="form-control @error('tanggal_lahir') is-invalid @enderror"
@@ -139,9 +156,12 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="jenis_kelamin">Jenis Kelamin</label>
+                                    <label for="jenis_kelamin">Jenis Kelamin <span class="text-danger">*</span></label>
                                     <select name="jenis_kelamin"
                                         class="form-control @error('jenis_kelamin') is-invalid @enderror"
                                         id="jenis_kelamin">
@@ -160,12 +180,9 @@
                                     @enderror
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="alamat">Alamat</label>
+                                    <label for="alamat">Alamat <span class="text-danger">*</span></label>
                                     <input name="alamat" class="form-control @error('alamat') is-invalid @enderror"
                                         value="{{ old('alamat', $guru->alamat) }}" type="text" id="alamat"
                                         placeholder="Alamat">
@@ -176,9 +193,12 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="status">Status</label>
+                                    <label for="status">Status <span class="text-danger">*</span></label>
                                     <select name="status" class="form-control @error('status') is-invalid @enderror"
                                         id="status">
                                         <option value="">Pilih Status</option>
@@ -196,7 +216,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Foto</label>
                                     <input type="file" name="foto"

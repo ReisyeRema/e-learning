@@ -283,6 +283,16 @@
                             <x-input-error class="mt-2" :messages="$errors->get('nip')" />
                         </div>
 
+                        <!-- NUPTK -->
+                        <div class="form-group row">
+                            <label for="nuptk" class="col-sm-3 col-form-label">NUPTK</label>
+                            <div class="col-sm-9">
+                                <input id="nuptk" name="nuptk" type="text" class="form-control"
+                                    value="{{ old('nuptk', $profile->nuptk ?? '') }}">
+                            </div>
+                            <x-input-error class="mt-2" :messages="$errors->get('nuptk')" />
+                        </div>
+
                         <!-- Tempat Lahir -->
                         <div class="form-group row">
                             <label for="tempat_lahir" class="col-sm-3 col-form-label">Tempat Lahir</label>

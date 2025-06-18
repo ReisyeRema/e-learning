@@ -91,7 +91,7 @@
                                                             <div class="modal-body">
                                                                 <!-- Judul -->
                                                                 <div class="form-group">
-                                                                    <label for="judul">Judul</label>
+                                                                    <label for="judul">Judul <span class="text-danger">*</span></label>
                                                                     <input type="text"
                                                                         class="form-control @error('judul') is-invalid @enderror"
                                                                         id="judul" name="judul"
@@ -115,7 +115,7 @@
 
                                                                 <!-- File -->
                                                                 <div class="form-group">
-                                                                    <label for="file_path">File Materi</label>
+                                                                    <label for="file_path">File Materi <span class="text-danger">*</span></label>
                                                                     <input type="file" id="file_path" name="file_path"
                                                                         class="form-control @error('file_path') is-invalid @enderror"
                                                                         accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip,.rar,image/*">
@@ -180,7 +180,7 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="judul">Judul</label>
+                            <label for="judul">Judul <span class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('judul') is-invalid @enderror"
                                 id="judul" name="judul" value="{{ old('judul') }}">
                             @error('judul')
@@ -199,7 +199,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="file_path">File Materi</label>
+                            <label for="file_path">File Materi <span class="text-danger">*</span></label>
                             <input type="file" id="file_path" name="file_path"
                                 class="form-control @error('file_path') is-invalid @enderror"
                                 accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip,.rar,image/*">

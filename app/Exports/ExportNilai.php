@@ -13,7 +13,7 @@ class ExportNilai implements FromView, WithStyles, WithTitle
     protected $pertemuanKuis;
     protected $sheetTitle;
     protected $jumlahBarisSiswa; // Baris data siswa (tanpa header)
-    protected $barisHeaderTabel = 6; // Header tabel mulai baris ke-6
+    protected $barisHeaderTabel = 7; // Header tabel mulai baris ke-6
 
     public function __construct($pertemuanKuis, $sheetTitle)
     {
@@ -25,6 +25,8 @@ class ExportNilai implements FromView, WithStyles, WithTitle
     {
         $pembelajaran = $this->pertemuanKuis->pembelajaran;
         $kuis = $this->pertemuanKuis->kuis;
+        $pertemuan = $this->pertemuanKuis->pertemuan;
+
 
         $enrollments = $pembelajaran->enrollments()->with('siswa')->get();
         $hasilKuis = $kuis->hasilKuis()->get()->keyBy('siswa_id');
@@ -47,6 +49,7 @@ class ExportNilai implements FromView, WithStyles, WithTitle
             'kuis' => $kuis,
             'pembelajaran' => $pembelajaran,
             'siswaList' => $siswaList,
+            'pertemuan' => $pertemuan,
         ]);
     }
 

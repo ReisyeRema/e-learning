@@ -64,6 +64,7 @@ class GuruAdminController extends Controller
         Guru::create([
             'user_id' => $user->id,
             'nip' => $request->nip,
+            'nuptk' => $request->nuptk,
             'tempat_lahir' => $request->tempat_lahir,
             'tanggal_lahir' => $request->tanggal_lahir,
             'jenis_kelamin' => $request->jenis_kelamin,
@@ -119,6 +120,7 @@ class GuruAdminController extends Controller
         // Update data guru
         $guru->update([
             'nip' => $request->nip,
+            'nuptk' => $request->nuptk,
             'tempat_lahir' => $request->tempat_lahir,
             'tanggal_lahir' => $request->tanggal_lahir,
             'jenis_kelamin' => $request->jenis_kelamin,

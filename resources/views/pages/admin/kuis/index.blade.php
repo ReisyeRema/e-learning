@@ -89,7 +89,7 @@
                                                             <div class="modal-body">
 
                                                                 <div class="form-group">
-                                                                    <label for="judul">Judul</label>
+                                                                    <label for="judul">Judul <span class="text-danger">*</span></label>
                                                                     <input type="text"
                                                                         class="form-control @error('judul') is-invalid @enderror"
                                                                         id="judul" name="judul"
@@ -103,7 +103,7 @@
 
                                                                 <div class="form-group">
                                                                     <label
-                                                                        for="kategori-{{ $item->id }}">Kategori</label>
+                                                                        for="kategori-{{ $item->id }}">Kategori <span class="text-danger">*</span></label>
                                                                     <select name="kategori"
                                                                         class="form-control kategori-edit"
                                                                         id="kategori-{{ $item->id }}">
@@ -122,7 +122,7 @@
 
                                                                 <div class="form-group materi-form-group"
                                                                     id="materi-form-group-{{ $item->id }}">
-                                                                    <label for="materi-{{ $item->id }}">Materi</label>
+                                                                    <label for="materi-{{ $item->id }}">Materi <span class="text-danger">*</span></label>
                                                                     <select name="materi_id" class="form-control"
                                                                         id="materi-{{ $item->id }}">
                                                                         <option value="">Pilih Materi</option>
@@ -163,7 +163,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addKelasModalLabel">Tambah Kelas</h5>
+                    <h5 class="modal-title" id="addKelasModalLabel">Tambah Kuis</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -173,7 +173,7 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="judul">Judul</label>
+                            <label for="judul">Judul <span class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('judul') is-invalid @enderror"
                                 id="judul" name="judul" value="{{ old('judul') }}">
                             @error('judul')
@@ -184,7 +184,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="kategori">Kategori</label>
+                            <label for="kategori">Kategori <span class="text-danger">*</span></label>
                             <select name="kategori" class="form-control @error('kategori') is-invalid @enderror"
                                 id="kategori">
                                 <option value="">Pilih Kategori</option>
@@ -202,7 +202,7 @@
                         </div>
 
                         <div class="form-group" id="materi-form-group">
-                            <label for="exampleSelectKelas">Materi</label>
+                            <label for="exampleSelectKelas">Materi <span class="text-danger">*</span></label>
                             <select name="materi_id" class="form-control @error('materi_id') is-invalid @enderror"
                                 id="exampleSelectguru">
                                 <option value="">Pilih Materi</option>

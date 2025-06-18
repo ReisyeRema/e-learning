@@ -17,6 +17,7 @@
                         $slugMapel = Str::slug($pertemuanTugas->pembelajaran->nama_mapel);
                         $slugKelas = Str::slug($pertemuanTugas->pembelajaran->kelas->nama_kelas);
                         $slugTahunAjaran = str_replace('/', '-', $pertemuanTugas->pembelajaran->tahunAjaran->nama_tahun);
+                        $slugSemester = Str::slug($pertemuanTugas->pembelajaran->semester);
                     @endphp
 
                     <div class="col-12 mb-4">
@@ -68,7 +69,7 @@
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#modalDetailTugas{{ $tugas->id }}">Lihat</a>
                                         @else
-                                            <a href="{{ route('mata-pelajaran.show', ['mapel' => $slugMapel, 'kelas' => $slugKelas, 'tahunAjaran' => $slugTahunAjaran]) }}"
+                                            <a href="{{ route('mata-pelajaran.show', ['mapel' => $slugMapel, 'kelas' => $slugKelas, 'tahunAjaran' => $slugTahunAjaran, 'semester' => $slugSemester]) }}"
                                                 class="text-decoration-none fw-bold">Kumpulkan</a>
                                         @endif
                                     </div>
@@ -111,6 +112,14 @@
                                                 @endif
                                             </div>
                                         </div>
+                                        <div class="d-flex mb-2">
+                                            <div style="min-width: 150px;"><strong>Nilai</strong></div>
+                                            <div>: 
+                                                <span class="badge {{ $submitTugas->skor !== null ? 'bg-success' : 'bg-secondary' }} fs-8">
+                                                    {{ $submitTugas->skor !== null ? $submitTugas->skor : '-' }}
+                                                </span>
+                                            </div>
+                                        </div>                                        
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>

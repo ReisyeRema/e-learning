@@ -328,7 +328,7 @@ class ProfileController extends Controller
         $user->save();
 
         if ($user->hasRole('Guru')) {
-            $user->guru->update($request->only('nip', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'alamat', 'status'));
+            $user->guru->update($request->only('nip','nuptk', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'alamat', 'status'));
         }
 
         return Redirect::route('profile-guru.edit')->with('status', 'profile-updated');

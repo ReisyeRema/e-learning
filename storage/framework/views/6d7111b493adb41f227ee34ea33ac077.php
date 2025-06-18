@@ -89,7 +89,7 @@
                                                             <div class="modal-body">
 
                                                                 <div class="form-group">
-                                                                    <label for="judul">Judul</label>
+                                                                    <label for="judul">Judul <span class="text-danger">*</span></label>
                                                                     <input type="text"
                                                                         class="form-control <?php $__errorArgs = ['judul'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -117,7 +117,7 @@ unset($__errorArgs, $__bag); ?>
 
                                                                 <div class="form-group">
                                                                     <label
-                                                                        for="kategori-<?php echo e($item->id); ?>">Kategori</label>
+                                                                        for="kategori-<?php echo e($item->id); ?>">Kategori <span class="text-danger">*</span></label>
                                                                     <select name="kategori"
                                                                         class="form-control kategori-edit"
                                                                         id="kategori-<?php echo e($item->id); ?>">
@@ -136,7 +136,7 @@ unset($__errorArgs, $__bag); ?>
 
                                                                 <div class="form-group materi-form-group"
                                                                     id="materi-form-group-<?php echo e($item->id); ?>">
-                                                                    <label for="materi-<?php echo e($item->id); ?>">Materi</label>
+                                                                    <label for="materi-<?php echo e($item->id); ?>">Materi <span class="text-danger">*</span></label>
                                                                     <select name="materi_id" class="form-control"
                                                                         id="materi-<?php echo e($item->id); ?>">
                                                                         <option value="">Pilih Materi</option>
@@ -178,7 +178,7 @@ unset($__errorArgs, $__bag); ?>
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addKelasModalLabel">Tambah Kelas</h5>
+                    <h5 class="modal-title" id="addKelasModalLabel">Tambah Kuis</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -188,7 +188,7 @@ unset($__errorArgs, $__bag); ?>
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="judul">Judul</label>
+                            <label for="judul">Judul <span class="text-danger">*</span></label>
                             <input type="text" class="form-control <?php $__errorArgs = ['judul'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -213,7 +213,7 @@ unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <div class="form-group">
-                            <label for="kategori">Kategori</label>
+                            <label for="kategori">Kategori <span class="text-danger">*</span></label>
                             <select name="kategori" class="form-control <?php $__errorArgs = ['kategori'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -245,7 +245,7 @@ unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <div class="form-group" id="materi-form-group">
-                            <label for="exampleSelectKelas">Materi</label>
+                            <label for="exampleSelectKelas">Materi <span class="text-danger">*</span></label>
                             <select name="materi_id" class="form-control <?php $__errorArgs = ['materi_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :

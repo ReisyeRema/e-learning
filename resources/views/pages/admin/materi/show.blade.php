@@ -113,7 +113,7 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="exampleSelectKelas">Pertemuan</label>
+                            <label for="exampleSelectKelas">Pertemuan <span class="text-danger">*</span></label>
                             <select name="pertemuan_id" class="form-control @error('pertemuan_id') is-invalid @enderror"
                                 id="exampleSelectguru">
                                 <option value="">Pilih Pertemuan</option>
@@ -134,7 +134,7 @@
                         <input type="hidden" name="pembelajaran_id" value="{{ $pembelajaran->id }}">
 
                         <div class="form-group">
-                            <label for="exampleSelectKelas">Materi</label>
+                            <label for="exampleSelectKelas">Materi <span class="text-danger">*</span></label>
                             <select name="materi_id" class="form-control @error('materi_id') is-invalid @enderror"
                                 id="exampleSelectguru">
                                 <option value="">Pilih Materi</option>
@@ -179,7 +179,7 @@
                         <input type="hidden" name="pertemuan_materi_id" id="editPertemuanMateriId">
 
                         <div class="form-group">
-                            <label for="editPertemuanSelect">Pertemuan</label>
+                            <label for="editPertemuanSelect">Pertemuan <span class="text-danger">*</span></label>
                             <select name="pertemuan_id" id="editPertemuanSelect" class="form-control">
                                 @foreach ($pertemuanSemua as $item)
                                     <option value="{{ $item->id }}">{{ $item->judul }}</option>
@@ -188,7 +188,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="editMateriSelect">Materi</label>
+                            <label for="editMateriSelect">Materi <span class="text-danger">*</span></label>
                             <select name="materi_id" id="editMateriSelect" class="form-control">
                                 @foreach ($materi as $item)
                                     <option value="{{ $item->id }}">{{ $item->judul }}</option>

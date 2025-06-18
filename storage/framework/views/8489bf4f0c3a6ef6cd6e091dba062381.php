@@ -18,7 +18,7 @@
                                         <?php echo csrf_field(); ?>
 
                                         <div class="form-group">
-                                            <label for="exampleInputName1">Nama Mata Pelajaran</label>
+                                            <label for="exampleInputName1">Nama Mata Pelajaran <span class="text-danger">*</span></label>
                                             <input name="nama_mapel"
                                                 class="form-control <?php $__errorArgs = ['nama_mapel'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -45,7 +45,7 @@ unset($__errorArgs, $__bag); ?>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="exampleSelectKelas">Guru</label>
+                                            <label for="exampleSelectKelas">Guru <span class="text-danger">*</span></label>
                                             <select name="guru_id"
                                                 class="form-control <?php $__errorArgs = ['guru_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -80,7 +80,7 @@ unset($__errorArgs, $__bag); ?>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="exampleSelectKelas">Kelas</label>
+                                            <label for="exampleSelectKelas">Kelas <span class="text-danger">*</span></label>
                                             <select name="kelas_id"
                                                 class="form-control <?php $__errorArgs = ['kelas_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -115,7 +115,7 @@ unset($__errorArgs, $__bag); ?>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="exampleSelectKelas">Tahun Ajaran</label>
+                                            <label for="exampleSelectKelas">Tahun Ajaran <span class="text-danger">*</span></label>
                                             <select name="tahun_ajaran_id"
                                                 class="form-control <?php $__errorArgs = ['tahun_ajaran_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -150,7 +150,7 @@ unset($__errorArgs, $__bag); ?>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="exampleSelectKelas">Kurikulum</label>
+                                            <label for="exampleSelectKelas">Kurikulum <span class="text-danger">*</span></label>
                                             <select name="kurikulum_id"
                                                 class="form-control <?php $__errorArgs = ['kurikulum_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -185,7 +185,7 @@ unset($__errorArgs, $__bag); ?>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="exampleSelectGender">Semester</label>
+                                            <label for="exampleSelectGender">Semester <span class="text-danger">*</span></label>
                                             <select name="semester"
                                                 class="form-control  <?php $__errorArgs = ['semester'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');

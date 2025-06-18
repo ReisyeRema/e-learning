@@ -91,7 +91,7 @@
                                                             <div class="modal-body">
 
                                                                 <div class="form-group">
-                                                                    <label for="exampleSelectKelas">Materi</label>
+                                                                    <label for="exampleSelectKelas">Materi <span class="text-danger">*</span></label>
                                                                     <select name="materi_id"
                                                                         class="form-control @error('materi_id') is-invalid @enderror"
                                                                         id="exampleSelectguru">
@@ -107,7 +107,7 @@
 
                                                                 <!-- Judul -->
                                                                 <div class="form-group">
-                                                                    <label for="judul">Judul</label>
+                                                                    <label for="judul">Judul <span class="text-danger">*</span></label>
                                                                     <input type="text"
                                                                         class="form-control @error('judul') is-invalid @enderror"
                                                                         id="judul" name="judul"
@@ -131,7 +131,7 @@
 
                                                                 <!-- File -->
                                                                 <div class="form-group">
-                                                                    <label for="file_path">File Materi</label>
+                                                                    <label for="file_path">File Tugas <span class="text-danger">*</span></label>
                                                                     <input type="file" id="file_path" name="file_path"
                                                                         class="form-control @error('file_path') is-invalid @enderror"
                                                                         accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip,.rar,image/*">
@@ -196,7 +196,7 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="exampleSelectKelas">Materi</label>
+                            <label for="exampleSelectKelas">Materi <span class="text-danger">*</span></label>
                             <select name="materi_id" class="form-control @error('materi_id') is-invalid @enderror"
                                 id="exampleSelectguru">
                                 <option value="">Pilih Materi</option>
@@ -215,7 +215,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="judul">Judul</label>
+                            <label for="judul">Judul <span class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('judul') is-invalid @enderror"
                                 id="judul" name="judul" value="{{ old('judul') }}">
                             @error('judul')
@@ -234,7 +234,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="file_path">File Tugas</label>
+                            <label for="file_path">File Tugas <span class="text-danger">*</span></label>
                             <input type="file" id="file_path" name="file_path"
                                 class="form-control @error('file_path') is-invalid @enderror"
                                 accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip,.rar,image/*">

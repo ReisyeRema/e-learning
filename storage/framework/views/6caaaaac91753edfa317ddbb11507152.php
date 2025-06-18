@@ -71,7 +71,7 @@
                                                             <?php echo method_field('PUT'); ?>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
-                                                                    <label for="nama_kelas">Nama Kelas</label>
+                                                                    <label for="nama_kelas">Nama Kelas <span class="text-danger">*</span></label>
                                                                     <input type="text" class="form-control <?php $__errorArgs = ['nama_kelas'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -129,7 +129,7 @@ unset($__errorArgs, $__bag); ?>
                     <?php echo csrf_field(); ?>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="nama_kelas">Nama Kelas</label>
+                            <label for="nama_kelas">Nama Kelas <span class="text-danger">*</span></label>
                             <input type="text" class="form-control <?php $__errorArgs = ['nama_kelas'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :

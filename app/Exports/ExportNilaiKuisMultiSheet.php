@@ -33,12 +33,14 @@ class ExportNilaiKuisMultiSheet implements WithMultipleSheets
             $kuis = $pertemuanKuis->kuis;
             $pembelajaran = $pertemuanKuis->pembelajaran;
             $kelas = $pembelajaran->kelas;
+            $pertemuan = $pertemuanKuis->pertemuan;
 
             // Pastikan relasi tidak null
             $judul = $kuis->judul ?? 'Tanpa Judul';
             $namaKelas = $kelas->nama_kelas ?? 'Tanpa Kelas';
+            $pertemuan = $pertemuan->judul ?? 'Tanpa Judul';
 
-            $judulSheet = substr("{$judul} - {$namaKelas}", 0, 31); // Batas Excel 31 karakter
+            $judulSheet = substr("{$judul} - {$pertemuan}", 0, 31); // Batas Excel 31 karakter
 
             $sheets[] = new ExportNilai($pertemuanKuis, $judulSheet);
         }

@@ -119,7 +119,7 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="exampleSelectKelas">Pertemuan</label>
+                            <label for="exampleSelectKelas">Pertemuan  <span class="text-danger">*</span></label>
                             <select name="pertemuan_id" class="form-control @error('pertemuan_id') is-invalid @enderror"
                                 id="exampleSelectguru">
                                 <option value="">Pilih Pertemuan</option>
@@ -140,7 +140,7 @@
                         <input type="hidden" name="pembelajaran_id" value="{{ $pembelajaran->id }}">
 
                         <div class="form-group">
-                            <label for="exampleSelectKelas">Kuis</label>
+                            <label for="exampleSelectKelas">Kuis <span class="text-danger">*</span></label>
                             <select name="kuis_id" class="form-control @error('kuis_id') is-invalid @enderror"
                                 id="exampleSelectguru">
                                 <option value="">Pilih Kuis</option>
@@ -159,7 +159,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="deadline">Deadline Tugas</label>
+                            <label for="deadline">Deadline Tugas <span class="text-danger">*</span></label>
                             <input type="datetime-local" class="form-control @error('deadline') is-invalid @enderror"
                                 id="deadline" name="deadline" value="{{ old('deadline') }}">
                             @error('deadline')
@@ -197,7 +197,7 @@
                         <input type="hidden" name="pertemuan_kuis_id" id="editPertemuanKuisId">
 
                         <div class="form-group">
-                            <label for="editPertemuanSelect">Pertemuan</label>
+                            <label for="editPertemuanSelect">Pertemuan <span class="text-danger">*</span></label>
                             <select name="pertemuan_id" id="editPertemuanSelect" class="form-control">
                                 @foreach ($pertemuanSemua as $item)
                                     <option value="{{ $item->id }}">{{ $item->judul }}</option>
@@ -206,7 +206,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="editKuisSelect">Kuis</label>
+                            <label for="editKuisSelect">Kuis <span class="text-danger">*</span></label>
                             <select name="kuis_id" id="editTugasSelect" class="form-control">
                                 @foreach ($kuis as $item)
                                     <option value="{{ $item->id }}">{{ $item->judul }}</option>
@@ -215,7 +215,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="editDeadlineKuis">Deadline Kuis</label>
+                            <label for="editDeadlineKuis">Deadline Kuis <span class="text-danger">*</span></label>
                             <input type="datetime-local" class="form-control @error('deadline') is-invalid @enderror"
                                 id="editDeadlineKuis" name="deadline" value="{{ old('deadline') }}">
                             @error('deadline')
