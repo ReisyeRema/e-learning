@@ -36,6 +36,7 @@ use App\Http\Controllers\Frontend\LandingPageController;
 use App\Http\Controllers\Siswa\DashboardSiswaController;
 use App\Http\Controllers\Admin\PertemuanMateriController;
 use App\Http\Controllers\Siswa\ForumController;
+use App\Http\Controllers\Siswa\SertifikatController;
 use App\Http\Controllers\Siswa\SiswaKuisSessionController;
 
 Route::get('/', function () {
@@ -323,6 +324,8 @@ Route::middleware(PreventBackHistory::class, RedirectIfNotSiswa::class)->prefix(
     // Komentar
     Route::post('/forum-diskusi/{mapel}/{kelas}/{tahunAjaran}/{semester}/{forum}/view', [ForumController::class, 'postKomentar'])->name('komentar.store');
 
+    // Sertifikat
+    Route::get('/sertifikat', [SertifikatController::class,'process'])->name('setifikat-siswa.index');
 });
 
 require __DIR__ . '/auth.php';

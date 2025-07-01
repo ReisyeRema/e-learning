@@ -23,7 +23,7 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleInputUsername">Username</label>
+                                                    <label for="exampleInputUsername">Username <span class="text-danger">*</span></label>
                                                     <input name="username"
                                                         class="form-control <?php $__errorArgs = ['username'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -51,7 +51,7 @@ unset($__errorArgs, $__bag); ?>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleInputPassword">Password</label>
+                                                    <label for="exampleInputPassword">Password <span class="text-danger">*</span></label>
                                                     <input name="password"
                                                         class="form-control <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -79,7 +79,7 @@ unset($__errorArgs, $__bag); ?>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="exampleInputPasswordConfirmation">Konfirmasi
-                                                        Password</label>
+                                                        Password <span class="text-danger">*</span></label>
                                                     <input name="password_confirmation"
                                                         class="form-control <?php $__errorArgs = ['password_confirmation'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -115,7 +115,7 @@ unset($__errorArgs, $__bag); ?>
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleInputName1">Nama Lengkap</label>
+                                                    <label for="exampleInputName1">Nama Lengkap <span class="text-danger">*</span></label>
                                                     <input name="name"
                                                         class="form-control <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -171,7 +171,7 @@ unset($__errorArgs, $__bag); ?>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleInputEmail3">Email address</label>
+                                                    <label for="exampleInputEmail3">Email address <span class="text-danger">*</span></label>
                                                     <input name="email"
                                                         class="form-control <?php $__errorArgs = ['email'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -202,7 +202,7 @@ unset($__errorArgs, $__bag); ?>
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleInputName1">Tempat Lahir</label>
+                                                    <label for="exampleInputName1">Tempat Lahir <span class="text-danger">*</span></label>
                                                     <input name="tempat_lahir"
                                                         class="form-control <?php $__errorArgs = ['tempat_lahir'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -231,7 +231,7 @@ unset($__errorArgs, $__bag); ?>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="tanggalLahir">Tanggal Lahir</label>
+                                                    <label for="tanggalLahir">Tanggal Lahir <span class="text-danger">*</span></label>
                                                     <div class="input-group">
                                                         <input name="tanggal_lahir" id="tanggalLahir"
                                                             class="form-control <?php $__errorArgs = ['tanggal_lahir'];
@@ -267,7 +267,7 @@ unset($__errorArgs, $__bag); ?>
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleSelectGender">Jenis Kelamin</label>
+                                                    <label for="exampleSelectGender">Jenis Kelamin <span class="text-danger">*</span></label>
                                                     <select name="jenis_kelamin"
                                                         class="form-control  <?php $__errorArgs = ['jenis_kelamin'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -306,7 +306,7 @@ unset($__errorArgs, $__bag); ?>
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleInputName1">Alamat</label>
+                                                    <label for="exampleInputName1">Alamat <span class="text-danger">*</span></label>
                                                     <input name="alamat"
                                                         class="form-control <?php $__errorArgs = ['alamat'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -335,7 +335,7 @@ unset($__errorArgs, $__bag); ?>
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleSelectKelas">Kelas</label>
+                                                    <label for="exampleSelectKelas">Kelas <span class="text-danger">*</span></label>
                                                     <select name="kelas_id"
                                                         class="form-control <?php $__errorArgs = ['kelas_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
