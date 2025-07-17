@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('kurikulum_id')->constrained('kurikulum')->onDelete('cascade');
             $table->enum('semester',['Genap','Ganjil']);
             $table->string('cover')->nullable();
+            $table->boolean('aktif')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

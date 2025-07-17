@@ -2,6 +2,68 @@
 
 @section('title', 'Data Pembelajaran')
 
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 26px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked+.slider {
+        background-color: #4caf50;
+    }
+
+    input:checked+.slider:before {
+        transform: translateX(24px);
+    }
+
+    .center-toggle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        margin-top: 15px;
+    }
+
+    .center-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+</style>
+
 @section('content')
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
@@ -26,6 +88,7 @@
                                             <th>Mata Pelajaran</th>
                                             <th>Kelas - Tahun Ajaran - Semester</th>
                                             <th>Guru</th>
+                                            <th>Status Aktif</th>
                                             <th width="15%">
                                                 <center>Aksi</center>
                                             </th>
@@ -47,13 +110,28 @@
                                                 <td> {{ optional($item->kelas)->nama_kelas}} - {{ optional($item->tahunAjaran)->nama_tahun}} - {{ $item->semester }}</td>
                                                 <td> {{ optional($item->guru)->name}} </td>
                                                 <td>
+                                                    <!-- Radio Aktif -->
+                                                    <div class="center-toggle">
+                                                        <form action="{{ route('pembelajaran.toggleAktif', $item->id) }}" method="POST"
+                                                            style="display: inline;">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <label class="switch">
+                                                                <input type="checkbox" name="aktif" onchange="this.form.submit()"
+                                                                    {{ $item->aktif ? 'checked' : '' }}>
+                                                                <span class="slider"></span>
+                                                            </label>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                                <td>
                                                     <div class="d-flex align-items-center">
                                                         <a href="{{ route('pembelajaran.edit', $item->id) }}" class="btn btn-sm btn-outline-success btn-fw mr-3">Edit</a>
 
                                                         <form id="deleteForm{{ $item->id }}" action="{{ route('pembelajaran.destroy', $item->id) }}" method="POST" style="display: inline;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="button" class="btn btn-sm btn-outline-danger btn-fw" onclick="confirmDelete('{{ $item->id }}')">Delete</button>
+                                                            <button type="button" class="btn btn-sm btn-outline-danger btn-fw mt-3" onclick="confirmDelete('{{ $item->id }}')">Delete</button>
                                                         </form>
 
                                                     </div>

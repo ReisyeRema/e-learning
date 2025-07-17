@@ -114,4 +114,15 @@ class PembelajaranController extends Controller
             'details' => $details,
         ]);
     }
+
+    public function toggleAktif(Request $request, $id)
+    {
+        $pembelajaran = Pembelajaran::findOrFail($id);
+
+        // Ubah status aktif
+        $pembelajaran->aktif = !$pembelajaran->aktif;
+        $pembelajaran->save();
+
+        return back()->with('success', 'Status pembelajaran diperbarui.');
+    }
 }

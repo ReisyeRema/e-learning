@@ -20,6 +20,7 @@ class RolePermissionSeeder extends Seeder
             'menu-data-kelas',
             'menu-data-tahun-ajar',
             'menu-data-guru',
+            'menu-data-walas',
             'menu-data-siswa',
             'menu-pembelajaran',
 
@@ -30,10 +31,15 @@ class RolePermissionSeeder extends Seeder
             'menu-submit-tugas',
             'menu-submit-kuis',
             'menu-daftar-siswa',
+            'menu-data-absensi',
 
             'menu-data-operator',
             'menu-data-permission',
             'menu-data-role',
+
+            'menu-daftar-siswa-kelas',
+            'menu-daftar-mapel-kelas',
+            'menu-export',
         ];
 
         foreach ($permissions as $permission) {
@@ -45,6 +51,7 @@ class RolePermissionSeeder extends Seeder
             'Admin',
             'Guru',
             'Siswa',
+            'Wali Kelas',
         ];
 
         foreach ($roles as $roleName) {
@@ -65,6 +72,7 @@ class RolePermissionSeeder extends Seeder
                     'menu-data-kelas',
                     'menu-data-tahun-ajar',
                     'menu-data-guru',
+                    'menu-data-walas',
                     'menu-data-siswa',
                     'menu-pembelajaran',
                 ]);
@@ -79,6 +87,15 @@ class RolePermissionSeeder extends Seeder
                     'menu-submit-tugas',
                     'menu-submit-kuis',
                     'menu-daftar-siswa',
+                    'menu-data-absensi',
+                ]);
+            }
+
+            if ($roleName == 'Wali Kelas') {
+                $role->givePermissionTo([
+                    'menu-daftar-siswa-kelas',
+                    'menu-daftar-mapel-kelas',
+                    'menu-export',
                 ]);
             }
         }

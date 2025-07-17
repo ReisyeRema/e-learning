@@ -36,7 +36,7 @@
 
 
     <!-- Floating Chat Button -->
-    {{-- @php
+    @php
         $showChatRoutes = [
             'submit-materi.show',
             'submit-kuis.show',
@@ -61,7 +61,7 @@
             class="chat-button" title="Forum Diskusi">
             <i class="fas fa-comments"></i>
         </a>
-    @endif --}}
+    @endif
 
 </body>
 

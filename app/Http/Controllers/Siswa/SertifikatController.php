@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Siswa;
 
 use setasign\Fpdi\Fpdi;
+use App\Models\HasilKuis;
+use App\Models\Enrollments;
+use App\Models\SubmitTugas;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Enrollments;
-use Google\Service\Eventarc\Enrollment;
 use Illuminate\Support\Facades\Auth;
+use Google\Service\Eventarc\Enrollment;
 
 class SertifikatController extends Controller
 {
@@ -38,7 +40,7 @@ class SertifikatController extends Controller
 
             // Ambil semua tugas dari pembelajaran ini
             $tugasIds = $pembelajaran->pertemuanTugas->pluck('tugas_id')->toArray();
-            $nilaiTugas = \App\Models\SubmitTugas::whereIn('tugas_id', $tugasIds)
+            $nilaiTugas = SubmitTugas::whereIn('tugas_id', $tugasIds)
                 ->where('siswa_id', $user->id)
                 ->whereNotNull('skor')
                 ->pluck('skor')
@@ -46,7 +48,7 @@ class SertifikatController extends Controller
 
             // Ambil semua kuis dari pembelajaran ini
             $kuisIds = $pembelajaran->pertemuanKuis->pluck('kuis_id')->toArray();
-            $nilaiKuis = \App\Models\HasilKuis::whereIn('kuis_id', $kuisIds)
+            $nilaiKuis = HasilKuis::whereIn('kuis_id', $kuisIds)
                 ->where('siswa_id', $user->id)
                 ->whereNotNull('skor_total')
                 ->pluck('skor_total')

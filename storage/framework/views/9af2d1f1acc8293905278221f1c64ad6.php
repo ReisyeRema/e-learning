@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="<?php echo e(asset('skydash/vendors/ti-icons/css/themify-icons.css')); ?>">
 <link rel="stylesheet" href="<?php echo e(asset('skydash/vendors/css/vendor.bundle.base.css')); ?>">
 <link rel="stylesheet" href="<?php echo e(asset('skydash/css/vertical-layout-light/style.css')); ?>">
-<link rel="shortcut icon" href="<?php echo e(asset('skydash/images/favicon.png')); ?>" />
+<link rel="shortcut icon" href="<?php echo e(url('storage/logo_sekolah/' . $profilSekolah->foto)); ?>" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 

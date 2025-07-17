@@ -6,6 +6,7 @@ use App\Models\Tugas;
 use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use App\Models\ProfilSekolah;
+use App\Models\PertemuanTugas;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +19,7 @@ class TugasSiswaController extends Controller
         $siswaId = Auth::id();
 
         // Ambil semua pertemuanTugas yang berasal dari pembelajaran yang di-enroll siswa
-        $pertemuanTugasList = \App\Models\PertemuanTugas::with(['tugas', 'pembelajaran.kelas', 'pembelajaran.tahunAjaran'])
+        $pertemuanTugasList = PertemuanTugas::with(['tugas', 'pembelajaran.kelas', 'pembelajaran.tahunAjaran'])
             ->whereHas('pembelajaran.enrollments', function ($query) use ($siswaId) {
                 $query->where('siswa_id', $siswaId);
             })

@@ -56,9 +56,9 @@
                             <hr class="w-100">
                             <p class="font-weight-bold mb-0 text-center">SMA NEGERI 2 KERINCI KANAN</p>
                             @if (!empty(Auth::user()->getRoleNames()))
-                                @foreach (Auth::user()->getRoleNames() as $rolename)
-                                    <p class="text-muted">{{ $rolename }}</p>
-                                @endforeach
+                                @if (session()->has('active_role'))
+                                    <p class="text-muted">{{ session('active_role') }}</p>
+                                @endif
                             @endif
 
                             <!-- Informasi Total Mata Pelajaran -->

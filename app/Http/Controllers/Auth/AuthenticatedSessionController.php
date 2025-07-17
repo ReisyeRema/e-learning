@@ -43,13 +43,39 @@ class AuthenticatedSessionController extends Controller
     //     }
     // }
 
+    // public function store(LoginRequest $request): RedirectResponse
+    // {
+    //     try {
+    //         $request->authenticate();
+    //         $request->session()->regenerate();
+
+    //         // Catat aktivitas login
+    //         DB::table('login_activities')->insert([
+    //             'user_id' => Auth::id(),
+    //             'login_at' => now(),
+    //         ]);
+
+    //         $user = Auth::user();
+
+    //         // Pastikan user memiliki role 'Super Admin'
+    //         if (!$user->roles->contains('name', 'Super Admin') && !$user->roles->contains('name', 'Admin') && !$user->roles->contains('name', 'Guru')) {
+    //             Auth::logout();
+    //             return back()->withErrors(['email' => 'Anda tidak memiliki akses ke halaman ini.']);
+    //         }
+
+
+    //         return redirect()->intended(route('dashboard'));
+    //     } catch (ValidationException $e) {
+    //         return back()->withErrors($e->errors());
+    //     }
+    // }
+
     public function store(LoginRequest $request): RedirectResponse
     {
         try {
             $request->authenticate();
             $request->session()->regenerate();
 
-            // Catat aktivitas login
             DB::table('login_activities')->insert([
                 'user_id' => Auth::id(),
                 'login_at' => now(),
@@ -57,18 +83,26 @@ class AuthenticatedSessionController extends Controller
 
             $user = Auth::user();
 
-            // Pastikan user memiliki role 'Super Admin'
-            if (!$user->roles->contains('name', 'Super Admin') && !$user->roles->contains('name', 'Admin') && !$user->roles->contains('name', 'Guru')) {
+            // Role check (boleh disesuaikan kalau kamu pakai permission dari Spatie)
+            $allowedRoles = ['Super Admin', 'Admin', 'Guru', 'Wali Kelas'];
+            if (!$user->roles->pluck('name')->intersect($allowedRoles)->count()) {
                 Auth::logout();
                 return back()->withErrors(['email' => 'Anda tidak memiliki akses ke halaman ini.']);
             }
 
+            // Jika user memiliki lebih dari 1 role
+            if ($user->roles->count() > 1) {
+                return redirect()->route('choose-role');
+            }
 
+            // Jika hanya punya satu role, langsung arahkan ke dashboard
+            session(['active_role' => $user->roles->first()->name]);
             return redirect()->intended(route('dashboard'));
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors());
         }
     }
+
 
     public function store_siswa(LoginRequest $request): RedirectResponse
     {

@@ -82,7 +82,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public static function getGuru()
     {
-        return self::role('guru')->get();
+        return self::role('Guru')->get();
     }
 
     // submit tugas
@@ -127,6 +127,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function komentar() {
         return $this->hasMany(Komentar::class);
+    }
+
+    public function waliKelas()
+    {
+        return $this->hasMany(WaliKelas::class, 'guru_id');
     }
 
 }

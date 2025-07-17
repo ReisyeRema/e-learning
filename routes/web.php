@@ -11,20 +11,25 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\KuisController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Admin\TugasController;
+use App\Http\Controllers\Siswa\ForumController;
 use App\Http\Controllers\Admin\MateriController;
 use App\Http\Controllers\Siswa\EnrollController;
 use App\Http\Controllers\Admin\AbsensiController;
 use App\Http\Controllers\Admin\SoalKuisController;
 use App\Http\Controllers\Admin\GuruAdminController;
 use App\Http\Controllers\Admin\PertemuanController;
+use App\Http\Controllers\Admin\WaliKelasController;
+use App\Http\Controllers\Auth\RoleSelectController;
 use App\Http\Controllers\Siswa\KuisSiswaController;
 use App\Http\Controllers\Admin\EnrollmentController;
 use App\Http\Controllers\Admin\KelasAdminController;
 use App\Http\Controllers\Admin\SiswaAdminController;
 use App\Http\Controllers\Siswa\KelasSiswaController;
+use App\Http\Controllers\Siswa\SertifikatController;
 use App\Http\Controllers\Siswa\TugasSiswaController;
 use App\Http\Controllers\Admin\TahunAjaranController;
 use App\Http\Controllers\Siswa\SubmitTugasController;
+use App\Http\Controllers\Admin\HalamanWalasController;
 use App\Http\Controllers\Admin\PembelajaranController;
 use App\Http\Controllers\Admin\DetailAbsensiController;
 use App\Http\Controllers\Admin\PertemuanKuisController;
@@ -35,8 +40,6 @@ use App\Http\Controllers\Admin\ProfileSekolahController;
 use App\Http\Controllers\Frontend\LandingPageController;
 use App\Http\Controllers\Siswa\DashboardSiswaController;
 use App\Http\Controllers\Admin\PertemuanMateriController;
-use App\Http\Controllers\Siswa\ForumController;
-use App\Http\Controllers\Siswa\SertifikatController;
 use App\Http\Controllers\Siswa\SiswaKuisSessionController;
 
 Route::get('/', function () {
@@ -51,11 +54,16 @@ Route::get('/', function () {
 
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified', PreventBackHistory::class])
+    ->middleware(['auth', 'verified', PreventBackHistory::class, 'role.selected'])
     ->name('dashboard');
 
 
 Route::get('/landing-page', [LandingPageController::class, 'index'])->name('landing-page.index');
+
+// ppilih role
+Route::get('/choose-role', [RoleSelectController::class, 'show'])->name('choose-role');
+Route::post('/choose-role', [RoleSelectController::class, 'select'])->name('choose-role.submit');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -123,7 +131,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::post('/tahun-ajaran/store', [TahunAjaranController::class, 'store'])->name('tahun-ajaran.store');
     Route::put('/tahun-ajaran/{tahunAjaran}/update', [TahunAjaranController::class, 'update'])->name('tahun-ajaran.update');
     Route::delete('/tahun-ajaran/{tahunAjaran}/destroy', [TahunAjaranController::class, 'destroy'])->name('tahun-ajaran.destroy');
-
+    
     // guru admin
     Route::get('/guru', [GuruAdminController::class, 'index'])->name('guru.index');
     Route::get('/guru/create', [GuruAdminController::class, 'create'])->name('guru.create');
@@ -132,6 +140,14 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::put('/guru/{guru}/update', [GuruAdminController::class, 'update'])->name('guru.update');
     Route::delete('/guru/{guru}/destroy', [GuruAdminController::class, 'destroy'])->name('guru.destroy');
     Route::get('/guru/export/excel', [GuruAdminController::class, 'export_excel'])->name('guru.export');
+
+    //Wali Kelas
+    Route::get('/wali-kelas', [WaliKelasController::class, 'index'])->name('wali-kelas.index');
+    Route::post('/wali-kelas/store', [WaliKelasController::class, 'store'])->name('wali-kelas.store');
+    Route::put('/wali-kelas/{waliKelas}/update', [WaliKelasController::class, 'update'])->name('wali-kelas.update');
+    Route::delete('/wali-kelas/{waliKelas}/destroy', [WaliKelasController::class, 'destroy'])->name('wali-kelas.destroy');
+    Route::put('/wali-kelas/{id}/toggle-aktif', [WaliKelasController::class, 'toggleAktif'])->name('wali-kelas.toggleAktif');
+    
 
     // siswa admin
     Route::get('/siswa', [SiswaAdminController::class, 'index'])->name('siswa.index');
@@ -162,6 +178,8 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::put('/pembelajaran/{pembelajaran}/update', [PembelajaranController::class, 'update'])->name('pembelajaran.update');
     Route::delete('/pembelajaran/{pembelajaran}/destroy', [PembelajaranController::class, 'destroy'])->name('pembelajaran.destroy');
     Route::get('/pembelajaran/export/excel', [PembelajaranController::class, 'export_excel'])->name('pembelajaran.export');
+    Route::put('/pembelajaran/{id}/toggle-aktif', [PembelajaranController::class, 'toggleAktif'])->name('pembelajaran.toggleAktif');
+
 });
 
 // Guru
@@ -276,6 +294,14 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->group(function () {
     Route::post('/forum-diskusi/{mapel}/{kelas}/{tahunAjaran}/{semester}/{forum}/view', [ForumController::class, 'postKomentar'])->name('komentar.store');
 
 
+});
+
+// Wali Kelas
+Route::middleware(['auth', 'role:Wali Kelas'])->prefix('walikelas')->group(function () {
+    Route::get('/daftar-siswa/{kelas}/{tahunAjaran}', [HalamanWalasController::class, 'daftarSiswa'])->name('daftar-siswa.index');
+    Route::get('/daftar-mapel/{kelas}/{tahunAjaran}', [HalamanWalasController::class, 'daftarMapel'])->name('daftar-mapel.index');
+    Route::get('/export-nilai/{kelas}/{tahunAjaran}', [HalamanWalasController::class, 'export'])->name('export-nilai.index');
+    
 });
 
 // Siswa

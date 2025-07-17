@@ -142,7 +142,7 @@
 
         /* Tab aktif dengan teks hijau */
         .nav-tabs .nav-link.active {
-            color: #198754 !important;
+            color: #48a6a7 !important;
             border-color: #dee2e6 #dee2e6 #fff;
             font-weight: 600;
         }
@@ -156,7 +156,7 @@
             position: fixed;
             bottom: 25px;
             right: 25px;
-            background-color: #27548A;
+            background-color: #3c888a;
             color: white;
             border-radius: 50%;
             width: 55px;
@@ -173,7 +173,7 @@
 
         .chat-button:hover,
         .chat-button:hover i {
-            background-color: #0056b3;
+            background-color: #316f71;
             color: white;
         }
     </style>
@@ -208,7 +208,12 @@
                             Materi & Tugas & Kuis
                         </button>
                     </li>
-                    
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="absensi-tab" data-bs-toggle="tab" data-bs-target="#absensi-content"
+                            type="button" role="tab" aria-controls="absensi-content" aria-selected="false">
+                            Absensi
+                        </button>
+                    </li>
                 </ul>
 
                 <!-- Tab Content -->
@@ -725,7 +730,15 @@
 
 
     <!-- Floating Chat Button -->
-    
+    <a href="<?php echo e(route('forum-diskusi.index', [
+        'mapel' => Str::slug($pembelajaran->nama_mapel),
+        'kelas' => Str::slug($pembelajaran->kelas->nama_kelas),
+        'tahunAjaran' => str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun),
+        'semester' => Str::slug($pembelajaran->semester),
+    ])); ?>"
+        class="chat-button" title="Forum Diskusi">
+        <i class="fas fa-comments"></i>
+    </a>
 
 </body>
 

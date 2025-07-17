@@ -55,9 +55,9 @@
                             <hr class="w-100">
                             <p class="font-weight-bold mb-0 text-center">SMA NEGERI 2 KERINCI KANAN</p>
                             <?php if(!empty(Auth::user()->getRoleNames())): ?>
-                                <?php $__currentLoopData = Auth::user()->getRoleNames(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $rolename): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <p class="text-muted"><?php echo e($rolename); ?></p>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php if(session()->has('active_role')): ?>
+                                    <p class="text-muted"><?php echo e(session('active_role')); ?></p>
+                                <?php endif; ?>
                             <?php endif; ?>
 
                             <!-- Informasi Total Mata Pelajaran -->
