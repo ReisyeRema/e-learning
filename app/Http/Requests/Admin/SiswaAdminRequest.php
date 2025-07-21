@@ -21,7 +21,7 @@ class SiswaAdminRequest extends FormRequest
      */
     public function rules(): array
     {
-        $siswa = $this->route('siswa'); 
+        $siswa = $this->route('siswa');
         $siswaId = $siswa ? $siswa->id : null;
         $userId = $siswa ? $siswa->user_id : null;
 
@@ -34,8 +34,8 @@ class SiswaAdminRequest extends FormRequest
             'password_confirmation' => $this->isMethod('post') ? 'required_with:password' : 'nullable',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
 
-            // Validasi untuk guru
-            'nis' => 'nullable|string|unique:siswa,nis,' . $siswaId,
+            // Validasi untuk siswa
+            'nis' => 'nullable|string|max:10|regex:/^\d{1,10}$/|unique:siswa,nis,' . $siswaId,
             'tempat_lahir' => 'required|string|max:100',
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
@@ -72,9 +72,8 @@ class SiswaAdminRequest extends FormRequest
             // Pesan error untuk siswa
             'user_id.exists' => 'ID pengguna tidak valid.',
             'kelas_id.exists' => 'ID pengguna tidak valid.',
-            'nis.string' => 'NIS harus berupa teks.',
-            'nis.unique' => 'NIS sudah digunakan.',
-            'nis.max' => 'NIS maksimal 20 karakter.',
+            'nis.max' => 'NIS maksimal 10 digit.',
+            'nis.regex' => 'NIS hanya boleh terdiri dari angka.',
             'tempat_lahir.required' => 'Tempat lahir wajib diisi.',
             'tempat_lahir.string' => 'Tempat lahir harus berupa teks.',
             'tempat_lahir.max' => 'Tempat lahir maksimal 100 karakter.',

@@ -26,7 +26,6 @@
                                             <th style="text-align: center">No</th>
                                             <th style="text-align: center">Nama</th>
                                             <th style="text-align: center">Guru</th>
-                                            <th style="text-align: center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -35,16 +34,7 @@
                                                 <td style="text-align: center"> {{ $loop->iteration }} </td>
                                                 <td>{{ $item->nama_mapel }}</td>
                                                 <td>{{ $item->guru->name ?? '-' }}</td>
-                                                <td>
-                                                    <div class="d-flex justify-content-center align-items-center">
-                                                        <!-- Button to trigger modal edit -->
-                                                        <button type="button" class="btn btn-sm btn-outline-success btn-fw"
-                                                            data-toggle="modal"
-                                                            data-target="#editKelasModal{{ $item->id }}">
-                                                            Lihat
-                                                        </button>
-                                                    </div>
-                                                </td>
+                                               
                                             </tr>
                                         @endforeach
                                     </tbody>

@@ -80,6 +80,11 @@
         .btn-light {
             border-radius: 10px;
         }
+
+        .question.unanswered {
+            border-left: 6px solid red !important;
+            background-color: #ffe6e6;
+        }
     </style>
 </head>
 
@@ -115,7 +120,7 @@
 
 
                 <?php $__currentLoopData = $soalKuis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $soal): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div class="question">
+                    <div class="question" data-no="<?php echo e($loop->iteration); ?>">
                         <div class="question-number">Soal <?php echo e($no++); ?></div>
                         <p><strong><?php echo e($soal->teks_soal); ?></strong></p>
 
@@ -165,48 +170,76 @@
         </div>
     </main>
 
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.getElementById("quiz-form").addEventListener("submit", function(e) {
             e.preventDefault();
 
             const form = e.target;
-            const formData = new FormData(form);
+            const questions = form.querySelectorAll('.question');
             const unanswered = [];
+
+            // Reset semua highlight sebelumnya
+            questions.forEach(q => q.classList.remove('unanswered'));
 
             <?php $__currentLoopData = $soalKuis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $soal): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 const soalId = "soal_<?php echo e($soal->id); ?>";
-                const answer = formData.get(soalId);
-                if (!answer || answer.trim() === "") {
-                    unanswered.push({
-                        id: soalId
+                const type = "<?php echo e(strtolower($soal->type_soal)); ?>";
+
+                let answered = false;
+
+                if (type === "objective" || type === "truefalse") {
+                    const radios = form.querySelectorAll(`input[name="${soalId}"]`);
+                    radios.forEach(r => {
+                        if (r.checked) answered = true;
                     });
+                } else if (type === "essay") {
+                    const textarea = form.querySelector(`textarea[name="${soalId}"]`);
+                    if (textarea && textarea.value.trim() !== "") {
+                        answered = true;
+                    }
+                }
+
+                if (!answered) {
+                    // Highlight soal
+                    const questionEl = form.querySelector(
+                        `.question input[name="${soalId}"], .question textarea[name="${soalId}"]`).closest(
+                        '.question');
+                    if (questionEl) {
+                        questionEl.classList.add('unanswered');
+                        unanswered.push(questionEl.dataset.no);
+                    }
                 }
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
             if (unanswered.length > 0) {
-                alert("Harap jawab semua soal terlebih dahulu sebelum mengumpulkan.");
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Jawaban Belum Lengkap',
+                    html: 'Silakan lengkapi terlebih dahulu soal nomor: <strong>' + unanswered.join(', ') +
+                        '</strong>',
+                    confirmButtonText: 'Oke'
+                });
                 return;
             }
 
-            fetch("<?php echo e(route('kuis.kumpulkan')); ?>", {
-                    method: "POST",
-                    headers: {
-                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute(
-                            'content'),
-                    },
-                    body: formData,
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert("Jawaban berhasil dikumpulkan!");
-                    window.location.reload(); // Atau redirect ke halaman lain jika perlu
-                })
-                .catch(error => {
-                    console.error("Terjadi kesalahan:", error);
-                    alert("Terjadi kesalahan saat mengirim jawaban.");
-                });
+            // Jika semua sudah terjawab
+            Swal.fire({
+                title: 'Yakin ingin mengumpulkan jawaban?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, kumpulkan',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
         });
     </script>
+
 
 </body>
 

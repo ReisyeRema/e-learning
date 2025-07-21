@@ -167,19 +167,19 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="form-group">
-                                                            <label>Tanggal</label>
+                                                            <label>Tanggal <span class="text-danger">*</span></label>
                                                             <input type="date" name="tanggal"
                                                                 value="{{ old('tanggal', \Carbon\Carbon::parse($item->tanggal)->format('Y-m-d')) }}"
                                                                 class="form-control">
                                                         </div>
                                                         <div class="form-group">
-                                                            <label>Jam Mulai</label>
+                                                            <label>Jam Mulai <span class="text-danger">*</span></label>
                                                             <input type="time" name="jam_mulai"
                                                                 value="{{ old('jam_mulai', $item->jam_mulai) }}"
                                                                 class="form-control">
                                                         </div>
                                                         <div class="form-group">
-                                                            <label>Jam Selesai</label>
+                                                            <label>Jam Selesai <span class="text-danger">*</span></label>
                                                             <input type="time" name="jam_selesai"
                                                                 value="{{ old('jam_selesai', $item->jam_selesai) }}"
                                                                 class="form-control">
@@ -245,7 +245,7 @@
 
                         {{-- Tanggal --}}
                         <div class="form-group">
-                            <label for="tanggal">Tanggal</label>
+                            <label for="tanggal">Tanggal <span class="text-danger">*</span></label>
                             <input type="date" name="tanggal"
                                 class="form-control @error('tanggal') is-invalid @enderror" value="{{ old('tanggal') }}">
                             @error('tanggal')
@@ -255,7 +255,7 @@
 
                         {{-- Waktu --}}
                         <div class="form-group">
-                            <label>Waktu</label>
+                            <label>Waktu <span class="text-danger">*</span></label>
                             <div class="d-flex">
                                 <input type="time" name="jam_mulai"
                                     class="form-control mr-2 @error('jam_mulai') is-invalid @enderror"

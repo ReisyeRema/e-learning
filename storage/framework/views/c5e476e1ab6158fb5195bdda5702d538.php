@@ -27,7 +27,6 @@
                                             <th style="text-align: center">No</th>
                                             <th style="text-align: center">Nama</th>
                                             <th style="text-align: center">Guru</th>
-                                            <th style="text-align: center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -36,16 +35,7 @@
                                                 <td style="text-align: center"> <?php echo e($loop->iteration); ?> </td>
                                                 <td><?php echo e($item->nama_mapel); ?></td>
                                                 <td><?php echo e($item->guru->name ?? '-'); ?></td>
-                                                <td>
-                                                    <div class="d-flex justify-content-center align-items-center">
-                                                        <!-- Button to trigger modal edit -->
-                                                        <button type="button" class="btn btn-sm btn-outline-success btn-fw"
-                                                            data-toggle="modal"
-                                                            data-target="#editKelasModal<?php echo e($item->id); ?>">
-                                                            Lihat
-                                                        </button>
-                                                    </div>
-                                                </td>
+                                               
                                             </tr>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </tbody>

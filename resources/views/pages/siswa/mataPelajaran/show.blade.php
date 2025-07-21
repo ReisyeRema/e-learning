@@ -1006,6 +1006,32 @@
         </script>
     @endif
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('#modalKumpul form');
+            const submitButton = document.getElementById('submitButton');
+
+            form.addEventListener('submit', function(e) {
+                const fileInput = document.getElementById('fileTugas');
+                const urlInput = document.getElementById('urlTugas');
+
+                const fileFilled = fileInput && fileInput.files.length > 0;
+                const urlFilled = urlInput && urlInput.value.trim() !== '';
+
+                if (!fileFilled && !urlFilled) {
+                    e.preventDefault(); // Mencegah form terkirim
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Pengumpulan Tidak Lengkap',
+                        text: 'Silakan unggah file tugas atau masukkan URL terlebih dahulu sebelum mengumpulkan.',
+                        confirmButtonText: 'Mengerti'
+                    });
+                }
+            });
+        });
+    </script>
+
+
 
     <!-- Floating Chat Button -->
     <a href="{{ route('forum-diskusi.index', [

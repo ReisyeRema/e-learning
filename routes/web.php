@@ -140,13 +140,14 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::put('/guru/{guru}/update', [GuruAdminController::class, 'update'])->name('guru.update');
     Route::delete('/guru/{guru}/destroy', [GuruAdminController::class, 'destroy'])->name('guru.destroy');
     Route::get('/guru/export/excel', [GuruAdminController::class, 'export_excel'])->name('guru.export');
-
+    
     //Wali Kelas
     Route::get('/wali-kelas', [WaliKelasController::class, 'index'])->name('wali-kelas.index');
     Route::post('/wali-kelas/store', [WaliKelasController::class, 'store'])->name('wali-kelas.store');
     Route::put('/wali-kelas/{waliKelas}/update', [WaliKelasController::class, 'update'])->name('wali-kelas.update');
     Route::delete('/wali-kelas/{waliKelas}/destroy', [WaliKelasController::class, 'destroy'])->name('wali-kelas.destroy');
     Route::put('/wali-kelas/{id}/toggle-aktif', [WaliKelasController::class, 'toggleAktif'])->name('wali-kelas.toggleAktif');
+    Route::get('/wali-kelas/export/excel', [WaliKelasController::class, 'export_excel'])->name('wali-kelas.export');
     
 
     // siswa admin
@@ -300,7 +301,15 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->group(function () {
 Route::middleware(['auth', 'role:Wali Kelas'])->prefix('walikelas')->group(function () {
     Route::get('/daftar-siswa/{kelas}/{tahunAjaran}', [HalamanWalasController::class, 'daftarSiswa'])->name('daftar-siswa.index');
     Route::get('/daftar-mapel/{kelas}/{tahunAjaran}', [HalamanWalasController::class, 'daftarMapel'])->name('daftar-mapel.index');
+    
     Route::get('/export-nilai/{kelas}/{tahunAjaran}', [HalamanWalasController::class, 'export'])->name('export-nilai.index');
+    Route::get('/export-tugas/{kelas}/{tahunAjaran}/excel', [HalamanWalasController::class, 'export_tugas'])
+    ->name('export-tugas-kelas.export');
+    Route::get('/export-kuis/{kelas}/{tahunAjaran}/excel', [HalamanWalasController::class, 'export_kuis'])
+    ->name('export-kuis-kelas.export');
+    Route::get('/export-absensi/{kelas}/{tahunAjaran}/excel', [HalamanWalasController::class, 'export_absensi'])
+    ->name('export-absensi-kelas.export');
+
     
 });
 

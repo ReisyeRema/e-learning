@@ -21,7 +21,7 @@
                     <form method="GET" action="">
                         <div class="form-group row">
                             <label for="exampleInputUsername2" class="col-sm-2 col-form-label">Pilih Semester</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-10">
                                 <select name="semester" id="semester" class="form-control" onchange="this.form.submit()">
                                     <option value="">-- Pilih Semester --</option>
                                     <option value="Ganjil" {{ request('semester') == 'Ganjil' ? 'selected' : '' }}>Ganjil
@@ -34,50 +34,62 @@
                     </form>
 
                     <div class="list-group">
-                        <a href="#"
-                            class="list-group-item list-group-item-action mb-5 py-4 px-5 rounded shadow-sm d-flex align-items-center">
-                            <i class="fas fa-file-alt fa-2x me-4"></i>
-                            <strong style="margin-left: 6rem; font-size: 1.3rem; font-weight: bold;">Rekapitulasi Nilai
-                                Tugas Siswa - {{ $waliKelas->kelas->nama_kelas }} Tahun Pelajaran
-                                ({{ $waliKelas->tahunAjaran->nama_tahun }})
-                                @if ($semester)
-                                    - Semester {{ $semester }}
-                                @endif
-                            </strong>
-                        </a>
-                        <a href="#"
-                            class="list-group-item list-group-item-action mb-5 py-4 px-5 rounded shadow-sm d-flex align-items-center">
-                            <i class="fas fa-file-alt fa-2x me-4"></i>
-                            <strong style="margin-left: 6rem; font-size: 1.3rem; font-weight: bold;">Rekapitulasi Nilai Kuis
-                                Siswa - {{ $waliKelas->kelas->nama_kelas }} Tahun Pelajaran
-                                ({{ $waliKelas->tahunAjaran->nama_tahun }})
-                                @if ($semester)
-                                    - Semester {{ $semester }}
-                                @endif
-                            </strong>
-                        </a>
-                        <a href="#"
-                            class="list-group-item list-group-item-action mb-5 py-4 px-5 rounded shadow-sm d-flex align-items-center">
-                            <i class="fas fa-file-alt fa-2x me-4"></i>
-                            <strong style="margin-left: 6rem; font-size: 1.3rem; font-weight: bold;">Rekapitulasi Kehadiran
-                                Siswa - {{ $waliKelas->kelas->nama_kelas }} Tahun Pelajaran
-                                ({{ $waliKelas->tahunAjaran->nama_tahun }})
-                                @if ($semester)
-                                    - Semester {{ $semester }}
-                                @endif
-                            </strong>
-                        </a>
-                        <a href="#"
-                            class="list-group-item list-group-item-action mb-5 py-4 px-5 rounded shadow-sm d-flex align-items-center">
-                            <i class="fas fa-file-alt fa-2x me-4"></i>
-                            <strong style="margin-left: 6rem; font-size: 1.3rem; font-weight: bold;">Laporan Nilai Akhir
-                                Siswa - {{ $waliKelas->kelas->nama_kelas }} Tahun Pelajaran
-                                ({{ $waliKelas->tahunAjaran->nama_tahun }})
-                                @if ($semester)
-                                    - Semester {{ $semester }}
-                                @endif
-                            </strong>
-                        </a>
+                        @if (request('semester'))
+                            <a href="{{ route('export-tugas-kelas.export', [
+                                'kelas' => $slugKelas,
+                                'tahunAjaran' => $slugTahunAjaran,
+                                'semester' => request('semester'),
+                            ]) }}"
+                                class="list-group-item list-group-item-action mb-5 py-4 px-5 rounded shadow-sm d-flex align-items-center">
+                                <i class="fas fa-file-alt fa-2x me-4"></i>
+                                <strong style="margin-left: 6rem; font-size: 1.3rem; font-weight: bold;">Rekapitulasi Nilai
+                                    Tugas Siswa - {{ $waliKelas->kelas->nama_kelas }} Tahun Pelajaran
+                                    ({{ $waliKelas->tahunAjaran->nama_tahun }})
+                                    @if ($semester)
+                                        - Semester {{ $semester }}
+                                    @endif
+                                </strong>
+                            </a>
+                        @endif
+
+                        @if (request('semester'))
+                            <a href="{{ route('export-kuis-kelas.export', [
+                                'kelas' => $slugKelas,
+                                'tahunAjaran' => $slugTahunAjaran,
+                                'semester' => request('semester'),
+                            ]) }}"
+                                class="list-group-item list-group-item-action mb-5 py-4 px-5 rounded shadow-sm d-flex align-items-center">
+                                <i class="fas fa-file-alt fa-2x me-4"></i>
+                                <strong style="margin-left: 6rem; font-size: 1.3rem; font-weight: bold;">Rekapitulasi Nilai
+                                    Kuis
+                                    Siswa - {{ $waliKelas->kelas->nama_kelas }} Tahun Pelajaran
+                                    ({{ $waliKelas->tahunAjaran->nama_tahun }})
+                                    @if ($semester)
+                                        - Semester {{ $semester }}
+                                    @endif
+                                </strong>
+                            </a>
+                        @endif
+
+                        @if (request('semester'))
+                            <a href="{{ route('export-absensi-kelas.export', [
+                                'kelas' => $slugKelas,
+                                'tahunAjaran' => $slugTahunAjaran,
+                                'semester' => request('semester'),
+                            ]) }}"
+                                class="list-group-item list-group-item-action mb-5 py-4 px-5 rounded shadow-sm d-flex align-items-center">
+                                <i class="fas fa-file-alt fa-2x me-4"></i>
+                                <strong style="margin-left: 6rem; font-size: 1.3rem; font-weight: bold;">Rekapitulasi
+                                    Kehadiran
+                                    Siswa - {{ $waliKelas->kelas->nama_kelas }} Tahun Pelajaran
+                                    ({{ $waliKelas->tahunAjaran->nama_tahun }})
+                                    @if ($semester)
+                                        - Semester {{ $semester }}
+                                    @endif
+                                </strong>
+                            </a>
+                        @endif
+
                     </div>
 
                 </div>

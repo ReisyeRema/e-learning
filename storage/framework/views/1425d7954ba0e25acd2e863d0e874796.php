@@ -80,6 +80,45 @@
                                     Tambah Data
                                 </button>
                             </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <form method="GET" action="<?php echo e(route('wali-kelas.index')); ?>" id="filterExportForm">
+                                        <div class="form-row align-items-center">
+                                            <!-- Export Button -->
+                                            <div class="col-md-9">
+                                                <button type="button" id="exportBtn"
+                                                    class="btn btn-sm btn-inverse-success btn-icon-text">
+                                                    <i class="ti-download btn-icon-prepend"></i>
+                                                    Export XLSX
+                                                </button>
+                                            </div>
+                            
+                                            <!-- Tahun Ajaran Dropdown -->
+                                            <div class="col-auto">
+                                                <select name="tahun_ajaran_id" class="form-control form-control-sm" id="tahunAjaranSelect">
+                                                    <option value="">-- Semua Tahun Ajaran --</option>
+                                                    <?php $__currentLoopData = $tahunAjaran; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $t): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <option value="<?php echo e($t->id); ?>" <?php echo e(request('tahun_ajaran_id') == $t->id ? 'selected' : ''); ?>>
+                                                            <?php echo e($t->nama_tahun); ?>
+
+                                                        </option>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                </select>
+                                            </div>
+                            
+                                            <!-- Filter Button -->
+                                            <div class="col-auto">
+                                                <button type="submit" class="btn btn-sm btn-outline-info">
+                                                    <i class="ti-filter btn-icon-append"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            
+
                             <!-- Table Section -->
                             <div class="table-responsive">
                                 <table id="myTable" class="display expandable-table" style="width:100%">
@@ -89,7 +128,9 @@
                                             <th>Nama Guru</th>
                                             <th>Nama Kelas</th>
                                             <th>Tahun Ajaran</th>
-                                            <th><center>Status</center></th>
+                                            <th>
+                                                <center>Status</center>
+                                            </th>
                                             <th width="15%">
                                                 <center>Aksi</center>
                                             </th>
@@ -105,12 +146,13 @@
                                                 <td>
                                                     <!-- Radio Aktif -->
                                                     <div class="center-toggle">
-                                                        <form action="<?php echo e(route('wali-kelas.toggleAktif', $item->id)); ?>" method="POST"
-                                                            style="display: inline;">
+                                                        <form action="<?php echo e(route('wali-kelas.toggleAktif', $item->id)); ?>"
+                                                            method="POST" style="display: inline;">
                                                             <?php echo csrf_field(); ?>
                                                             <?php echo method_field('PUT'); ?>
                                                             <label class="switch">
-                                                                <input type="checkbox" name="aktif" onchange="this.form.submit()"
+                                                                <input type="checkbox" name="aktif"
+                                                                    onchange="this.form.submit()"
                                                                     <?php echo e($item->aktif ? 'checked' : ''); ?>>
                                                                 <span class="slider"></span>
                                                             </label>
@@ -142,7 +184,8 @@
 
                                             <!-- Modal for Editing Kelas -->
                                             <div class="modal fade" id="editKelasModal<?php echo e($item->id); ?>" tabindex="-1"
-                                                aria-labelledby="editKelasModalLabel<?php echo e($item->id); ?>" aria-hidden="true">
+                                                aria-labelledby="editKelasModalLabel<?php echo e($item->id); ?>"
+                                                aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -413,5 +456,16 @@ unset($__errorArgs, $__bag); ?>
         </div>
     </div>
 <?php $__env->stopSection(); ?>
+
+
+<?php $__env->startPush('scripts'); ?>
+    <script>
+        document.getElementById("exportBtn").addEventListener("click", function() {
+            const tahunId = document.getElementById("tahunAjaranSelect").value;
+            const url = "<?php echo e(route('wali-kelas.export')); ?>?tahun_ajaran_id=" + tahunId;
+            window.location.href = url;
+        });
+    </script>
+<?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\DATA MATKUL\SEMESTER 6\TA\PROJECT\e-learn-laravel\resources\views/pages/admin/waliKelas/index.blade.php ENDPATH**/ ?>

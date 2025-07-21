@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\ExportWaliKelas;
 use App\Models\User;
 use App\Models\Kelas;
 use App\Models\WaliKelas;
@@ -9,17 +10,29 @@ use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\WaliKelasRequest;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class WaliKelasController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $waliKelas = WaliKelas::all();
+        $tahunAjaranId = $request->input('tahun_ajaran_id');
+
+        $waliKelas = WaliKelas::with(['guru', 'kelas', 'tahunAjaran'])
+            ->when($tahunAjaranId, function ($query) use ($tahunAjaranId) {
+                $query->where('tahun_ajaran_id', $tahunAjaranId);
+            })
+            ->get();
+
         $tahunAjaran = TahunAjaran::all();
         $kelas = Kelas::all();
         $guru = User::getGuru();
+
         return view('pages.admin.waliKelas.index', compact('waliKelas', 'tahunAjaran', 'kelas', 'guru'));
     }
+
+
 
 
     public function store(WaliKelasRequest $request)
@@ -91,5 +104,17 @@ class WaliKelasController extends Controller
         $waliKelas->save();
 
         return back()->with('success', 'Status Wali Kelas diperbarui.');
+    }
+
+    public function export_excel(Request $request)
+    {
+        $tahunAjaranId = $request->input('tahun_ajaran_id');
+
+        $tahunAjaran = TahunAjaran::find($tahunAjaranId);
+        $namaTahun = $tahunAjaran ? str_replace('/', '_', $tahunAjaran->nama_tahun) : 'semua_tahun';
+
+        $fileName = "wali_kelas_" . $namaTahun . ".xlsx";
+
+        return Excel::download(new ExportWaliKelas($tahunAjaranId), $fileName);
     }
 }
