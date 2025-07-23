@@ -85,6 +85,12 @@
 
 <body>
     <main class="main">
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <div class="container">
 
             <!-- Tombol Kembali -->
@@ -102,6 +108,11 @@
 
 
             <h3 class="text-center">🧠 {{ $kuis->judul }}</h3>
+
+            @php
+                $oldAnswers = session('old_answers', []);
+            @endphp
+
 
             <form id="quiz-form" action="{{ route('kuis.kumpulkan') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -124,29 +135,36 @@
                                 class="img-fluid mb-3">
                         @endif
 
+                        @php
+                            $fieldName = 'soal_' . $soal->id;
+                            $oldValue = old($fieldName, $oldAnswers[$fieldName] ?? '');
+                        @endphp
+
                         @if ($soal->type_soal === 'Objective')
                             @foreach ($soal->pilihan_jawaban as $key => $pilihan)
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="soal_{{ $soal->id }}"
-                                        id="soal_{{ $soal->id }}_{{ $key }}"
-                                        value="{{ $key }}">
+                                    <input class="form-check-input" type="radio" name="{{ $fieldName }}"
+                                        id="{{ $fieldName }}_{{ $key }}" value="{{ $key }}"
+                                        {{ $oldValue == $key ? 'checked' : '' }}>
                                     <label class="form-check-label"
-                                        for="soal_{{ $soal->id }}_{{ $key }}">{{ $pilihan }}</label>
+                                        for="{{ $fieldName }}_{{ $key }}">{{ $pilihan }}</label>
                                 </div>
                             @endforeach
                         @elseif ($soal->type_soal === 'Essay')
-                            <textarea class="form-control mt-2" name="soal_{{ $soal->id }}" rows="4"
-                                placeholder="Tulis jawaban Anda di sini..."></textarea>
+                            <textarea class="form-control mt-2" name="{{ $fieldName }}" rows="4"
+                                placeholder="Tulis jawaban Anda di sini...">{{ $oldValue }}</textarea>
                         @elseif ($soal->type_soal === 'TrueFalse')
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="soal_{{ $soal->id }}"
-                                    id="true_{{ $soal->id }}" value="true">
-                                <label class="form-check-label" for="true_{{ $soal->id }}">Benar</label>
+                                <input class="form-check-input" type="radio" name="{{ $fieldName }}"
+                                    id="{{ $fieldName }}_true" value="true"
+                                    {{ $oldValue == 'true' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="{{ $fieldName }}_true">Benar</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="soal_{{ $soal->id }}"
-                                    id="false_{{ $soal->id }}" value="false">
-                                <label class="form-check-label" for="false_{{ $soal->id }}">Salah</label>
+                                <input class="form-check-input" type="radio" name="{{ $fieldName }}"
+                                    id="{{ $fieldName }}_false" value="false"
+                                    {{ $oldValue == 'false' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="{{ $fieldName }}_false">Salah</label>
                             </div>
                         @else
                             <p><em>Tipe soal tidak dikenali</em></p>

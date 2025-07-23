@@ -27,7 +27,7 @@ class PertemuanTugas extends Model
     protected $casts = [
         'deadline' => 'datetime',
     ];
-    
+
 
 
     public function pembelajaran()
@@ -45,5 +45,30 @@ class PertemuanTugas extends Model
         return $this->belongsTo('App\Models\Tugas', 'tugas_id');
     }
 
-    
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($pertemuanTugas) {
+            // Cek dulu, apakah relasi tugas tersedia
+            $tugas = $pertemuanTugas->tugas;
+
+            if ($tugas) {
+                // Hapus semua SubmitTugas yang berkaitan dengan tugas ini
+                if ($pertemuanTugas->isForceDeleting()) {
+                    $tugas->submitTugas()->forceDelete();
+                } else {
+                    $tugas->submitTugas()->delete();
+                }
+            }
+        });
+
+        static::restoring(function ($pertemuanTugas) {
+            $tugas = $pertemuanTugas->tugas;
+
+            if ($tugas) {
+                $tugas->submitTugas()->withTrashed()->restore();
+            }
+        });
+    }
 }

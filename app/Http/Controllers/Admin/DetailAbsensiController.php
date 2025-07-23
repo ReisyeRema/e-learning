@@ -28,7 +28,9 @@ class DetailAbsensiController extends Controller
         $detailAbsensi = DetailAbsensi::where('absensi_id', $absensiId)->get()
             ->keyBy('siswa_id');
 
-        return view('pages.admin.detailAbsensi.index', compact('absensi', 'enrolledSiswa', 'detailAbsensi'));
+        $pembelajaran = $absensi->pembelajaran;
+
+        return view('pages.admin.detailAbsensi.index', compact('absensi', 'enrolledSiswa', 'detailAbsensi','pembelajaran'));
     }
 
     public function storeOrUpdate(Request $request)

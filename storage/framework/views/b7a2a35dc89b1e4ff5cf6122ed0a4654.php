@@ -8,7 +8,7 @@
 
                 
 
-                <?php if(Auth::user()->hasRole('Guru')): ?>
+                <?php if(session('active_role') === 'Guru'): ?>
                     <div class="col-12 mb-3">
                         <div class="card h-100">
                             <div class="card-body d-flex flex-column justify-content-between">
@@ -23,6 +23,43 @@
                                                 <?php echo e($pembelajaran->nama_mapel); ?> -
                                                 <?php echo e($pembelajaran->kelas->nama_kelas); ?> -
                                                 <?php echo e($pembelajaran->tahunAjaran->nama_tahun ?? 'N/A'); ?>
+
+                                            </option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <?php if(session('active_role') === 'Wali Kelas'): ?>
+                    <div class="col-12 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <form method="GET" class="text-center">
+                                    <label for="" class="form-label fw-semibold">Filter Kelas dan Tahun
+                                        Ajaran</label>
+
+                                    <select name="kelas_id" class="form-control mb-2 w-75 mx-auto"
+                                        onchange="this.form.submit()">
+                                        <option value="">-- Pilih Kelas --</option>
+                                        <?php $__currentLoopData = $daftarAmpu; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($item->kelas_id); ?>"
+                                                <?php echo e(request('kelas_id') == $item->kelas_id ? 'selected' : ''); ?>>
+                                                <?php echo e($item->kelas->nama_kelas); ?>
+
+                                            </option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+
+                                    <select name="tahun_ajaran_id" class="form-control w-75 mx-auto"
+                                        onchange="this.form.submit()">
+                                        <option value="">-- Pilih Tahun Ajaran --</option>
+                                        <?php $__currentLoopData = $daftarAmpu->unique('tahun_ajaran_id'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($item->tahun_ajaran_id); ?>"
+                                                <?php echo e(request('tahun_ajaran_id') == $item->tahun_ajaran_id ? 'selected' : ''); ?>>
+                                                <?php echo e($item->tahunAjaran->nama_tahun ?? 'N/A'); ?>
 
                                             </option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -61,7 +98,7 @@
                             <?php endif; ?>
 
                             <!-- Informasi Total Mata Pelajaran -->
-                            <?php if(Auth::user()->hasRole('Guru')): ?>
+                            <?php if(session('active_role') === 'Guru'): ?>
                                 <div class="d-flex justify-content-between align-items-center w-100 mt-3">
                                     <div class="d-flex align-items-center">
                                         <img src="<?php echo e(asset('assets/img/books.png')); ?>" alt="Icon"
@@ -71,6 +108,7 @@
                                     <span class="badge badge-info badge-pill"><?php echo e($pembelajaranList->count()); ?></span>
                                 </div>
                             <?php endif; ?>
+
                         </div>
                     </div>
                 </div>
@@ -284,7 +322,7 @@
 
 
                 
-                <?php if(Auth::user()->hasRole('Guru')): ?>
+                <?php if(session('active_role') === 'Guru'): ?>
 
                     <!-- Card 9 -->
                     <!-- Card Statistik Guru -->
@@ -462,6 +500,80 @@
                             </div>
                         </div>
                     </div>
+                <?php endif; ?>
+
+                
+                <?php if(session('active_role') === 'Wali Kelas'): ?>
+
+                    <div class="col-md-8">
+                        <div class="card border-primary mb-4">
+                            <div class="card-header bg-primary text-white p-3">Progress Tugas</div>
+                            <div class="card-body p-4">
+                                <h5 class="card-text">Tugas dikerjakan: <?php echo e($dikerjakanTugas); ?> dari
+                                    <?php echo e($totalTugas * $jumlahSiswa); ?> total tugas siswa</h5>
+                                <div class="progress" style="height: 30px; width: 100%;">
+                                    <div class="progress-bar bg-primary fw-semibold text-start ps-3" role="progressbar"
+                                        style="width: <?php echo e($progresTugas); ?>%; font-size: 0.95rem;">
+                                        <?php echo e($progresTugas); ?>%
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="card border-success mb-4">
+                            <div class="card-header bg-success text-white p-3">Progress Kuis</div>
+                            <div class="card-body p-4">
+                                <h5 class="card-text">Kuis dikerjakan: <?php echo e($dikerjakanKuis); ?> dari
+                                    <?php echo e($totalKuis * $jumlahSiswa); ?> total kuis siswa</h5>
+                                <div class="progress" style="height: 30px; width: 100%;">
+                                    <div class="progress-bar bg-success fw-semibold text-start ps-3" role="progressbar"
+                                        style="width: <?php echo e($progresKuis); ?>%; font-size: 0.95rem;">
+                                        <?php echo e($progresKuis); ?>%
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card text-dark shadow-sm border-0 rounded-4" style="background-color: white;">
+                            <div class="card-body text-center py-4">
+                                <h6 class="font-weight-bold text-center">Siswa Kelas <?php echo e($namaKelas); ?></h6>
+                                <h4 class="badge badge-pill badge-success"><?php echo e($jumlahSiswa); ?></h4>
+                                <hr class="my-3" style="opacity: 0.3;">
+
+                                <div class="d-flex align-items-center justify-content-between mb-3 px-4">
+                                    <img src="<?php echo e(asset('assets/img/girl.png')); ?>" alt="Perempuan" width="40">
+                                    <span class="badge bg-primary rounded-pill text-white"><?php echo e($perempuan); ?></span>
+                                </div>
+
+                                <div class="d-flex align-items-center justify-content-between px-4">
+                                    <img src="<?php echo e(asset('assets/img/man.png')); ?>" alt="Laki-laki" width="40">
+                                    <span class="badge bg-primary rounded-pill text-white"><?php echo e($laki); ?></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <?php if(isset($jumlahMapel)): ?>
+                            <div class="card mt-3">
+                                <div class="card-header bg-info text-white font-weight-bold">Jumlah Mata Pelajaran</div>
+                                <div class="card-body">
+                                    <h5 class="card-title display-4"><?php echo e($jumlahMapel); ?></h5>
+                                    <p class="card-text">Mapel aktif di kelas <?php echo e($namaKelas); ?></p>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Statistik Kehadiran Siswa (<?php echo e($namaKelas); ?>)</h5>
+                                <canvas id="kehadiranChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
                 <?php endif; ?>
 
             </div>
@@ -752,15 +864,74 @@
                     }
                 });
             <?php endif; ?>
-
-
-
-
-
-
-            // Siswa
         });
     </script>
+
+
+    <?php if(session('active_role') === 'Wali Kelas'): ?>
+        <script>
+            const ctxKehadiran = document.getElementById('kehadiranChart').getContext('2d');
+            new Chart(ctxKehadiran, {
+                type: 'bar',
+                data: {
+                    labels: <?php echo json_encode($kehadiranChartData['labels'], 15, 512) ?>, // ['Jumlah Kehadiran']
+                    datasets: [{
+                            label: 'Hadir',
+                            data: <?php echo json_encode($kehadiranChartData['hadir'], 15, 512) ?>,
+                            backgroundColor: '#1cc88a'
+                        },
+                        {
+                            label: 'Izin',
+                            data: <?php echo json_encode($kehadiranChartData['izin'], 15, 512) ?>,
+                            backgroundColor: '#f6c23e'
+                        },
+                        {
+                            label: 'Sakit',
+                            data: <?php echo json_encode($kehadiranChartData['sakit'], 15, 512) ?>,
+                            backgroundColor: '#36b9cc'
+                        },
+                        {
+                            label: 'Alpha',
+                            data: <?php echo json_encode($kehadiranChartData['alpha'], 15, 512) ?>,
+                            backgroundColor: '#e74a3b'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                            title: {
+                                display: true,
+                                text: 'Jenis Kehadiran'
+                            }
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Jumlah Siswa'
+                            },
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    <?php endif; ?>
 <?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\DATA MATKUL\SEMESTER 6\TA\PROJECT\e-learn-laravel\resources\views/dashboard.blade.php ENDPATH**/ ?>

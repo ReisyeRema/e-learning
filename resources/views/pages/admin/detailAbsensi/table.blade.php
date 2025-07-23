@@ -9,6 +9,7 @@
         <tr>
             <th rowspan="3">No</th>
             <th rowspan="3">Nama</th>
+            <th rowspan="3">NIS</th>
             <th colspan="{{ $pertemuanList->count() }}" style="text-align: center;">Pertemuan</th>
             <th colspan="4" style="text-align: center;">Rekap</th>
         </tr>
@@ -34,6 +35,7 @@
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $siswa['nama'] }}</td>
+                <td>{{ $siswa['nis'] ? "'" . $siswa['nis'] : '-' }}</td>
                 @foreach ($siswa['pertemuan'] as $keterangan)
                     <td>
                         @if ($keterangan === 'Hadir')

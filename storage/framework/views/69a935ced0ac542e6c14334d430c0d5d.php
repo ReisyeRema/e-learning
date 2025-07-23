@@ -10,6 +10,7 @@
         <tr>
             <th>No</th>
             <th>Nama Siswa</th>
+            <th>NIS</th>
             <th>Status</th>
             <th>Skor</th>
         </tr>
@@ -19,6 +20,7 @@
             <tr>
                 <td><?php echo e($index + 1); ?></td>
                 <td><?php echo e($siswa['nama']); ?></td>
+                <td><?php echo e($siswa['nis'] ? "'" . $siswa['nis'] : '-'); ?></td>
                 <td><?php echo e($siswa['status']); ?></td>
                 <td><?php echo e($siswa['skor']); ?></td>
             </tr>

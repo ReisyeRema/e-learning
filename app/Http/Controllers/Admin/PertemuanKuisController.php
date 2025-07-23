@@ -271,7 +271,7 @@ class PertemuanKuisController extends Controller
         $guruId = Auth::id();
         $pembelajaranId = $request->query('pembelajaran_id');
 
-        $pembelajaran = \App\Models\Pembelajaran::with(['kelas', 'tahunAjaran'])
+        $pembelajaran = Pembelajaran::with(['kelas', 'tahunAjaran'])
             ->where('guru_id', $guruId)
             ->when($pembelajaranId, function ($query, $pembelajaranId) {
                 $query->where('id', $pembelajaranId);
@@ -280,6 +280,16 @@ class PertemuanKuisController extends Controller
 
         if (!$pembelajaran) {
             abort(404, 'Data pembelajaran tidak ditemukan.');
+        }
+
+        $kuisList = PertemuanKuis::whereHas('pembelajaran', function ($query) use ($guruId, $pembelajaranId) {
+            $query->where('guru_id', $guruId)
+                  ->where('id', $pembelajaranId);
+        })
+        ->exists();
+
+        if (!$kuisList) {
+            return back()->with('error', 'Belum ada data kuis yang tersedia untuk diexport!');
         }
 
         $namaKelas = $pembelajaran->kelas->nama_kelas ?? 'Kelas';

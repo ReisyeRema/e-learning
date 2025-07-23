@@ -9,6 +9,7 @@
         <tr>
             <th rowspan="3">No</th>
             <th rowspan="3">Nama</th>
+            <th rowspan="3">NIS</th>
             <th colspan="<?php echo e($pertemuanList->count()); ?>" style="text-align: center;">Pertemuan</th>
             <th colspan="4" style="text-align: center;">Rekap</th>
         </tr>
@@ -35,6 +36,7 @@
             <tr>
                 <td><?php echo e($index + 1); ?></td>
                 <td><?php echo e($siswa['nama']); ?></td>
+                <td><?php echo e($siswa['nis'] ? "'" . $siswa['nis'] : '-'); ?></td>
                 <?php $__currentLoopData = $siswa['pertemuan']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $keterangan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <td>
                         <?php if($keterangan === 'Hadir'): ?>

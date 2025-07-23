@@ -5,6 +5,8 @@
         <tr>
             <th style="text-align: center; border: 1px solid black;">No</th>
             <th style="border: 1px solid black;">Nama</th>
+            <th style="border: 1px solid black;">NUPTK</th>
+            <th style="border: 1px solid black;">NIP</th>
             <th style="border: 1px solid black;">Username</th>
             <th style="border: 1px solid black;">Email</th>
             <th style="border: 1px solid black;">Password</th>
@@ -15,6 +17,8 @@
             <tr>
                 <td style="text-align: center; border: 1px solid black;">{{ $loop->iteration }}</td>
                 <td style="border: 1px solid black;">{{ $user->name }}</td>
+                <td style="border: 1px solid black;">{{ $user->guru->nuptk ? "'".$user->guru->nuptk : '-' }}</td>
+                <td style="border: 1px solid black;">{{ $user->guru->nip ? "'".$user->guru->nip : '-' }}</td>
                 <td style="border: 1px solid black;">{{ $user->username }}</td>
                 <td style="border: 1px solid black;">{{ $user->email }}</td>
                 <td style="border: 1px solid black;">{{ $user->password_plain ?? 'N/A' }}</td>

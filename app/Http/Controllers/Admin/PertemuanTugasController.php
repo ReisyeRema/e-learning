@@ -194,6 +194,16 @@ class PertemuanTugasController extends Controller
             abort(404, 'Data pembelajaran tidak ditemukan.');
         }
 
+        $tugasList = PertemuanTugas::whereHas('pembelajaran', function ($query) use ($guruId, $pembelajaranId) {
+            $query->where('guru_id', $guruId)
+                  ->where('id', $pembelajaranId);
+        })
+        ->exists();
+
+        if (!$tugasList) {
+            return back()->with('error', 'Belum ada data tugas yang tersedia untuk diexport!');
+        }
+
         $namaKelas = $pembelajaran->kelas->nama_kelas ?? 'Kelas';
         $tahunAjaran = $pembelajaran->tahunAjaran->nama_tahun ?? 'TahunAjaran';
         $mapel = $pembelajaran->nama_mapel ?? 'Mapel';

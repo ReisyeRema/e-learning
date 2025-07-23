@@ -29,7 +29,7 @@ class ExportNilaiTugasKelas implements FromArray, WithTitle, WithStyles
         $tugasList = $this->pembelajaran->pertemuanTugas->pluck('tugas')->filter();
 
         // Header tabel
-        $header = ['No', 'Nama Siswa'];
+        $header = ['No', 'Nama Siswa', 'NIS'];
         foreach ($tugasList as $tugas) {
             $header[] = $tugas->judul ?? 'Tugas ' . $tugas->id;
         }
@@ -40,7 +40,7 @@ class ExportNilaiTugasKelas implements FromArray, WithTitle, WithStyles
         $nilaiKolom = array_fill(0, count($tugasList) + 1, []); // index 0..n-1: tugas, index n: rata-rata per siswa
 
         foreach ($siswaList as $index => $siswa) {
-            $row = [$index + 1, $siswa->name];
+            $row = [$index + 1, $siswa->name, $siswa->siswa->nis ?? '-'];
             $nilaiSiswa = [];
 
             foreach ($tugasList as $tugasIndex => $tugas) {
@@ -68,7 +68,7 @@ class ExportNilaiTugasKelas implements FromArray, WithTitle, WithStyles
         }
 
         // Baris rata-rata kolom
-        $rataRataRow = ['Rata-rata', ''];
+        $rataRataRow = ['Rata-rata', '', ''];
         foreach ($nilaiKolom as $nilai) {
             $rataRataRow[] = count($nilai) > 0 ? round(array_sum($nilai) / count($nilai), 2) : '-';
         }
@@ -81,9 +81,15 @@ class ExportNilaiTugasKelas implements FromArray, WithTitle, WithStyles
             $this->pembelajaran->tahunAjaran->nama_tahun
         );
 
+        $guru = $this->pembelajaran->guru->name ?? '-';
+        $nuptk = $this->pembelajaran->guru->guru->nuptk ?? '-';
+        $guruRow = ['Guru Pengampu: ' . $guru . "          NUPTK:" . $nuptk];
+
+
         // Gabungkan semua
         return array_merge(
             [[$judul]],     // Baris 1
+            [$guruRow],
             [$header],      // Baris 2: header
             $rows,          // Baris 3-n: data siswa
             [$rataRataRow]  // Baris terakhir: rata-rata per kolom
@@ -102,38 +108,39 @@ class ExportNilaiTugasKelas implements FromArray, WithTitle, WithStyles
             $query->where('pembelajaran_id', $this->pembelajaran->id);
         })->count();
 
-        $totalColumns = $tugasCount + 3; // +1 No, +1 Nama Siswa, +1 Rata-rata
-        $totalRows = $siswaCount + 3;    // +1 Judul, +1 Header, +N siswa, +1 rata-rata
+        $totalColumns = $tugasCount + 4; // +1 No, +1 Nama Siswa, +1 Rata-rata
+        $totalRows = $siswaCount + 4;    // +1 Judul, +1 Header, +N siswa, +1 rata-rata
 
         $endColumn = Coordinate::stringFromColumnIndex($totalColumns);
 
-        // Merge cell judul
+        // Merge judul (baris 1) dan nama guru (baris 2)
         $sheet->mergeCells("A1:{$endColumn}1");
+        $sheet->mergeCells("A2:{$endColumn}2");
 
         return [
-            // Baris 1: Judul
-            1 => [
+            1 => [ // Judul
                 'font' => ['bold' => true, 'size' => 14],
                 'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER],
             ],
-            // Baris 2: Header tabel
-            2 => [
+            2 => [ // Nama Guru
+                'font' => ['italic' => true],
+                'alignment' => ['horizontal' => Alignment::HORIZONTAL_LEFT],
+            ],
+            3 => [ // Header
                 'font' => ['bold' => true],
                 'fill' => [
                     'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                     'startColor' => ['rgb' => 'EEEDEB'],
                 ],
             ],
-            // Baris rata-rata (baris terakhir)
-            $totalRows => [
+            $totalRows => [ // Baris rata-rata
                 'font' => ['italic' => true, 'bold' => true],
                 'fill' => [
                     'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                     'startColor' => ['rgb' => 'EEEDEB'],
                 ],
             ],
-            // Border semua sel tabel (header sampai rata-rata)
-            "A2:{$endColumn}{$totalRows}" => [
+            "A3:{$endColumn}{$totalRows}" => [ // Border mulai dari header
                 'borders' => [
                     'allBorders' => [
                         'borderStyle' => Border::BORDER_THIN,

@@ -51,4 +51,31 @@ class PertemuanKuis extends Model
     {
         return $this->hasMany(SiswaKuisSession::class, 'pertemuan_kuis_id');
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($pertemuanKuis) {
+            // Cek dulu, apakah relasi tugas tersedia
+            $kuis = $pertemuanKuis->kuis;
+
+            if ($kuis) {
+                // Hapus semua Submitkuis yang berkaitan dengan kuis ini
+                if ($pertemuanKuis->isForceDeleting()) {
+                    $kuis->hasilKuis()->forceDelete();
+                } else {
+                    $kuis->hasilKuis()->delete();
+                }
+            }
+        });
+
+        static::restoring(function ($pertemuanKuis) {
+            $kuis = $pertemuanKuis->kuis;
+
+            if ($kuis) {
+                $kuis->hasilKuis()->withTrashed()->restore();
+            }
+        });
+    }
 }

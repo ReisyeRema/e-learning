@@ -87,7 +87,6 @@ class KuisSiswaController extends Controller
         ]);
     }
 
-
     public function kumpulkan(Request $request)
     {
         $request->validate([
@@ -96,48 +95,61 @@ class KuisSiswaController extends Controller
 
         $userId = Auth::id();
         $kuisId = $request->kuis_id;
-        $jumlahBenar = 0;
-        $jumlahSoal = 0;
+        $kuis = Kuis::with('soalKuis')->findOrFail($kuisId);
+
         $jawabanJSON = [];
+        $jumlahBenar = 0;
+        $jumlahSoal = count($kuis->soalKuis);
+        $jumlahDijawab = 0;
 
-        foreach ($request->all() as $key => $jawabanUser) {
-            if (Str::startsWith($key, 'soal_')) {
-                $soalId = str_replace('soal_', '', $key);
-                $soal = SoalKuis::find($soalId);
+        $nomor = 1;
+        foreach ($kuis->soalKuis as $soal) {
+            $soalInput = 'soal_' . $soal->id;
+            $jawabanUser = $request->input($soalInput);
 
-                if (!$soal || is_null($jawabanUser)) {
-                    continue;
+            // Cek apakah jawaban kosong (semua tipe soal)
+            if (is_null($jawabanUser) || (is_string($jawabanUser) && trim($jawabanUser) === '')) {
+                $pesan = "Soal nomor {$nomor} belum dijawab.";
+
+                if ($request->ajax()) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => $pesan,
+                    ], 422);
                 }
 
-                $jumlahSoal++; // hitung total soal yang dijawab
-                $isCorrect = false;
-
-                if ($soal->type_soal === 'Essay') {
-                    $isCorrect = strtolower(trim($soal->jawaban_benar)) === strtolower(trim($jawabanUser));
-                } elseif (in_array($soal->type_soal, ['Objective', 'TrueFalse'])) {
-                    $isCorrect = $soal->jawaban_benar == $jawabanUser;
-                }
-
-                if ($isCorrect) {
-                    $jumlahBenar++;
-                }
-
-                $jawabanJSON[$soalId] = [
-                    'jawaban' => $jawabanUser,
-                    'status_jawaban' => $isCorrect
-                ];
+                return back()
+                    ->with('error', $pesan)
+                    ->withInput()
+                    ->with('old_answers', $request->all());
             }
+
+
+            $jumlahDijawab++;
+            $isCorrect = false;
+
+            if ($soal->type_soal === 'Essay') {
+                $isCorrect = strtolower(trim($soal->jawaban_benar)) === strtolower(trim($jawabanUser));
+            } elseif (in_array($soal->type_soal, ['Objective', 'TrueFalse'])) {
+                $isCorrect = $soal->jawaban_benar == $jawabanUser;
+            }
+
+            if ($isCorrect) {
+                $jumlahBenar++;
+            }
+
+            $jawabanJSON[$soal->id] = [
+                'jawaban' => $jawabanUser,
+                'status_jawaban' => $isCorrect
+            ];
+
+            $nomor++;
         }
 
-        // Hitung skor sebagai persentase
-        $skorTotal = $jumlahSoal > 0 ? round(($jumlahBenar / $jumlahSoal) * 100) : 0;
+        $skorTotal = round(($jumlahBenar / $jumlahSoal) * 100);
 
-        // Simpan ke tabel hasil_kuis
         HasilKuis::updateOrCreate(
-            [
-                'kuis_id' => $kuisId,
-                'siswa_id' => $userId
-            ],
+            ['kuis_id' => $kuisId, 'siswa_id' => $userId],
             [
                 'jawaban_user' => json_encode($jawabanJSON),
                 'skor_total' => $skorTotal,
@@ -145,19 +157,94 @@ class KuisSiswaController extends Controller
             ]
         );
 
-        // jam selesai
         $pertemuanId = PertemuanKuis::where('kuis_id', $kuisId)->value('id');
-
         if ($pertemuanId) {
             SiswaKuisSession::where('pertemuan_kuis_id', $pertemuanId)
                 ->where('siswa_id', $userId)
-                ->update([
-                    'jam_selesai' => now()->format('H:i:s'),
-                ]);
+                ->update(['jam_selesai' => now()->format('H:i:s')]);
+        }
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Jawaban berhasil dikumpulkan!',
+            ]);
         }
 
         return redirect()->route('list-kuis.index')->with('success', 'Jawaban berhasil dikumpulkan!');
     }
+
+
+    // public function kumpulkan(Request $request)
+    // {
+    //     $request->validate([
+    //         'kuis_id' => 'required|exists:kuis,id',
+    //     ]);
+
+    //     $userId = Auth::id();
+    //     $kuisId = $request->kuis_id;
+    //     $jumlahBenar = 0;
+    //     $jumlahSoal = 0;
+    //     $jawabanJSON = [];
+
+    //     foreach ($request->all() as $key => $jawabanUser) {
+    //         if (Str::startsWith($key, 'soal_')) {
+    //             $soalId = str_replace('soal_', '', $key);
+    //             $soal = SoalKuis::find($soalId);
+
+    //             if (!$soal || is_null($jawabanUser)) {
+    //                 continue;
+    //             }
+
+    //             $jumlahSoal++; // hitung total soal yang dijawab
+    //             $isCorrect = false;
+
+    //             if ($soal->type_soal === 'Essay') {
+    //                 $isCorrect = strtolower(trim($soal->jawaban_benar)) === strtolower(trim($jawabanUser));
+    //             } elseif (in_array($soal->type_soal, ['Objective', 'TrueFalse'])) {
+    //                 $isCorrect = $soal->jawaban_benar == $jawabanUser;
+    //             }
+
+    //             if ($isCorrect) {
+    //                 $jumlahBenar++;
+    //             }
+
+    //             $jawabanJSON[$soalId] = [
+    //                 'jawaban' => $jawabanUser,
+    //                 'status_jawaban' => $isCorrect
+    //             ];
+    //         }
+    //     }
+
+    //     // Hitung skor sebagai persentase
+    //     $skorTotal = $jumlahSoal > 0 ? round(($jumlahBenar / $jumlahSoal) * 100) : 0;
+
+    //     // Simpan ke tabel hasil_kuis
+    //     HasilKuis::updateOrCreate(
+    //         [
+    //             'kuis_id' => $kuisId,
+    //             'siswa_id' => $userId
+    //         ],
+    //         [
+    //             'jawaban_user' => json_encode($jawabanJSON),
+    //             'skor_total' => $skorTotal,
+    //             'is_done' => true
+    //         ]
+    //     );
+
+    //     // jam selesai
+    //     $pertemuanId = PertemuanKuis::where('kuis_id', $kuisId)->value('id');
+
+    //     if ($pertemuanId) {
+    //         SiswaKuisSession::where('pertemuan_kuis_id', $pertemuanId)
+    //             ->where('siswa_id', $userId)
+    //             ->update([
+    //                 'jam_selesai' => now()->format('H:i:s'),
+    //             ]);
+    //     }
+
+    //     return redirect()->route('list-kuis.index')->with('success', 'Jawaban berhasil dikumpulkan!');
+    // }
 
 
     // public function index()

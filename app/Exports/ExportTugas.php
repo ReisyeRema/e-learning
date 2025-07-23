@@ -35,6 +35,7 @@ class ExportTugas implements FromView, WithStyles, WithTitle
             $hasil = $submitTugas->get($siswa->id);
             return [
                 'nama' => $siswa->name,
+                'nis' => $siswa->siswa->nis,
                 'status' => $hasil ? 'Sudah' : 'Belum',
                 'skor' => $hasil->skor ?? 0,
             ];
@@ -67,7 +68,7 @@ class ExportTugas implements FromView, WithStyles, WithTitle
         $startRow = $this->barisHeaderTabel;
         $endRow = $startRow + $this->jumlahBarisSiswa;
 
-        $sheet->getStyle("A{$startRow}:D{$endRow}")->applyFromArray([
+        $sheet->getStyle("A{$startRow}:E{$endRow}")->applyFromArray([
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,

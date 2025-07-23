@@ -40,7 +40,7 @@ class ExportNilaiKuisKelas implements FromArray, WithTitle, WithStyles
         })->values();
 
         // Header
-        $header = ['No', 'Nama Siswa'];
+        $header = ['No', 'Nama Siswa', 'NIS'];
         foreach ($kuisBiasa as $kuis) {
             $header[] = $kuis->judul ?? 'Kuis ' . $kuis->id;
         }
@@ -54,7 +54,7 @@ class ExportNilaiKuisKelas implements FromArray, WithTitle, WithStyles
         $nilaiKolom = array_fill(0, $kuisBiasa->count() + 1, []); // kolom nilai + rata-rata
 
         foreach ($siswaList as $index => $siswa) {
-            $row = [$index + 1, $siswa->name];
+            $row = [$index + 1, $siswa->name, $siswa->siswa->nis ?? '-'];
             $nilaiSiswa = [];
 
             // Nilai kuis biasa (dihitung ke rata-rata)
@@ -92,7 +92,7 @@ class ExportNilaiKuisKelas implements FromArray, WithTitle, WithStyles
         }
 
         // Baris rata-rata kolom (hanya untuk kuis biasa + rata-rata siswa)
-        $rataRataRow = ['Rata-rata', ''];
+        $rataRataRow = ['Rata-rata', '',''];
         foreach ($nilaiKolom as $nilai) {
             $rataRataRow[] = count($nilai) > 0 ? round(array_sum($nilai) / count($nilai), 2) : '-';
         }
@@ -100,22 +100,22 @@ class ExportNilaiKuisKelas implements FromArray, WithTitle, WithStyles
         // Tambahkan kolom kosong untuk ujian karena tidak dihitung rata-rata kolom
         foreach ($kuisUjian as $kuis) {
             $nilaiUjian = [];
-        
+
             foreach ($siswaList as $siswa) {
                 $skor = $kuis->HasilKuis()
                     ->where('siswa_id', $siswa->id)
                     ->first()
                     ->skor_total ?? null;
-        
+
                 if (is_numeric($skor)) {
                     $nilaiUjian[] = $skor;
                 }
             }
-        
+
             $rataUjian = count($nilaiUjian) > 0 ? round(array_sum($nilaiUjian) / count($nilaiUjian), 2) : '-';
             $rataRataRow[] = $rataUjian;
         }
-        
+
 
         // Judul dinamis
         $judul = sprintf(
@@ -125,9 +125,14 @@ class ExportNilaiKuisKelas implements FromArray, WithTitle, WithStyles
             $this->pembelajaran->tahunAjaran->nama_tahun
         );
 
+        $guru = $this->pembelajaran->guru->name ?? '-';
+        $nuptk = $this->pembelajaran->guru->guru->nuptk ?? '-';
+        $guruRow = ['Guru Pengampu: ' . $guru . "          NUPTK:" . $nuptk];
+
         // Gabungkan semua
         return array_merge(
             [[$judul]],
+            [$guruRow],
             [$header],
             $rows,
             [$rataRataRow]
@@ -156,33 +161,39 @@ class ExportNilaiKuisKelas implements FromArray, WithTitle, WithStyles
             $query->where('pembelajaran_id', $this->pembelajaran->id);
         })->count();
 
-        $totalColumns = 2 + $kuisBiasaCount + 1 + $ujianCount; // No, Nama, kuis, rata2, ujian
-        $totalRows = $siswaCount + 3;
+        $totalColumns = 3 + $kuisBiasaCount + 1 + $ujianCount; // No, Nama, kuis, rata2, ujian
+        $totalRows = $siswaCount + 4;
 
         $endColumn = Coordinate::stringFromColumnIndex($totalColumns);
 
-        $sheet->mergeCells("A1:{$endColumn}1");
+        $sheet->mergeCells("A1:{$endColumn}1"); // Judul
+        $sheet->mergeCells("A2:{$endColumn}2"); // Guru
+
 
         return [
-            1 => [
+            1 => [ // Judul
                 'font' => ['bold' => true, 'size' => 14],
                 'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER],
             ],
-            2 => [
+            2 => [ // Nama Guru
+                'font' => ['italic' => true],
+                'alignment' => ['horizontal' => Alignment::HORIZONTAL_LEFT],
+            ],
+            3 => [ // Header
                 'font' => ['bold' => true],
                 'fill' => [
                     'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                     'startColor' => ['rgb' => 'EEEDEB'],
                 ],
             ],
-            $totalRows => [
+            $totalRows => [ // Baris rata-rata
                 'font' => ['italic' => true, 'bold' => true],
                 'fill' => [
                     'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                     'startColor' => ['rgb' => 'EEEDEB'],
                 ],
             ],
-            "A2:{$endColumn}{$totalRows}" => [
+            "A3:{$endColumn}{$totalRows}" => [ // Border mulai dari header
                 'borders' => [
                     'allBorders' => [
                         'borderStyle' => Border::BORDER_THIN,
@@ -190,5 +201,6 @@ class ExportNilaiKuisKelas implements FromArray, WithTitle, WithStyles
                 ],
             ],
         ];
+        
     }
 }

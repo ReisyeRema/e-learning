@@ -3,14 +3,19 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Kuis;
 use App\Models\User;
 use App\Models\Kelas;
+use App\Models\Siswa;
+use App\Models\Tugas;
 use App\Models\HasilKuis;
+use App\Models\WaliKelas;
 use App\Models\Enrollments;
 use App\Models\SubmitTugas;
 use App\Models\Pembelajaran;
 use App\Models\UserActivity;
 use Illuminate\Http\Request;
+use App\Models\DetailAbsensi;
 use App\Models\PertemuanKuis;
 use App\Models\PertemuanTugas;
 use App\Models\PertemuanMateri;
@@ -49,7 +54,7 @@ class DashboardController extends Controller
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
             ->select('roles.name as role', DB::raw('count(*) as total'))
-            ->where('login_at', '>=', Carbon::now()->startOfWeek()) 
+            ->where('login_at', '>=', Carbon::now()->startOfWeek())
             ->groupBy('roles.name')
             ->orderByDesc('total')
             ->get();
@@ -204,6 +209,113 @@ class DashboardController extends Controller
 
 
 
+
+
+
+
+
+        /** Wali Kelas */
+        $user = Auth::user();
+
+        $daftarAmpu = WaliKelas::with(['kelas', 'tahunAjaran'])
+            ->where('guru_id', $user->id)
+            ->get();
+
+        $kelasId = $request->kelas_id;
+        $tahunAjaranId = $request->tahun_ajaran_id;
+
+        $waliKelas = WaliKelas::where('guru_id', $user->id)
+            ->where('kelas_id', $kelasId)
+            ->where('tahun_ajaran_id', $tahunAjaranId)
+            ->first();
+
+        // Inisialisasi default agar tidak error meskipun $waliKelas null
+        $laki = $perempuan = $jumlahSiswa = $jumlahMapel = 0;
+        $namaKelas = '-';
+        $progresTugas = $progresKuis = $totalTugas = $totalKuis = $dikerjakanTugas = $dikerjakanKuis = 0;
+
+        $kehadiranChartData = [
+            'labels' => [],
+            'hadir' => [],
+            'izin' => [],
+            'sakit' => [],
+            'alpha' => []
+        ];
+
+        if ($waliKelas) {
+            $kelasId = $waliKelas->kelas_id;
+            $tahunAjaranId = $waliKelas->tahun_ajaran_id;
+
+            // Nama kelas
+            $namaKelas = optional($waliKelas->kelas)->nama_kelas ?? '-';
+
+            // Jumlah siswa dan gender
+            $jumlahSiswa = Siswa::where('kelas_id', $kelasId)->count();
+            $laki = Siswa::where('kelas_id', $kelasId)->where('jenis_kelamin', 'Laki-Laki')->count();
+            $perempuan = Siswa::where('kelas_id', $kelasId)->where('jenis_kelamin', 'Perempuan')->count();
+
+            // Mapel
+            $jumlahMapel = Pembelajaran::where('kelas_id', $kelasId)
+                ->where('tahun_ajaran_id', $tahunAjaranId)
+                ->count();
+
+            $pembelajarans = Pembelajaran::where('kelas_id', $kelasId)
+                ->where('tahun_ajaran_id', $tahunAjaranId)
+                ->get();
+
+            // Statistik Kehadiran
+            $labels = ['Jumlah Kehadiran'];
+            $hadirCount = $izinCount = $sakitCount = $alphaCount = 0;
+
+            foreach ($pembelajarans as $pembelajaran) {
+                $absensiData = DetailAbsensi::whereHas('absensi', function ($q) use ($pembelajaran) {
+                    $q->where('pembelajaran_id', $pembelajaran->id);
+                })->whereHas('siswa.siswa', function ($q) use ($kelasId) {
+                    $q->where('kelas_id', $kelasId);
+                })->get();
+
+                $hadirCount += $absensiData->where('keterangan', 'Hadir')->count();
+                $izinCount  += $absensiData->where('keterangan', 'Izin')->count();
+                $sakitCount += $absensiData->where('keterangan', 'Sakit')->count();
+                $alphaCount += $absensiData->where('keterangan', 'Alpha')->count();
+            }
+
+            $kehadiranChartData = [
+                'labels' => $labels,
+                'hadir' => [$hadirCount],
+                'izin' => [$izinCount],
+                'sakit' => [$sakitCount],
+                'alpha' => [$alphaCount],
+            ];
+
+
+            // Progress Tugas & Kuis
+            $siswaIds = Siswa::where('kelas_id', $kelasId)->pluck('user_id');
+            $pembelajaranIds = $pembelajarans->pluck('id');
+
+            $tugasIds = PertemuanTugas::whereIn('pembelajaran_id', $pembelajaranIds)->pluck('tugas_id');
+            $kuisIds  = PertemuanKuis::whereIn('pembelajaran_id', $pembelajaranIds)->pluck('kuis_id');
+
+            $totalTugas = Tugas::whereIn('id', $tugasIds)->count();
+            $totalKuis  = Kuis::whereIn('id', $kuisIds)->count();
+
+            $dikerjakanTugas = SubmitTugas::whereIn('siswa_id', $siswaIds)
+                ->whereIn('tugas_id', $tugasIds)
+                ->count();
+
+            $dikerjakanKuis = HasilKuis::whereIn('siswa_id', $siswaIds)
+                ->whereIn('kuis_id', $kuisIds)
+                ->where('is_done', true)
+                ->count();
+
+            $maxTugas = $totalTugas * max($siswaIds->count(), 1);
+            $maxKuis = $totalKuis * max($siswaIds->count(), 1);
+
+            $progresTugas = $maxTugas > 0 ? round(($dikerjakanTugas / $maxTugas) * 100) : 0;
+            $progresKuis  = $maxKuis > 0 ? round(($dikerjakanKuis / $maxKuis) * 100) : 0;
+        }
+
+
         return view('dashboard', compact(
             'roleNames',
             'dates',
@@ -229,8 +341,20 @@ class DashboardController extends Controller
             'upcomingKuis',
             'loginRoleLabels',
             'loginRoleCounts',
-            'activities'
-
+            'activities',
+            'jumlahSiswa',
+            'namaKelas',
+            'laki',
+            'perempuan',
+            'kehadiranChartData',
+            'jumlahMapel',
+            'totalTugas',
+            'dikerjakanTugas',
+            'progresTugas',
+            'totalKuis',
+            'dikerjakanKuis',
+            'progresKuis',
+            'daftarAmpu',
         ));
     }
 }

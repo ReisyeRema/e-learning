@@ -168,19 +168,19 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="form-group">
-                                                            <label>Tanggal</label>
+                                                            <label>Tanggal <span class="text-danger">*</span></label>
                                                             <input type="date" name="tanggal"
                                                                 value="<?php echo e(old('tanggal', \Carbon\Carbon::parse($item->tanggal)->format('Y-m-d'))); ?>"
                                                                 class="form-control">
                                                         </div>
                                                         <div class="form-group">
-                                                            <label>Jam Mulai</label>
+                                                            <label>Jam Mulai <span class="text-danger">*</span></label>
                                                             <input type="time" name="jam_mulai"
                                                                 value="<?php echo e(old('jam_mulai', $item->jam_mulai)); ?>"
                                                                 class="form-control">
                                                         </div>
                                                         <div class="form-group">
-                                                            <label>Jam Selesai</label>
+                                                            <label>Jam Selesai <span class="text-danger">*</span></label>
                                                             <input type="time" name="jam_selesai"
                                                                 value="<?php echo e(old('jam_selesai', $item->jam_selesai)); ?>"
                                                                 class="form-control">
@@ -246,7 +246,7 @@
 
                         
                         <div class="form-group">
-                            <label for="tanggal">Tanggal</label>
+                            <label for="tanggal">Tanggal <span class="text-danger">*</span></label>
                             <input type="date" name="tanggal"
                                 class="form-control <?php $__errorArgs = ['tanggal'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -270,7 +270,7 @@ unset($__errorArgs, $__bag); ?>
 
                         
                         <div class="form-group">
-                            <label>Waktu</label>
+                            <label>Waktu <span class="text-danger">*</span></label>
                             <div class="d-flex">
                                 <input type="time" name="jam_mulai"
                                     class="form-control mr-2 <?php $__errorArgs = ['jam_mulai'];

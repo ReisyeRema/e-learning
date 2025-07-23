@@ -8,9 +8,9 @@
         <div class="col-12 grid-margin">
             <div class="row">
 
-                {{-- FILTER --}}
+                {{-- FILTER PADA GURU --}}
 
-                @if (Auth::user()->hasRole('Guru'))
+                @if (session('active_role') === 'Guru')
                     <div class="col-12 mb-3">
                         <div class="card h-100">
                             <div class="card-body d-flex flex-column justify-content-between">
@@ -25,6 +25,41 @@
                                                 {{ $pembelajaran->nama_mapel }} -
                                                 {{ $pembelajaran->kelas->nama_kelas }} -
                                                 {{ $pembelajaran->tahunAjaran->nama_tahun ?? 'N/A' }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                @if (session('active_role') === 'Wali Kelas')
+                    <div class="col-12 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <form method="GET" class="text-center">
+                                    <label for="" class="form-label fw-semibold">Filter Kelas dan Tahun
+                                        Ajaran</label>
+
+                                    <select name="kelas_id" class="form-control mb-2 w-75 mx-auto"
+                                        onchange="this.form.submit()">
+                                        <option value="">-- Pilih Kelas --</option>
+                                        @foreach ($daftarAmpu as $item)
+                                            <option value="{{ $item->kelas_id }}"
+                                                {{ request('kelas_id') == $item->kelas_id ? 'selected' : '' }}>
+                                                {{ $item->kelas->nama_kelas }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    <select name="tahun_ajaran_id" class="form-control w-75 mx-auto"
+                                        onchange="this.form.submit()">
+                                        <option value="">-- Pilih Tahun Ajaran --</option>
+                                        @foreach ($daftarAmpu->unique('tahun_ajaran_id') as $item)
+                                            <option value="{{ $item->tahun_ajaran_id }}"
+                                                {{ request('tahun_ajaran_id') == $item->tahun_ajaran_id ? 'selected' : '' }}>
+                                                {{ $item->tahunAjaran->nama_tahun ?? 'N/A' }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -62,7 +97,7 @@
                             @endif
 
                             <!-- Informasi Total Mata Pelajaran -->
-                            @if (Auth::user()->hasRole('Guru'))
+                            @if (session('active_role') === 'Guru')
                                 <div class="d-flex justify-content-between align-items-center w-100 mt-3">
                                     <div class="d-flex align-items-center">
                                         <img src="{{ asset('assets/img/books.png') }}" alt="Icon"
@@ -72,6 +107,7 @@
                                     <span class="badge badge-info badge-pill">{{ $pembelajaranList->count() }}</span>
                                 </div>
                             @endif
+
                         </div>
                     </div>
                 </div>
@@ -278,7 +314,7 @@
 
 
                 {{-- Guru --}}
-                @if (Auth::user()->hasRole('Guru'))
+                @if (session('active_role') === 'Guru')
 
                     <!-- Card 9 -->
                     <!-- Card Statistik Guru -->
@@ -453,6 +489,80 @@
                         </div>
                     </div>
                 @endrole
+
+                {{-- Wali Kelas --}}
+                @if (session('active_role') === 'Wali Kelas')
+
+                    <div class="col-md-8">
+                        <div class="card border-primary mb-4">
+                            <div class="card-header bg-primary text-white p-3">Progress Tugas</div>
+                            <div class="card-body p-4">
+                                <h5 class="card-text">Tugas dikerjakan: {{ $dikerjakanTugas }} dari
+                                    {{ $totalTugas * $jumlahSiswa }} total tugas siswa</h5>
+                                <div class="progress" style="height: 30px; width: 100%;">
+                                    <div class="progress-bar bg-primary fw-semibold text-start ps-3" role="progressbar"
+                                        style="width: {{ $progresTugas }}%; font-size: 0.95rem;">
+                                        {{ $progresTugas }}%
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="card border-success mb-4">
+                            <div class="card-header bg-success text-white p-3">Progress Kuis</div>
+                            <div class="card-body p-4">
+                                <h5 class="card-text">Kuis dikerjakan: {{ $dikerjakanKuis }} dari
+                                    {{ $totalKuis * $jumlahSiswa }} total kuis siswa</h5>
+                                <div class="progress" style="height: 30px; width: 100%;">
+                                    <div class="progress-bar bg-success fw-semibold text-start ps-3" role="progressbar"
+                                        style="width: {{ $progresKuis }}%; font-size: 0.95rem;">
+                                        {{ $progresKuis }}%
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card text-dark shadow-sm border-0 rounded-4" style="background-color: white;">
+                            <div class="card-body text-center py-4">
+                                <h6 class="font-weight-bold text-center">Siswa Kelas {{ $namaKelas }}</h6>
+                                <h4 class="badge badge-pill badge-success">{{ $jumlahSiswa }}</h4>
+                                <hr class="my-3" style="opacity: 0.3;">
+
+                                <div class="d-flex align-items-center justify-content-between mb-3 px-4">
+                                    <img src="{{ asset('assets/img/girl.png') }}" alt="Perempuan" width="40">
+                                    <span class="badge bg-primary rounded-pill text-white">{{ $perempuan }}</span>
+                                </div>
+
+                                <div class="d-flex align-items-center justify-content-between px-4">
+                                    <img src="{{ asset('assets/img/man.png') }}" alt="Laki-laki" width="40">
+                                    <span class="badge bg-primary rounded-pill text-white">{{ $laki }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (isset($jumlahMapel))
+                            <div class="card mt-3">
+                                <div class="card-header bg-info text-white font-weight-bold">Jumlah Mata Pelajaran</div>
+                                <div class="card-body">
+                                    <h5 class="card-title display-4">{{ $jumlahMapel }}</h5>
+                                    <p class="card-text">Mapel aktif di kelas {{ $namaKelas }}</p>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Statistik Kehadiran Siswa ({{ $namaKelas }})</h5>
+                                <canvas id="kehadiranChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                @endif
 
             </div>
         </div>
@@ -741,13 +851,72 @@
                     }
                 });
             @endif
-
-
-
-
-
-
-            // Siswa
         });
     </script>
+
+
+    @if (session('active_role') === 'Wali Kelas')
+        <script>
+            const ctxKehadiran = document.getElementById('kehadiranChart').getContext('2d');
+            new Chart(ctxKehadiran, {
+                type: 'bar',
+                data: {
+                    labels: @json($kehadiranChartData['labels']), // ['Jumlah Kehadiran']
+                    datasets: [{
+                            label: 'Hadir',
+                            data: @json($kehadiranChartData['hadir']),
+                            backgroundColor: '#1cc88a'
+                        },
+                        {
+                            label: 'Izin',
+                            data: @json($kehadiranChartData['izin']),
+                            backgroundColor: '#f6c23e'
+                        },
+                        {
+                            label: 'Sakit',
+                            data: @json($kehadiranChartData['sakit']),
+                            backgroundColor: '#36b9cc'
+                        },
+                        {
+                            label: 'Alpha',
+                            data: @json($kehadiranChartData['alpha']),
+                            backgroundColor: '#e74a3b'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                            title: {
+                                display: true,
+                                text: 'Jenis Kehadiran'
+                            }
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Jumlah Siswa'
+                            },
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    @endif
 @endpush

@@ -93,20 +93,22 @@
                                                     Export XLSX
                                                 </button>
                                             </div>
-                            
+
                                             <!-- Tahun Ajaran Dropdown -->
                                             <div class="col-auto">
-                                                <select name="tahun_ajaran_id" class="form-control form-control-sm" id="tahunAjaranSelect">
+                                                <select name="tahun_ajaran_id" class="form-control form-control-sm"
+                                                    id="tahunAjaranSelect">
                                                     <option value="">-- Semua Tahun Ajaran --</option>
                                                     <?php $__currentLoopData = $tahunAjaran; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $t): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                        <option value="<?php echo e($t->id); ?>" <?php echo e(request('tahun_ajaran_id') == $t->id ? 'selected' : ''); ?>>
+                                                        <option value="<?php echo e($t->id); ?>"
+                                                            <?php echo e(request('tahun_ajaran_id') == $t->id ? 'selected' : ''); ?>>
                                                             <?php echo e($t->nama_tahun); ?>
 
                                                         </option>
                                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                 </select>
                                             </div>
-                            
+
                                             <!-- Filter Button -->
                                             <div class="col-auto">
                                                 <button type="submit" class="btn btn-sm btn-outline-info">
@@ -117,7 +119,7 @@
                                     </form>
                                 </div>
                             </div>
-                            
+
 
                             <!-- Table Section -->
                             <div class="table-responsive">

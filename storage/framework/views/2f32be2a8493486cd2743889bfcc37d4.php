@@ -80,16 +80,18 @@
         .btn-light {
             border-radius: 10px;
         }
-
-        .question.unanswered {
-            border-left: 6px solid red !important;
-            background-color: #ffe6e6;
-        }
     </style>
 </head>
 
 <body>
     <main class="main">
+        <?php if(session('error')): ?>
+            <div class="alert alert-danger">
+                <?php echo e(session('error')); ?>
+
+            </div>
+        <?php endif; ?>
+
         <div class="container">
 
             <!-- Tombol Kembali -->
@@ -108,6 +110,11 @@
 
             <h3 class="text-center">🧠 <?php echo e($kuis->judul); ?></h3>
 
+            <?php
+                $oldAnswers = session('old_answers', []);
+            ?>
+
+
             <form id="quiz-form" action="<?php echo e(route('kuis.kumpulkan')); ?>" method="POST" enctype="multipart/form-data">
                 <?php echo csrf_field(); ?>
                 <input type="hidden" name="kuis_id" value="<?php echo e($kuis->id); ?>">
@@ -120,7 +127,7 @@
 
 
                 <?php $__currentLoopData = $soalKuis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $soal): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div class="question" data-no="<?php echo e($loop->iteration); ?>">
+                    <div class="question">
                         <div class="question-number">Soal <?php echo e($no++); ?></div>
                         <p><strong><?php echo e($soal->teks_soal); ?></strong></p>
 
@@ -129,29 +136,36 @@
                                 class="img-fluid mb-3">
                         <?php endif; ?>
 
+                        <?php
+                            $fieldName = 'soal_' . $soal->id;
+                            $oldValue = old($fieldName, $oldAnswers[$fieldName] ?? '');
+                        ?>
+
                         <?php if($soal->type_soal === 'Objective'): ?>
                             <?php $__currentLoopData = $soal->pilihan_jawaban; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $pilihan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="soal_<?php echo e($soal->id); ?>"
-                                        id="soal_<?php echo e($soal->id); ?>_<?php echo e($key); ?>"
-                                        value="<?php echo e($key); ?>">
+                                    <input class="form-check-input" type="radio" name="<?php echo e($fieldName); ?>"
+                                        id="<?php echo e($fieldName); ?>_<?php echo e($key); ?>" value="<?php echo e($key); ?>"
+                                        <?php echo e($oldValue == $key ? 'checked' : ''); ?>>
                                     <label class="form-check-label"
-                                        for="soal_<?php echo e($soal->id); ?>_<?php echo e($key); ?>"><?php echo e($pilihan); ?></label>
+                                        for="<?php echo e($fieldName); ?>_<?php echo e($key); ?>"><?php echo e($pilihan); ?></label>
                                 </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         <?php elseif($soal->type_soal === 'Essay'): ?>
-                            <textarea class="form-control mt-2" name="soal_<?php echo e($soal->id); ?>" rows="4"
-                                placeholder="Tulis jawaban Anda di sini..."></textarea>
+                            <textarea class="form-control mt-2" name="<?php echo e($fieldName); ?>" rows="4"
+                                placeholder="Tulis jawaban Anda di sini..."><?php echo e($oldValue); ?></textarea>
                         <?php elseif($soal->type_soal === 'TrueFalse'): ?>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="soal_<?php echo e($soal->id); ?>"
-                                    id="true_<?php echo e($soal->id); ?>" value="true">
-                                <label class="form-check-label" for="true_<?php echo e($soal->id); ?>">Benar</label>
+                                <input class="form-check-input" type="radio" name="<?php echo e($fieldName); ?>"
+                                    id="<?php echo e($fieldName); ?>_true" value="true"
+                                    <?php echo e($oldValue == 'true' ? 'checked' : ''); ?>>
+                                <label class="form-check-label" for="<?php echo e($fieldName); ?>_true">Benar</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="soal_<?php echo e($soal->id); ?>"
-                                    id="false_<?php echo e($soal->id); ?>" value="false">
-                                <label class="form-check-label" for="false_<?php echo e($soal->id); ?>">Salah</label>
+                                <input class="form-check-input" type="radio" name="<?php echo e($fieldName); ?>"
+                                    id="<?php echo e($fieldName); ?>_false" value="false"
+                                    <?php echo e($oldValue == 'false' ? 'checked' : ''); ?>>
+                                <label class="form-check-label" for="<?php echo e($fieldName); ?>_false">Salah</label>
                             </div>
                         <?php else: ?>
                             <p><em>Tipe soal tidak dikenali</em></p>
@@ -170,76 +184,48 @@
         </div>
     </main>
 
-    
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.getElementById("quiz-form").addEventListener("submit", function(e) {
             e.preventDefault();
 
             const form = e.target;
-            const questions = form.querySelectorAll('.question');
+            const formData = new FormData(form);
             const unanswered = [];
-
-            // Reset semua highlight sebelumnya
-            questions.forEach(q => q.classList.remove('unanswered'));
 
             <?php $__currentLoopData = $soalKuis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $soal): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 const soalId = "soal_<?php echo e($soal->id); ?>";
-                const type = "<?php echo e(strtolower($soal->type_soal)); ?>";
-
-                let answered = false;
-
-                if (type === "objective" || type === "truefalse") {
-                    const radios = form.querySelectorAll(`input[name="${soalId}"]`);
-                    radios.forEach(r => {
-                        if (r.checked) answered = true;
+                const answer = formData.get(soalId);
+                if (!answer || answer.trim() === "") {
+                    unanswered.push({
+                        id: soalId
                     });
-                } else if (type === "essay") {
-                    const textarea = form.querySelector(`textarea[name="${soalId}"]`);
-                    if (textarea && textarea.value.trim() !== "") {
-                        answered = true;
-                    }
-                }
-
-                if (!answered) {
-                    // Highlight soal
-                    const questionEl = form.querySelector(
-                        `.question input[name="${soalId}"], .question textarea[name="${soalId}"]`).closest(
-                        '.question');
-                    if (questionEl) {
-                        questionEl.classList.add('unanswered');
-                        unanswered.push(questionEl.dataset.no);
-                    }
                 }
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
             if (unanswered.length > 0) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Jawaban Belum Lengkap',
-                    html: 'Silakan lengkapi terlebih dahulu soal nomor: <strong>' + unanswered.join(', ') +
-                        '</strong>',
-                    confirmButtonText: 'Oke'
-                });
+                alert("Harap jawab semua soal terlebih dahulu sebelum mengumpulkan.");
                 return;
             }
 
-            // Jika semua sudah terjawab
-            Swal.fire({
-                title: 'Yakin ingin mengumpulkan jawaban?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Ya, kumpulkan',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            });
+            fetch("<?php echo e(route('kuis.kumpulkan')); ?>", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content'),
+                    },
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert("Jawaban berhasil dikumpulkan!");
+                    window.location.reload(); // Atau redirect ke halaman lain jika perlu
+                })
+                .catch(error => {
+                    console.error("Terjadi kesalahan:", error);
+                    alert("Terjadi kesalahan saat mengirim jawaban.");
+                });
         });
     </script>
-
 
 </body>
 

@@ -33,7 +33,7 @@ class ExportAbsensiKelas implements FromArray, WithTitle, WithStyles
         $absensiList = $this->pembelajaran->absensi()->with('detailAbsensi')->orderBy('tanggal')->get();
 
         // Header
-        $header = ['No', 'Nama Siswa'];
+        $header = ['No', 'Nama Siswa', 'NIS'];
         foreach ($absensiList as $absensi) {
             $tanggal = $absensi->tanggal ? $absensi->tanggal->format('d/m') : 'Tanpa Tanggal';
             $header[] = $tanggal;
@@ -47,7 +47,7 @@ class ExportAbsensiKelas implements FromArray, WithTitle, WithStyles
         $rows = [];
 
         foreach ($siswaList as $index => $siswa) {
-            $row = [$index + 1, $siswa->name];
+            $row = [$index + 1, $siswa->name, $siswa->siswa->nis ?? '-'];
 
             // Hitung total absensi per jenis
             $total = [
@@ -95,8 +95,12 @@ class ExportAbsensiKelas implements FromArray, WithTitle, WithStyles
             $this->pembelajaran->tahunAjaran->nama_tahun
         );
 
+        $guru = $this->pembelajaran->guru->name ?? '-';
+        $nuptk = $this->pembelajaran->guru->guru->nuptk ?? '-';
+
         return array_merge(
             [[$judul]], // Judul
+            [['Guru Pengampu: ' . $guru . "          NUPTK:" . $nuptk]],
             [$header],  // Header
             $rows       // Data siswa
         );
@@ -114,27 +118,32 @@ class ExportAbsensiKelas implements FromArray, WithTitle, WithStyles
             $query->where('pembelajaran_id', $this->pembelajaran->id);
         })->count();
 
-        $totalColumns = $absensiCount + 6; // +2 untuk No dan Nama Siswa, +4 kolom total
-        $totalRows = $siswaCount + 2;      // Judul + header + siswa
+        $totalColumns = $absensiCount + 7; // +2 untuk No dan Nama Siswa, +4 kolom total
+        $totalRows = $siswaCount + 3;      // Judul + header + siswa
 
         $endColumn = Coordinate::stringFromColumnIndex($totalColumns);
 
         // Merge untuk judul
-        $sheet->mergeCells("A1:{$endColumn}1");
-
+        $sheet->mergeCells("A1:{$endColumn}1"); 
+        $sheet->mergeCells("A2:{$endColumn}2"); 
+        
         return [
-            1 => [
+            1 => [ // Judul
                 'font' => ['bold' => true, 'size' => 14],
                 'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER],
             ],
-            2 => [
+            2 => [ // Guru
+                'font' => ['italic' => true],
+                'alignment' => ['horizontal' => Alignment::HORIZONTAL_LEFT],
+            ],
+            3 => [ // Header tabel
                 'font' => ['bold' => true],
                 'fill' => [
                     'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                     'startColor' => ['rgb' => 'EEEDEB'],
                 ],
             ],
-            "A2:{$endColumn}{$totalRows}" => [
+            "A3:{$endColumn}{$totalRows}" => [
                 'borders' => [
                     'allBorders' => [
                         'borderStyle' => Border::BORDER_THIN,

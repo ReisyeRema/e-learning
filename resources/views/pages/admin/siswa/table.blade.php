@@ -5,6 +5,7 @@
         <tr>
             <th style="text-align: center; border: 1px solid black;">No</th>
             <th style="border: 1px solid black;">Nama</th>
+            <th style="border: 1px solid black;">NIS</th>
             <th style="border: 1px solid black;">Kelas</th>
             <th style="border: 1px solid black;">Username</th>
             <th style="border: 1px solid black;">Email</th>
@@ -16,6 +17,7 @@
             <tr>
                 <td style="text-align: center; border: 1px solid black;">{{ $loop->iteration }}</td>
                 <td style="border: 1px solid black;">{{ $user->name }}</td>
+                <td style="border: 1px solid black;">{{ $user->siswa->nis ? "'".$user->siswa->nis : '-' }}</td>
                 <td style="border: 1px solid black;">{{ $user->siswa->kelas->nama_kelas ?? '-' }}</td>
                 <td style="border: 1px solid black;">{{ $user->username }}</td>
                 <td style="border: 1px solid black;">{{ $user->email }}</td>

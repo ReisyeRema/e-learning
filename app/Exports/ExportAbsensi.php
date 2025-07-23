@@ -68,6 +68,7 @@ class ExportAbsensi implements FromView, WithStyles, WithTitle
 
             return [
                 'nama' => $siswa->name,
+                'nis' => $siswa->siswa->nis,
                 'pertemuan' => $data['pertemuan'],
                 'rekap' => $rekap,
             ];
@@ -97,7 +98,7 @@ class ExportAbsensi implements FromView, WithStyles, WithTitle
         ]);
 
         // Hitung kolom total: 2 (No + Nama) + n pertemuan + 4 (Hadir, Izin, Sakit, Alfa)
-        $totalKolom = 2 + $this->jumlahKolomPertemuan + 4;
+        $totalKolom = 3 + $this->jumlahKolomPertemuan + 4;
         $endColLetter = $this->getExcelColumnName($totalKolom);
 
         // Baris awal dan akhir data

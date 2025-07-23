@@ -10,6 +10,7 @@
         <tr>
             <th>No</th>
             <th>Nama Siswa</th>
+            <th>NIS</th>
             <th>Status</th>
             <th>Skor</th>
         </tr>
@@ -19,6 +20,7 @@
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $siswa['nama'] }}</td>
+                <td>{{ $siswa['nis'] ? "'" . $siswa['nis'] : '-' }}</td>
                 <td>{{ $siswa['status'] }}</td>
                 <td>{{ $siswa['skor'] }}</td>
             </tr>
