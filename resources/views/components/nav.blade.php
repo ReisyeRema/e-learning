@@ -68,5 +68,7 @@
         <a href="{{ route('siswa-kelas.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug, 'semester' => $semesterSlug]) }}"
             class="btn btn-sm btn-custom {{ request()->is('*siswa-kelas/*') ? 'btn-primary' : 'btn-outline-primary' }} mr-3">Daftar
             Siswa</a>
+        <a href="{{ route('rekap-akhir.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug, 'semester' => $semesterSlug]) }}"
+            class="btn btn-sm btn-custom {{ request()->is('*rekap-akhir/*') ? 'btn-primary' : 'btn-outline-primary' }} mr-3">Rekapitulasi Nilai Akhir</a>
     </div>
 </div>

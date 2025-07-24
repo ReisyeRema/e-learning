@@ -23,6 +23,7 @@ use App\Http\Controllers\Auth\RoleSelectController;
 use App\Http\Controllers\Siswa\KuisSiswaController;
 use App\Http\Controllers\Admin\EnrollmentController;
 use App\Http\Controllers\Admin\KelasAdminController;
+use App\Http\Controllers\Admin\RekapAkhirController;
 use App\Http\Controllers\Admin\SiswaAdminController;
 use App\Http\Controllers\Siswa\KelasSiswaController;
 use App\Http\Controllers\Siswa\SertifikatController;
@@ -131,7 +132,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::post('/tahun-ajaran/store', [TahunAjaranController::class, 'store'])->name('tahun-ajaran.store');
     Route::put('/tahun-ajaran/{tahunAjaran}/update', [TahunAjaranController::class, 'update'])->name('tahun-ajaran.update');
     Route::delete('/tahun-ajaran/{tahunAjaran}/destroy', [TahunAjaranController::class, 'destroy'])->name('tahun-ajaran.destroy');
-    
+
     // guru admin
     Route::get('/guru', [GuruAdminController::class, 'index'])->name('guru.index');
     Route::get('/guru/create', [GuruAdminController::class, 'create'])->name('guru.create');
@@ -140,7 +141,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::put('/guru/{guru}/update', [GuruAdminController::class, 'update'])->name('guru.update');
     Route::delete('/guru/{guru}/destroy', [GuruAdminController::class, 'destroy'])->name('guru.destroy');
     Route::get('/guru/export/excel', [GuruAdminController::class, 'export_excel'])->name('guru.export');
-    
+
     //Wali Kelas
     Route::get('/wali-kelas', [WaliKelasController::class, 'index'])->name('wali-kelas.index');
     Route::post('/wali-kelas/store', [WaliKelasController::class, 'store'])->name('wali-kelas.store');
@@ -148,7 +149,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::delete('/wali-kelas/{waliKelas}/destroy', [WaliKelasController::class, 'destroy'])->name('wali-kelas.destroy');
     Route::put('/wali-kelas/{id}/toggle-aktif', [WaliKelasController::class, 'toggleAktif'])->name('wali-kelas.toggleAktif');
     Route::get('/wali-kelas/export/excel', [WaliKelasController::class, 'export_excel'])->name('wali-kelas.export');
-    
+
 
     // siswa admin
     Route::get('/siswa', [SiswaAdminController::class, 'index'])->name('siswa.index');
@@ -180,7 +181,6 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::delete('/pembelajaran/{pembelajaran}/destroy', [PembelajaranController::class, 'destroy'])->name('pembelajaran.destroy');
     Route::get('/pembelajaran/export/excel', [PembelajaranController::class, 'export_excel'])->name('pembelajaran.export');
     Route::put('/pembelajaran/{id}/toggle-aktif', [PembelajaranController::class, 'toggleAktif'])->name('pembelajaran.toggleAktif');
-
 });
 
 // Guru
@@ -295,22 +295,23 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->group(function () {
     Route::post('/forum-diskusi/{mapel}/{kelas}/{tahunAjaran}/{semester}/{forum}/view', [ForumController::class, 'postKomentar'])->name('komentar.store');
 
 
+    Route::get('/rekap-akhir/{mapel}/{kelas}/{tahunAjaran}/{semester}', [RekapAkhirController::class, 'show'])->name('rekap-akhir.show');
+    Route::get('/rekap-akhir/export/excel', [RekapAkhirController::class, 'export_excel'])->name('rekap-akhir.export');
+
 });
 
 // Wali Kelas
 Route::middleware(['auth', 'role:Wali Kelas'])->prefix('walikelas')->group(function () {
     Route::get('/daftar-siswa/{kelas}/{tahunAjaran}', [HalamanWalasController::class, 'daftarSiswa'])->name('daftar-siswa.index');
     Route::get('/daftar-mapel/{kelas}/{tahunAjaran}', [HalamanWalasController::class, 'daftarMapel'])->name('daftar-mapel.index');
-    
+
     Route::get('/export-nilai/{kelas}/{tahunAjaran}', [HalamanWalasController::class, 'export'])->name('export-nilai.index');
     Route::get('/export-tugas/{kelas}/{tahunAjaran}/excel', [HalamanWalasController::class, 'export_tugas'])
-    ->name('export-tugas-kelas.export');
+        ->name('export-tugas-kelas.export');
     Route::get('/export-kuis/{kelas}/{tahunAjaran}/excel', [HalamanWalasController::class, 'export_kuis'])
-    ->name('export-kuis-kelas.export');
+        ->name('export-kuis-kelas.export');
     Route::get('/export-absensi/{kelas}/{tahunAjaran}/excel', [HalamanWalasController::class, 'export_absensi'])
-    ->name('export-absensi-kelas.export');
-
-    
+        ->name('export-absensi-kelas.export');
 });
 
 // Siswa
@@ -360,7 +361,7 @@ Route::middleware(PreventBackHistory::class, RedirectIfNotSiswa::class)->prefix(
     Route::post('/forum-diskusi/{mapel}/{kelas}/{tahunAjaran}/{semester}/{forum}/view', [ForumController::class, 'postKomentar'])->name('komentar.store');
 
     // Sertifikat
-    Route::get('/sertifikat', [SertifikatController::class,'process'])->name('setifikat-siswa.index');
+    Route::get('/sertifikat', [SertifikatController::class, 'process'])->name('setifikat-siswa.index');
 });
 
 require __DIR__ . '/auth.php';

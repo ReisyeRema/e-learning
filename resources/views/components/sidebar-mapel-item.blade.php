@@ -16,6 +16,7 @@
         "*submit-tugas/$slugMapel/$slugKelas/$slugTahunAjaran/$slugSemester/list-tugas",
         "*submit-kuis/$slugMapel/$slugKelas/$slugTahunAjaran/$slugSemester/list-kuis",
         "*pertemuan-kuis/$slugMapel/$slugKelas/$slugTahunAjaran/$slugSemester/hasil-kuis/*/*",
+        "*rekap-akhir/$slugMapel/$slugKelas/$slugTahunAjaran/$slugSemester",
     ];
 
     $isActive = collect($activePatterns)->contains(fn($pattern) => Str::is($pattern, $currentPath));

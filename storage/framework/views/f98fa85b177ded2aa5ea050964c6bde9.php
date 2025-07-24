@@ -68,6 +68,8 @@
         <a href="<?php echo e(route('siswa-kelas.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug, 'semester' => $semesterSlug])); ?>"
             class="btn btn-sm btn-custom <?php echo e(request()->is('*siswa-kelas/*') ? 'btn-primary' : 'btn-outline-primary'); ?> mr-3">Daftar
             Siswa</a>
+        <a href="<?php echo e(route('rekap-akhir.show', ['mapel' => $mapelSlug, 'kelas' => $kelasSlug, 'tahunAjaran' => $tahunAjaranSlug, 'semester' => $semesterSlug])); ?>"
+            class="btn btn-sm btn-custom <?php echo e(request()->is('*rekap-akhir/*') ? 'btn-primary' : 'btn-outline-primary'); ?> mr-3">Rekapitulasi Nilai Akhir</a>
     </div>
 </div>
 <?php /**PATH D:\DATA MATKUL\SEMESTER 6\TA\PROJECT\e-learn-laravel\resources\views/components/nav.blade.php ENDPATH**/ ?>
