@@ -12,8 +12,8 @@ class ExportNilai implements FromView, WithStyles, WithTitle
 {
     protected $pertemuanKuis;
     protected $sheetTitle;
-    protected $jumlahBarisSiswa; // Baris data siswa (tanpa header)
-    protected $barisHeaderTabel = 7; // Header tabel mulai baris ke-6
+    protected $jumlahBarisSiswa; 
+    protected $barisHeaderTabel = 7; 
 
     public function __construct($pertemuanKuis, $sheetTitle)
     {
@@ -40,7 +40,7 @@ class ExportNilai implements FromView, WithStyles, WithTitle
                 'status' => $hasil ? 'Sudah' : 'Belum',
                 'skor' => $hasil->skor_total ?? 0,
             ];
-        })->sortBy(fn($item) => strtolower($item['nama']))->values(); // urutkan dan reset index
+        })->sortBy(fn($item) => strtolower($item['nama']))->values(); 
         
 
         // Simpan jumlah data siswa untuk styling nanti

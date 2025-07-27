@@ -42,7 +42,7 @@ class EnrollController extends Controller
 
     public function approve($id, Request $request)
     {
-        $pembelajaranId = $request->input('pembelajaran_id'); // Ambil pembelajaran_id dari request
+        $pembelajaranId = $request->input('pembelajaran_id'); 
 
         $enrollment = Enrollments::where('siswa_id', $id)
             ->where('pembelajaran_id', $pembelajaranId)
@@ -103,7 +103,7 @@ class EnrollController extends Controller
     public function batchDelete(Request $request)
     {
         $pembelajaranId = $request->input('pembelajaran_id');
-        $siswaIds = $request->input('siswa_ids', []); // Ambil array langsung
+        $siswaIds = $request->input('siswa_ids', []);
 
         if (empty($siswaIds)) {
             return redirect()->back()->with('error', 'Pilih minimal satu siswa untuk dihapus.');

@@ -107,7 +107,6 @@ class KuisController extends Controller
         return view('pages.admin.kuis.show', compact('pembelajaran', 'kelasData', 'kuis', 'pertemuanSemua', 'pertemuan'));
     }
 
-    // memanggila kuis di setiap pertemuan
     public function getKuisByPertemuan($pertemuan_id)
     {
         $pembelajaran_id = request()->query('pembelajaran_id');

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Kuis;
 use App\Models\SoalKuis;
 use Illuminate\Http\Request;
+use App\Imports\SoalKuisImport;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\SoalKuisRequest;
 
@@ -28,7 +30,7 @@ class SoalKuisController extends Controller
     public function store(SoalKuisRequest $request, $kuis_id)
     {
         $validatedData = $request->validated();
-        
+
         // Simpan gambar jika ada
         if ($request->hasFile('gambar')) {
             $newImage = $request->file('gambar')->store('gambar_soal', 'public');
@@ -36,13 +38,6 @@ class SoalKuisController extends Controller
         } else {
             $validatedData['gambar'] = null;
         }
-
-        // Pastikan pilihan jawaban dikonversi ke JSON jika tipe soal Objective
-        // if ($request->type_soal === 'Objective' && is_array($request->pilihan_jawaban)) {
-        //     $validatedData['pilihan_jawaban'] = json_encode($request->pilihan_jawaban);
-        // } else {
-        //     $validatedData['pilihan_jawaban'] = null;
-        // }
 
         // Tidak perlu json_encode, cukup isi array langsung
         if ($request->type_soal !== 'Objective') {
@@ -68,13 +63,13 @@ class SoalKuisController extends Controller
             if ($soalKuis->gambar) {
                 Storage::disk('public')->delete($soalKuis->gambar);
             }
-            
+
             // Simpan gambar baru
             $newImage = $request->file('gambar')->store('gambar_soal', 'public');
             $validatedData['gambar'] = $newImage;
         }
 
-         // Tidak perlu json_encode
+        // Tidak perlu json_encode
         if ($request->type_soal !== 'Objective') {
             $validatedData['pilihan_jawaban'] = null;
         }
@@ -94,10 +89,32 @@ class SoalKuisController extends Controller
         if ($soalKuis->gambar) {
             Storage::disk('public')->delete($soalKuis->gambar);
         }
-        
+
         $soalKuis->delete();
 
         return redirect()->route('soal.index', ['kuis_id' => $kuis_id])
             ->with('success', 'Soal berhasil dihapus.');
+    }
+
+    public function import(Request $request, $kuisId)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ]);
+
+        Excel::import(new SoalKuisImport($kuisId), $request->file('file'));
+
+        return redirect()->back()->with('success', 'Soal berhasil diimpor.');
+    }
+
+    public function exportTemplate()
+    {
+        $path = public_path('assets/templateExcel/template_soal_import.xlsx');
+
+        if (!file_exists($path)) {
+            abort(404, 'Template file not found.');
+        }
+
+        return response()->download($path, 'template_soal_import.xlsx');
     }
 }

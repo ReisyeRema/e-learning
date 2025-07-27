@@ -10,12 +10,10 @@
 
     .pertemuan-item:hover {
         background-color: #F7F7F7;
-        /* Biru muda saat hover */
     }
 
     .pertemuan-item.active {
         background-color: #F7F7F7 !important;
-        /* Biru saat aktif */
         color: rgb(0, 0, 0) !important;
         font-weight: bold;
     }
@@ -67,9 +65,6 @@
                                                 data-pertemuan="{{ $item->id }}"
                                                 data-pembelajaran="{{ $pembelajaran->id }}">
                                                 {{ $item->judul }}
-                                                {{-- <a href="#" class="text-danger delete-pertemuan" data-id="{{ $item->id }}">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </a>                                                 --}}
                                             </li>
                                         @endforeach
                                     </ul>
@@ -281,7 +276,7 @@
                             // Tampilkan data ke dalam modal edit saat tombol edit diklik
                             $(document).on("click", ".edit-materi", function(e) {
                                 e
-                                    .stopPropagation(); // Penting: mencegah klik masuk ke materi-item dan membuka file
+                                    .stopPropagation(); 
 
                                 let id = $(this).data("id");
                                 let materiId = $(this).data("materi-id");
@@ -301,7 +296,7 @@
                             $(".delete-materi").click(function(e) {
                                 e.preventDefault();
                                 e
-                                    .stopPropagation(); // Mencegah event bubbling ke elemen .materi-item
+                                    .stopPropagation(); 
 
                                 let materiId = $(this).data("id");
                                 let parentItem = $(this).closest(".materi-item");

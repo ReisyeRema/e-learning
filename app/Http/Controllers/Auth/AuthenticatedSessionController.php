@@ -26,50 +26,6 @@ class AuthenticatedSessionController extends Controller
         return view('auth.login-siswa');
     }
 
-    /**
-     * Handle an incoming authentication request.
-     */
-    // public function store(LoginRequest $request): RedirectResponse
-    // {
-    //     try {
-    //         $request->authenticate(); // Proses autentikasi
-    //         $request->session()->regenerate(); // Regenerasi session
-    //         return redirect()->intended(route('dashboard')); // Redirect ke dashboard
-    //     } catch (ValidationException $e) {
-    //         // Jika login gagal
-    //         return back()
-    //         ->withInput($request->only('email'))
-    //         ->withErrors($e->errors());
-    //     }
-    // }
-
-    // public function store(LoginRequest $request): RedirectResponse
-    // {
-    //     try {
-    //         $request->authenticate();
-    //         $request->session()->regenerate();
-
-    //         // Catat aktivitas login
-    //         DB::table('login_activities')->insert([
-    //             'user_id' => Auth::id(),
-    //             'login_at' => now(),
-    //         ]);
-
-    //         $user = Auth::user();
-
-    //         // Pastikan user memiliki role 'Super Admin'
-    //         if (!$user->roles->contains('name', 'Super Admin') && !$user->roles->contains('name', 'Admin') && !$user->roles->contains('name', 'Guru')) {
-    //             Auth::logout();
-    //             return back()->withErrors(['email' => 'Anda tidak memiliki akses ke halaman ini.']);
-    //         }
-
-
-    //         return redirect()->intended(route('dashboard'));
-    //     } catch (ValidationException $e) {
-    //         return back()->withErrors($e->errors());
-    //     }
-    // }
-
     public function store(LoginRequest $request): RedirectResponse
     {
         try {

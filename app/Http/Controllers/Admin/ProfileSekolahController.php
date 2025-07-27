@@ -76,7 +76,7 @@ class ProfileSekolahController extends Controller
         if ($request->hasFile('foto')) {
             // Hapus foto lama jika ada dan file-nya ada di disk 'public'
             if ($profilSekolah->foto && Storage::disk('public')->exists('logo_sekolah/' . $profilSekolah->foto)) {
-                Storage::disk('public')->delete('logo_sekolah/' . $profilSekolah->foto); // Hapus foto lama
+                Storage::disk('public')->delete('logo_sekolah/' . $profilSekolah->foto); 
             }
 
             // Ambil ekstensi file dan buat nama file baru

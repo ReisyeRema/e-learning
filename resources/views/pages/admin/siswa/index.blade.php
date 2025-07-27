@@ -12,13 +12,11 @@
                             <!-- Button Section -->
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <p class="card-title">Daftar Data Siswa</p>
-                                <!-- Button to trigger modal -->
                                 <a href="{{ route('siswa.create') }}" class="btn btn-primary">Tambah Data</a>
                             </div>
 
                             <!-- Dropdown Filter Section -->
                             <div class="row">
-                                <!-- Tombol Download -->
                                 <div class="col-md-3">
                                     <form method="GET" action="{{ route('siswa.export') }}">
                                         <input type="hidden" name="kelas_id" value="{{ request('kelas_id') }}">
@@ -104,7 +102,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            {{ $users->links() }} <!-- Tambahkan pagination -->
+                            {{ $users->links() }} 
                         </div>
                     </div>
                 </div>

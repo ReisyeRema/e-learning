@@ -60,11 +60,11 @@ class SubmitTugasController extends Controller
         SubmitTugas::create([
             'tugas_id' => $request->tugas_id,
             'siswa_id' => Auth::id(),
-            'file_path' => $fileId, // Simpan File ID saja
+            'file_path' => $fileId, 
             'url' => $request->url,
             'mime_type' => $uploadedFile->getClientMimeType(),
             'file_size' => $uploadedFile->getSize(),
-            'skor' => null, // Skor diisi setelah tugas dikumpul
+            'skor' => null, 
             'status' => 'sudah_dikumpulkan',
         ]);
 
@@ -112,7 +112,7 @@ class SubmitTugasController extends Controller
         $results = $service->files->listFiles(['q' => $query]);
 
         if (count($results->getFiles()) > 0) {
-            return $results->getFiles()[0]->getId(); // Folder sudah ada, ambil ID-nya
+            return $results->getFiles()[0]->getId(); 
         }
 
         // Jika folder belum ada, buat baru

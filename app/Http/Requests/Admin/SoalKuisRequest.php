@@ -43,8 +43,8 @@ class SoalKuisRequest extends FormRequest
                 'required',
                 'string',
                 function ($attribute, $value, $fail) {
-                    if ($this->type_soal === 'Objective' && !in_array($value, ['A', 'B', 'C', 'D'])) {
-                        $fail('Jawaban benar harus berupa A, B, C, atau D untuk soal Objective.');
+                    if ($this->type_soal === 'Objective' && !in_array($value, ['A', 'B', 'C', 'D','E'])) {
+                        $fail('Jawaban benar harus berupa A, B, C, D atau D untuk soal Objective.');
                     } elseif ($this->type_soal === 'TrueFalse' && !in_array(strtolower($value), ['true', 'false'])) {
                         $fail('Jawaban benar harus "true" atau "false" untuk soal TrueFalse.');
                     }

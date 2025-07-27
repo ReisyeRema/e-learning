@@ -77,7 +77,7 @@ class ExportRekapAkhir implements FromCollection, WithHeadings, WithStyles, With
             );
 
             return [
-                'NIS' => $siswa->siswa->nis ?? '-', // pastikan kolom nis ada di table users
+                'NIS' => $siswa->siswa->nis ?? '-', 
                 'Nama' => $siswa->name,
                 'Tugas (20%)' => round($avgTugas, 2),
                 'Kuis (20%)' => round($avgKuis, 2),
@@ -122,7 +122,7 @@ class ExportRekapAkhir implements FromCollection, WithHeadings, WithStyles, With
 
     public function startCell(): string
     {
-        return 'A3'; // Data mulai dari baris ke-3 (baris 1 untuk judul, 2 untuk kosong/spasi)
+        return 'A3'; 
     }
 
     public function registerEvents(): array

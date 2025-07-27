@@ -47,7 +47,7 @@ class WaliKelasController extends Controller
 
         // Berikan role 'Guru' dan 'Wali Kelas' (jika belum punya)
         if ($guru) {
-            $guru->assignRole('Guru'); // Tidak akan menambah ganda kalau sudah ada
+            $guru->assignRole('Guru'); 
             $guru->assignRole('Wali Kelas');
         }
 

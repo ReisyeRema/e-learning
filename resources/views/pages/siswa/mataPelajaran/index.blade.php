@@ -45,23 +45,6 @@
                                                 class="badge bg-secondary">{{ $enrollment->pembelajaran->guru->name }}</span>
                                         </p>
 
-                                        <!-- Progress Bar -->
-                                        {{-- @php
-                                            $progress = rand(50, 100);
-                                        @endphp
-                                        <div class="mb-2">
-                                            <div class="d-flex justify-content-between small">
-                                                <span class="fw-bold">{{ $progress }}% Completed</span>
-                                                <span
-                                                    class="text-muted">{{ $progress < 100 ? 'Belum Selesai' : 'Selesai' }}</span>
-                                            </div>
-                                            <div class="progress" style="height: 6px;">
-                                                <div class="progress-bar bg-success" role="progressbar"
-                                                    style="width: {{ $progress }}%;" aria-valuenow="{{ $progress }}"
-                                                    aria-valuemin="0" aria-valuemax="100">
-                                                </div>
-                                            </div>
-                                        </div> --}}
 
                                         <div class="mb-2">
                                             <div class="d-flex justify-content-between small">

@@ -52,7 +52,7 @@
                 @forelse ($riwayatAbsensi as $i => $absen)
                     @php
                         $tanggal = $absen->absensi->tanggal;
-                        $jamAbsen = \Carbon\Carbon::parse($absen->created_at)->format('H:i'); // atau 'H:i:s' untuk detik
+                        $jamAbsen = \Carbon\Carbon::parse($absen->created_at)->format('H:i'); 
                     @endphp
                     <tr style="background-color: {{ $absen->keterangan == 'Hadir' ? '#e9f7ef' : '#fff3f3' }};">
                         <td>{{ $i + 1 }}</td>
@@ -62,16 +62,16 @@
                             @php
                                 switch ($absen->keterangan) {
                                     case 'Hadir':
-                                        $badgeClass = 'bg-success'; // Hijau
+                                        $badgeClass = 'bg-success'; 
                                         break;
                                     case 'Izin':
-                                        $badgeClass = 'bg-warning text-dark'; // Kuning
+                                        $badgeClass = 'bg-warning text-dark'; 
                                         break;
                                     case 'Sakit':
-                                        $badgeClass = 'bg-info text-dark'; // Biru Muda
+                                        $badgeClass = 'bg-info text-dark'; 
                                         break;
                                     case 'Alfa':
-                                        $badgeClass = 'bg-danger'; // Merah
+                                        $badgeClass = 'bg-danger'; 
                                         break;
                                     default:
                                         $badgeClass = 'bg-secondary';

@@ -69,10 +69,6 @@
                                 </tbody>
                             </table>
                         </div>
-
-                        {{-- <div class="mt-3">
-                            <button type="submit" class="btn btn-primary">Simpan Absensi</button>
-                        </div> --}}
                     </form>
 
                 </div>

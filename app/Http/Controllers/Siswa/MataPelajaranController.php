@@ -114,14 +114,6 @@ class MataPelajaranController extends Controller
             ->first();
 
         // Tambahkan kondisi waktu
-        // $absensiMasihAktif = false;
-        // if ($absensiAktif) {
-        //     $sekarang = Carbon::now();
-        //     $jamSelesai = Carbon::parse($absensiAktif->jam_selesai);
-        //     $absensiMasihAktif = $sekarang->lessThanOrEqualTo($jamSelesai);
-        // }
-
-        // Tambahkan kondisi waktu
         $absensiMasihAktif = false;
         $waktuAbsensiBelumDimulai = false;
         if ($absensiAktif) {
@@ -159,50 +151,6 @@ class MataPelajaranController extends Controller
         return view('pages.siswa.mataPelajaran.show', compact('pembelajaran', 'tugas', 'profileSekolah', 'absensiAktif', 'detailAbsensi', 'riwayatAbsensi', 'absensiMasihAktif', 'waktuAbsensiBelumDimulai'));
     }
 
-
-    // public function lakukanAbsensi(Request $request, $id)
-    // {
-    //     $request->validate([
-    //         'keterangan' => 'required|in:Hadir,Izin,Sakit,Alfa',
-    //         'surat' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
-    //     ]);
-
-    //     $absensi = Absensi::findOrFail($id);
-    //     $fileId = null;
-
-    //     if (in_array($request->keterangan, ['Izin', 'Sakit']) && $request->hasFile('surat')) {
-    //         $uploadedFile = $request->file('surat');
-    //         $extension = $uploadedFile->getClientOriginalExtension();
-    //         $newFileName = 'Surat-' . Auth::user()->name . '-' . now()->format('YmdHis') . '.' . $extension;
-
-    //         // Ambil ID folder utama dari .env, misal: GOOGLE_DRIVE_FOLDER=ID_FOLDER_UTAMA
-    //         $parentFolderId = env('GOOGLE_DRIVE_FOLDER');
-
-    //         // Buat atau cari folder "Surat Absensi" di dalam folder utama
-    //         $folderId = $this->getOrCreateFolder('Surat Absensi', $parentFolderId);
-
-    //         // Upload file ke Google Drive
-    //         $fileId = $this->uploadFileToDrive($uploadedFile, $newFileName, $folderId);
-
-    //         if (!$fileId) {
-    //             return redirect()->back()->withErrors(['surat' => 'Gagal mengunggah surat ke Google Drive.']);
-    //         }
-    //     }
-
-    //     DetailAbsensi::updateOrCreate(
-    //         [
-    //             'absensi_id' => $absensi->id,
-    //             'siswa_id' => Auth::id(),
-    //         ],
-    //         [
-    //             'keterangan' => $request->keterangan,
-    //             'surat' => $fileId, // Simpan file ID Google Drive
-    //         ]
-    //     );
-
-    //     return redirect()->back()->with('success', 'Absensi berhasil dilakukan.');
-    // }
-
     public function lakukanAbsensi(Request $request, $id)
     {
         $request->validate([
@@ -215,7 +163,7 @@ class MataPelajaranController extends Controller
         $absensi = Absensi::findOrFail($id);
         $fileId = null;
 
-        // ✅ Jika absensi aktif dan gunakan koordinat, validasi lokasi siswa
+        //Jika absensi aktif dan gunakan koordinat, validasi lokasi siswa
         if ($absensi->aktif && $absensi->gunakan_koordinat && $request->keterangan === 'Hadir') {
             // Ambil koordinat dari tabel profile_sekolah
             $sekolah = DB::table('profile_sekolah')->first();
@@ -241,7 +189,7 @@ class MataPelajaranController extends Controller
             }
         }
 
-        // ✅ Upload surat jika Izin atau Sakit
+        // Upload surat jika Izin atau Sakit
         if (in_array($request->keterangan, ['Izin', 'Sakit']) && $request->hasFile('surat')) {
             $uploadedFile = $request->file('surat');
             $extension = $uploadedFile->getClientOriginalExtension();
@@ -255,7 +203,7 @@ class MataPelajaranController extends Controller
             }
         }
 
-        // ✅ Simpan ke detail_absensi
+        // Simpan ke detail_absensi
         DetailAbsensi::updateOrCreate(
             [
                 'absensi_id' => $absensi->id,
@@ -270,7 +218,7 @@ class MataPelajaranController extends Controller
         return redirect()->back()->with('success', 'Absensi berhasil dilakukan.');
     }
 
-    // ✅ Fungsi bantu hitung jarak antara dua titik koordinat (dalam meter)
+    // Fungsi bantu hitung jarak antara dua titik koordinat (dalam meter)
     private function hitungJarakMeter($lat1, $lon1, $lat2, $lon2)
     {
         $earthRadius = 6371000; // meter
@@ -326,7 +274,7 @@ class MataPelajaranController extends Controller
         $results = $service->files->listFiles(['q' => $query]);
 
         if (count($results->getFiles()) > 0) {
-            return $results->getFiles()[0]->getId(); // Folder sudah ada, ambil ID-nya
+            return $results->getFiles()[0]->getId(); 
         }
 
         // Jika folder belum ada, buat baru
@@ -339,19 +287,6 @@ class MataPelajaranController extends Controller
         $folder = $service->files->create($fileMetadata, ['fields' => 'id']);
         return $folder->id;
     }
-
-    // public function getAbsensiByPertemuan($pertemuan_id)
-    // {
-    //     $pembelajaran_id = request()->query('pembelajaran_id');
-
-    //     $absensi = DetailAbsensi::where('pertemuan_id', $pertemuan_id)
-    //         ->where('pembelajaran_id', $pembelajaran_id)
-    //         ->with('absensi')
-    //         ->get();
-
-    //     return response()->json($absensi);
-    // }
-
 
 
     protected function logActivity($activity, $details = '')

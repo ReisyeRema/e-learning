@@ -68,10 +68,15 @@
                                                             <?php else: ?>
                                                                 <?php
                                                                     $status =
-                                                                        ($jawaban['jawaban'] ?? '') ===
-                                                                        ($soal->jawaban_benar ?? '')
+                                                                        strtolower(
+                                                                            trim((string) ($jawaban['jawaban'] ?? '')),
+                                                                        ) ===
+                                                                        strtolower(
+                                                                            trim((string) ($soal->jawaban_benar ?? '')),
+                                                                        )
                                                                             ? 'Benar'
                                                                             : 'Salah';
+
                                                                     $badgeClass =
                                                                         $status === 'Benar'
                                                                             ? 'badge-success'

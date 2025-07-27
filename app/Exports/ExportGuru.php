@@ -15,7 +15,7 @@ class ExportGuru implements FromView, WithStyles
     public function __construct()
     {
         // Hitung jumlah data untuk menentukan jumlah baris
-        $this->rowCount = User::role('Guru')->with('guru')->count() + 2; // +2 untuk header dan jarak
+        $this->rowCount = User::role('Guru')->with('guru')->count() + 2; 
     }
 
     public function view(): View
@@ -30,7 +30,7 @@ class ExportGuru implements FromView, WithStyles
     public function styles(Worksheet $sheet)
     {
         // Atur gaya untuk judul (baris pertama)
-        $sheet->mergeCells('A1:E1'); // Menggabungkan sel A1 sampai E1 untuk judul
+        $sheet->mergeCells('A1:E1'); 
         $sheet->getStyle('A1')->applyFromArray([
             'font' => [
                 'bold' => true,
@@ -43,7 +43,7 @@ class ExportGuru implements FromView, WithStyles
         ]);
 
         // Tentukan range dinamis untuk border tabel
-        $lastRow = $this->rowCount; // Total baris (header + data + jarak)
+        $lastRow = $this->rowCount;
         $sheet->getStyle("A3:E{$lastRow}")->applyFromArray([
             'borders' => [
                 'allBorders' => [

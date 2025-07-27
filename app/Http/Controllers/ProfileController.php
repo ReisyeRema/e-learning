@@ -128,7 +128,7 @@ class ProfileController extends Controller
         // Update foto jika ada file baru
         if ($request->hasFile('foto')) {
             $request->validate([
-                'foto' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Validasi file foto
+                'foto' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], 
             ]);
 
             $extension = $request->file('foto')->getClientOriginalExtension();
@@ -194,7 +194,7 @@ class ProfileController extends Controller
         // Update foto jika ada file baru
         if ($request->hasFile('foto')) {
             $request->validate([
-                'foto' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Validasi file foto
+                'foto' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], 
             ]);
 
             $extension = $request->file('foto')->getClientOriginalExtension();
@@ -253,7 +253,7 @@ class ProfileController extends Controller
         // Update foto jika ada file baru
         if ($request->hasFile('foto')) {
             $request->validate([
-                'foto' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Validasi file foto
+                'foto' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], 
             ]);
 
             $extension = $request->file('foto')->getClientOriginalExtension();
@@ -307,7 +307,7 @@ class ProfileController extends Controller
         // Update foto jika ada file baru
         if ($request->hasFile('foto')) {
             $request->validate([
-                'foto' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Validasi file foto
+                'foto' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], 
             ]);
 
             $extension = $request->file('foto')->getClientOriginalExtension();

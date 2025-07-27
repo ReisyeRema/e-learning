@@ -33,7 +33,7 @@ class PertemuanKuisController extends Controller
         // Generate unique token kalau kosong
         if (empty($validatedData['token'])) {
             do {
-                $generatedToken = Str::upper(Str::random(6)); // contoh: YG3K8Z
+                $generatedToken = Str::upper(Str::random(6)); 
             } while (PertemuanKuis::where('token', $generatedToken)->exists());
 
             $validatedData['token'] = $generatedToken;
@@ -60,9 +60,6 @@ class PertemuanKuisController extends Controller
         $tahunAjaranSlug = str_replace('/', '-', $pembelajaran->tahunAjaran->nama_tahun);
         $semesterSlug = Str::slug($pembelajaran->semester);
 
-
-        // Simpan data ke database
-        // PertemuanKuis::create($validatedData);
 
         // Redirect ke route yang sesuai dengan slug
         return redirect()->route('submit-kuis.show', [
@@ -122,8 +119,8 @@ class PertemuanKuisController extends Controller
             ->where('pembelajaran_id', $pembelajaran->id)
             ->where('status', 'approved')
             ->get()
-            ->sortBy(fn($enroll) => strtolower($enroll->siswa->name ?? '')) // urutkan berdasarkan nama siswa
-            ->values(); // reset key
+            ->sortBy(fn($enroll) => strtolower($enroll->siswa->name ?? '')) 
+            ->values();
 
 
         $kuisIdAktif = $request->query('kuis_id');
@@ -212,7 +209,7 @@ class PertemuanKuisController extends Controller
                 $jawaban['is_benar'] = $isBenar;
             } elseif ($soal->type_soal === 'Objective' || $soal->type_soal === 'TrueFalse') {
                 $isBenar = ($jawaban['jawaban'] ?? '') == $soal->jawaban_benar;
-                $jawaban['is_benar'] = $isBenar; // Optional, sync ulang
+                $jawaban['is_benar'] = $isBenar; 
             }
 
             if ($isBenar) {
@@ -229,42 +226,6 @@ class PertemuanKuisController extends Controller
 
         return back()->with('success', 'Penilaian berhasil diperbarui.');
     }
-
-
-    // public function export_excel()
-    // {
-    //     $guruId = Auth::id(); // Pastikan hanya data guru aktif
-    //     return Excel::download(new ExportNilaiKuisMultiSheet($guruId), "nilai_kuis.xlsx");
-    // }
-
-    // public function export_excel()
-    // {
-    //     $guruId = Auth::id();
-
-    //     // Ambil satu pembelajaran yang diampu guru (asumsi satu kelas/tahun/mapel per export)
-    //     $pembelajaran = \App\Models\Pembelajaran::with(['kelas', 'tahunAjaran'])
-    //         ->where('guru_id', $guruId)
-    //         ->first();
-
-    //     if (!$pembelajaran) {
-    //         abort(404, 'Data pembelajaran tidak ditemukan.');
-    //     }
-
-    //     // Ambil data untuk nama file
-    //     $namaKelas = $pembelajaran->kelas->nama_kelas ?? 'Kelas';
-    //     $tahunAjaran = $pembelajaran->tahunAjaran->nama_tahun ?? 'TahunAjaran';
-    //     $mapel = $pembelajaran->nama_mapel ?? 'Mapel';
-
-    //     // Slugify nama agar aman untuk nama file
-    //     $namaKelasSlug = str_replace(' ', '_', $namaKelas);
-    //     $tahunAjaranSlug = str_replace([' ', '/', '\\'], '-', $tahunAjaran); // ganti slash agar aman
-    //     $mapelSlug = str_replace(' ', '_', $mapel);
-
-    //     $filename = "nilai_kuis_{$namaKelasSlug}_{$tahunAjaranSlug}_{$mapelSlug}.xlsx";
-
-    //     // Jalankan export
-    //     return Excel::download(new \App\Exports\ExportNilaiKuisMultiSheet($guruId), $filename);
-    // }
 
     public function export_excel(Request $request)
     {

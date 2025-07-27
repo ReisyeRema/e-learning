@@ -26,7 +26,7 @@ class ExportSiswa implements FromView, WithStyles
                 $q->where('id', $this->kelasId);
             });
         }
-        $this->rowCount = $query->count() + 2; // +2 untuk header dan jarak
+        $this->rowCount = $query->count() + 2; 
 
         // Set judul berdasarkan filter kelas
         if ($this->kelasId) {

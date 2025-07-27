@@ -28,34 +28,6 @@ class TugasController extends Controller
         return view('pages.admin.tugas.index', compact('tugas', 'materi'));
     }
 
-    // public function store(TugasRequest $request)
-    // {
-    //     // Pastikan file ada
-    //     if (!$request->hasFile('file_path')) {
-    //         return redirect()->back()->withErrors(['file_path' => 'File materi harus diunggah!']);
-    //     }
-
-    //     $uploadedFile = $request->file('file_path');
-    //     $extension = $uploadedFile->getClientOriginalExtension();
-    //     $newFileName = $request->judul . '.' . now()->timestamp . '.' . $extension;
-
-    //     // Simpan file ke dalam direktori storage/app/public/materi
-    //     $uploadedFile->storeAs('tugas', $newFileName, 'public');
-
-    //     // Simpan ke database
-    //     Tugas::create([
-    //         'user_id' => Auth::id(),
-    //         'materi_id' => $request->materi_id,
-    //         'judul' => $request->judul,
-    //         'deskripsi' => $request->deskripsi,
-    //         'file_path' => 'tugas/' . $newFileName,
-    //         'mime_type' => $uploadedFile->getClientMimeType(),
-    //         'file_size' => $uploadedFile->getSize(),
-    //     ]);
-
-    //     return redirect()->route('tugas.index')->with('success', 'Tugas Berhasil Ditambah');
-    // }
-
     public function store(TugasRequest $request)
     {
         if (!$request->hasFile('file_path')) {
@@ -93,52 +65,7 @@ class TugasController extends Controller
         return redirect()->route('tugas.index')->with('success', 'Materi Berhasil Ditambah');
     }
 
-    // public function update(TugasRequest $request, $id)
-    // {
-    //     $tugas = Tugas::findOrFail($id);
-
-    //      // Cek apakah yang mengakses adalah pemilik materi
-    //      if (Auth::id() !== $tugas->user_id) {
-    //         return redirect()->back()->withErrors(['unauthorized' => 'Anda tidak memiliki izin untuk mengedit materi ini.']);
-    //     }
-
-    //     // Cek apakah ada file baru yang diunggah
-    //     if ($request->hasFile('file_path')) {
-    //         // Hapus file lama jika ada
-    //         if ($tugas->file_path && Storage::disk('public')->exists($tugas->file_path)) {
-    //             Storage::disk('public')->delete($tugas->file_path);
-    //         }
-
-    //         // Upload file baru
-    //         $uploadedFile = $request->file('file_path');
-    //         $extension = $uploadedFile->getClientOriginalExtension();
-    //         $newFileName = $request->judul . '.' . now()->timestamp . '.' . $extension;
-
-    //         // Simpan file baru ke dalam direktori storage/app/public/tugas
-    //         $uploadedFile->storeAs('tugas', $newFileName, 'public');
-
-    //         // Update data dengan file baru
-    //         $tugas->update([
-    //             'materi_id' => $request->materi_id,
-    //             'judul' => $request->judul,
-    //             'deskripsi' => $request->deskripsi,
-    //             'file_path' => 'tugas/' . $newFileName,
-    //             'mime_type' => $uploadedFile->getClientMimeType(),
-    //             'file_size' => $uploadedFile->getSize(),
-    //         ]);
-    //     } else {
-    //         // Jika file tidak diubah, hanya update judul dan deskripsi
-    //         $tugas->update([
-    //             'materi_id' => $request->materi_id,
-    //             'judul' => $request->judul,
-    //             'deskripsi' => $request->deskripsi,
-    //         ]);
-    //     }
-
-    //     return redirect()->route('tugas.index')->with('success', 'Tugas Berhasil Diupdate');
-    // }
-
-
+    
     public function update(TugasRequest $request, $id)
     {
         $tugas = Tugas::findOrFail($id);
@@ -191,28 +118,6 @@ class TugasController extends Controller
 
         return redirect()->route('tugas.index')->with('success', 'Tugas Berhasil Diupdate');
     }
-
-
-    // public function destroy($id)
-    // {
-    //     $tugas = Tugas::findOrFail($id);
-
-    //     // Pastikan hanya pemilik materi yang bisa menghapus
-    //     if (Auth::id() !== $tugas->user_id) {
-    //         return redirect()->back()->withErrors(['unauthorized' => 'Anda tidak memiliki izin untuk menghapus materi ini.']);
-    //     }
-
-    //     // Hapus file jika ada
-    //     if ($tugas->file_path && Storage::disk('public')->exists($tugas->file_path)) {
-    //         Storage::disk('public')->delete($tugas->file_path);
-    //     }
-
-    //     // Hapus data dari database
-    //     $tugas->delete();
-
-    //     return redirect()->route('tugas.index')->with('success', 'Tugas Berhasil Dihapus');
-    // }
-
 
     public function destroy($id)
     {
@@ -284,7 +189,7 @@ class TugasController extends Controller
         $pembelajaran_id = request()->query('pembelajaran_id');
 
         $tugas = PertemuanTugas::where('pertemuan_id', $pertemuan_id)
-            ->where('pembelajaran_id', $pembelajaran_id) // filter tambahan
+            ->where('pembelajaran_id', $pembelajaran_id) 
             ->with('tugas')
             ->get();
 
@@ -333,7 +238,7 @@ class TugasController extends Controller
         $results = $service->files->listFiles(['q' => $query]);
 
         if (count($results->getFiles()) > 0) {
-            return $results->getFiles()[0]->getId(); // Folder sudah ada, ambil ID-nya
+            return $results->getFiles()[0]->getId(); 
         }
 
         // Jika folder belum ada, buat baru

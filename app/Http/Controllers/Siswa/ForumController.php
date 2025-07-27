@@ -16,30 +16,6 @@ use App\Notifications\ForumDiskusiNotification;
 
 class ForumController extends Controller
 {
-    // public function index()
-    // {
-    //     $forum = Forum::orderBy('created_at', 'desc')->paginate(10);
-
-    //     $profileSekolah = ProfilSekolah::first();
-    //     $pembelajaran = \App\Models\Pembelajaran::all(); // Tambahkan ini
-    //     return view('pages.siswa.forum.index', compact(['forum', 'profileSekolah', 'pembelajaran']));
-    // }
-
-    // public function create(Request $request)
-    // {
-
-    //     $request->request->add(['user_id' => Auth::id()]);
-    //     $forum = Forum::create($request->all());
-    //     return redirect()->back()->with('success', 'Forum Berhasil ditambahkan');
-    // }
-
-    // public function view(Forum $forum)
-    // {
-    //     $profileSekolah = ProfilSekolah::first();
-
-    //     return view('pages.siswa.forum.view', compact('forum', 'profileSekolah'));
-    // }
-
     public function create(Request $request)
     {
         $request->validate([

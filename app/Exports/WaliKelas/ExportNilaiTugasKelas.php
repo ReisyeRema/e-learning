@@ -37,7 +37,7 @@ class ExportNilaiTugasKelas implements FromArray, WithTitle, WithStyles
 
         // Body + kumpulkan nilai per kolom untuk hitung rata-rata kolom
         $rows = [];
-        $nilaiKolom = array_fill(0, count($tugasList) + 1, []); // index 0..n-1: tugas, index n: rata-rata per siswa
+        $nilaiKolom = array_fill(0, count($tugasList) + 1, []); 
 
         foreach ($siswaList as $index => $siswa) {
             $row = [$index + 1, $siswa->name, $siswa->siswa->nis ?? '-'];
@@ -88,11 +88,11 @@ class ExportNilaiTugasKelas implements FromArray, WithTitle, WithStyles
 
         // Gabungkan semua
         return array_merge(
-            [[$judul]],     // Baris 1
+            [[$judul]],     
             [$guruRow],
-            [$header],      // Baris 2: header
-            $rows,          // Baris 3-n: data siswa
-            [$rataRataRow]  // Baris terakhir: rata-rata per kolom
+            [$header],      
+            $rows,          
+            [$rataRataRow]  
         );
     }
 
@@ -108,8 +108,8 @@ class ExportNilaiTugasKelas implements FromArray, WithTitle, WithStyles
             $query->where('pembelajaran_id', $this->pembelajaran->id);
         })->count();
 
-        $totalColumns = $tugasCount + 4; // +1 No, +1 Nama Siswa, +1 Rata-rata
-        $totalRows = $siswaCount + 4;    // +1 Judul, +1 Header, +N siswa, +1 rata-rata
+        $totalColumns = $tugasCount + 4; 
+        $totalRows = $siswaCount + 4;    
 
         $endColumn = Coordinate::stringFromColumnIndex($totalColumns);
 
@@ -140,7 +140,7 @@ class ExportNilaiTugasKelas implements FromArray, WithTitle, WithStyles
                     'startColor' => ['rgb' => 'EEEDEB'],
                 ],
             ],
-            "A3:{$endColumn}{$totalRows}" => [ // Border mulai dari header
+            "A3:{$endColumn}{$totalRows}" => [ 
                 'borders' => [
                     'allBorders' => [
                         'borderStyle' => Border::BORDER_THIN,

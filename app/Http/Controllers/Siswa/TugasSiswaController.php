@@ -27,7 +27,7 @@ class TugasSiswaController extends Controller
                 $query->where('siswa_id', $siswaId);
             }])
             ->get()
-            ->sortByDesc('created_at'); // Atau bisa juga berdasarkan deadline
+            ->sortByDesc('created_at'); 
 
         $profileSekolah = ProfilSekolah::first();
 

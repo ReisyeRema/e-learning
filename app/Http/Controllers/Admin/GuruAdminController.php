@@ -95,8 +95,8 @@ class GuruAdminController extends Controller
 
         // Periksa apakah password diisi
         if ($request->filled('password')) {
-            $updateUserData['password'] = Hash::make($request->password); // Hash password untuk keamanan
-            $updateUserData['password_plain'] = $request->password; // Simpan password plain
+            $updateUserData['password'] = Hash::make($request->password); 
+            $updateUserData['password_plain'] = $request->password; 
         }
 
         // Update foto jika ada file baru

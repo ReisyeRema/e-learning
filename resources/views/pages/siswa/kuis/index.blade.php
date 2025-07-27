@@ -13,7 +13,7 @@
                 @foreach ($pertemuanKuisList as $pertemuanKuis)
                     @php
                         $kuis = $pertemuanKuis->kuis;
-                        $hasilKuis = $kuis->hasilKuis->first(); // hasil kuis siswa
+                        $hasilKuis = $kuis->hasilKuis->first(); 
                         $slugMapel = Str::slug($pertemuanKuis->pembelajaran->nama_mapel);
                         $slugKelas = Str::slug($pertemuanKuis->pembelajaran->kelas->nama_kelas);
                         $slugTahunAjaran = str_replace('/', '-', $pertemuanKuis->pembelajaran->tahunAjaran->nama_tahun);

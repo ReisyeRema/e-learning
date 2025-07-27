@@ -217,7 +217,7 @@
                 .then(response => response.json())
                 .then(data => {
                     alert("Jawaban berhasil dikumpulkan!");
-                    window.location.reload(); // Atau redirect ke halaman lain jika perlu
+                    window.location.reload(); 
                 })
                 .catch(error => {
                     console.error("Terjadi kesalahan:", error);

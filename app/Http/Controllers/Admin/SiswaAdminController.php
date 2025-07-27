@@ -26,7 +26,7 @@ class SiswaAdminController extends Controller
         $this->logActivity('Mengakses Data Siswa', 'User membuka halaman data siswa');
 
         // Ambil semua data kelas untuk dropdown
-        $kelas = \App\Models\Kelas::all();
+        $kelas = Kelas::all();
 
         // Filter berdasarkan kelas jika ada parameter 'kelas_id'
         $users = User::role('Siswa')
@@ -44,7 +44,7 @@ class SiswaAdminController extends Controller
 
     public function create()
     {
-        $kelas = \App\Models\Kelas::all(); // Ambil semua data kelas
+        $kelas = Kelas::all(); 
         return view('pages.admin.siswa.create', compact('kelas'));
     }
 
@@ -114,8 +114,8 @@ class SiswaAdminController extends Controller
 
         // Periksa apakah password diisi
         if ($request->filled('password')) {
-            $updateUserData['password'] = Hash::make($request->password); // Hash password untuk keamanan
-            $updateUserData['password_plain'] = $request->password; // Simpan password plain
+            $updateUserData['password'] = Hash::make($request->password); 
+            $updateUserData['password_plain'] = $request->password; 
         }
 
         // Update foto jika ada file baru
@@ -173,7 +173,6 @@ class SiswaAdminController extends Controller
         if ($kelasId) {
             $kelas = \App\Models\Kelas::find($kelasId);
             $kelasNama = $kelas ? str_replace(' ', '_', $kelas->nama_kelas) : 'kelas_tidak_ditemukan';
-            // $tahunAjaran = $kelas ? str_replace('/', '-', $kelas->tahun_ajaran) : 'N/A';
             $fileName = "daftar_siswa_kelas_{$kelasNama}.xlsx";
         } else {
             $fileName = 'daftar_semua_siswa.xlsx';
@@ -213,9 +212,8 @@ class SiswaAdminController extends Controller
                 $query->where('pembelajaran_id', $pembelajaran->id);
             })
             ->get()
-            ->sortBy('name') // 🔥 urutkan berdasarkan nama
-            ->values(); // reset ulang key-nya (0, 1, 2, ...)               
-
+            ->sortBy('name') 
+            ->values(); 
 
         return view('pages.admin.siswa.show', compact('pembelajaran', 'kelasData', 'siswaList'));
     }

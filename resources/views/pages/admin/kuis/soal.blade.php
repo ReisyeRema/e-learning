@@ -10,13 +10,30 @@
                     <div class="row">
                         <div class="col-12">
                             <!-- Header Section -->
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h4>Daftar Tugas - {{ $kuis->judul }}</h4>
-                                <button type="button" class="btn btn-sm btn-dark" data-toggle="modal"
-                                    data-target="#addKelasModal">
-                                    <i class="fas fa-plus"></i>
-                                </button>
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h4>Daftar Soal - {{ $kuis->judul }}</h4>
+
+                                <div class="d-flex flex-column align-items-end">
+                                    <!-- Tombol Tambah Soal -->
+                                    <button type="button" class="btn btn-sm btn-dark mb-2" data-toggle="modal"
+                                        data-target="#addKelasModal">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+
+                                    <!-- Tombol Export dan Import -->
+                                    <div class="d-flex">
+                                        <a href="{{ route('export.template.soal') }}" class="btn btn-sm btn-primary mr-2">
+                                            <i class="fas fa-file-export mr-1"></i> Export Template Soal
+                                        </a>
+
+                                        <button type="button" class="btn btn-sm btn-success" data-toggle="modal"
+                                            data-target="#importModal">
+                                            <i class="fas fa-file-import mr-1"></i> Import Soal
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
+
 
                             <!-- List Soal -->
                             <div class="list-group">
@@ -57,7 +74,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Modal Edit -->
                                     <!-- Modal Edit -->
                                     <div class="modal fade" id="editKelasModal{{ $item->id }}" tabindex="-1"
                                         aria-labelledby="editKelasModalLabel{{ $item->id }}" aria-hidden="true">
@@ -133,6 +149,9 @@
                                                                     <input type="text" name="pilihan_jawaban[D]"
                                                                         class="form-control mb-2" placeholder="Jawaban D"
                                                                         value="{{ $choices['D'] ?? '' }}">
+                                                                    <input type="text" name="pilihan_jawaban[E]"
+                                                                        class="form-control mb-2" placeholder="Jawaban E"
+                                                                        value="{{ $choices['E'] ?? '' }}">
                                                                 </div>
 
                                                                 <div class="form-group">
@@ -151,6 +170,9 @@
                                                                         <option value="D"
                                                                             {{ $item->jawaban_benar == 'D' ? 'selected' : '' }}>
                                                                             D</option>
+                                                                        <option value="E"
+                                                                            {{ $item->jawaban_benar == 'E' ? 'selected' : '' }}>
+                                                                            E</option>
                                                                     </select>
                                                                 </div>
                                                             @elseif ($item->type_soal == 'Essay')
@@ -257,6 +279,39 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Import Soal -->
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{{ route('soal.import', $kuis->id) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="importModalLabel">Import Soal dari Excel</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="file">Pilih File Excel <span class="text-danger">*</span></label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="file" name="file"
+                                    accept=".xls,.xlsx" required>
+                                <label class="custom-file-label" for="file">Pilih file Excel...</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-success"><i class="fas fa-file-import mr-1"></i>
+                            Import</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @push('scripts')
@@ -274,6 +329,7 @@
                         <input type="text" name="pilihan_jawaban[B]" class="form-control mb-2" placeholder="Jawaban B">
                         <input type="text" name="pilihan_jawaban[C]" class="form-control mb-2" placeholder="Jawaban C">
                         <input type="text" name="pilihan_jawaban[D]" class="form-control mb-2" placeholder="Jawaban D">
+                        <input type="text" name="pilihan_jawaban[E]" class="form-control mb-2" placeholder="Jawaban E">
                     </div>
 
                     <div class="form-group">
@@ -284,6 +340,7 @@
                             <option value="B">B</option>
                             <option value="C">C</option>
                             <option value="D">D</option>
+                            <option value="E">E</option>
                         </select>
                     </div>
                 `;
@@ -303,6 +360,16 @@
                     </div>
                 `;
                 }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // update label nama file
+            $('.custom-file-input').on('change', function() {
+                let fileName = $(this).val().split('\\').pop();
+                $(this).next('.custom-file-label').html(fileName);
             });
         });
     </script>

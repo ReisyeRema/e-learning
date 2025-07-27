@@ -44,8 +44,7 @@ class KurikulumAdminController extends Controller
 
     public function update(KurikulumRequest $request, $id)
     {
-        $kurikulum = Kurikulum::findOrFail($id); // Fail jika data tidak ditemukan
-
+        $kurikulum = Kurikulum::findOrFail($id); 
         $updateData = [
             'nama_kurikulum' => $request->nama_kurikulum,
             'deskripsi' => $request->deskripsi,

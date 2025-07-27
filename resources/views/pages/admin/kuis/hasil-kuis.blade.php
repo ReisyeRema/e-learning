@@ -1,64 +1,3 @@
-{{-- @extends('layouts.app')
-
-@section('title', 'Penilaian Kuis')
-
-@section('content')
-<div class="container">
-    <h4>Penilaian Kuis: {{ $kuis->judul }} - {{ $hasil->siswa->name }}</h4>
-
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    <form action="{{ route('hasil-kuis.updateEssay', ['kuis' => $kuis->id, 'siswa' => $hasil->siswa_id]) }}" method="POST">
-        @csrf
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Soal</th>
-                    <th>Jawaban Siswa</th>
-                    <th>Status</th>
-                    <th>Skor</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($jawabanUser as $soalId => $jawaban)
-                @php
-                    $soal = $soalList[$soalId] ?? null;
-                @endphp
-            
-                @if ($soal)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{!! $soal->teks_soal !!}</td>
-                    <td>{!! $jawaban['jawaban'] ?? '-' !!}</td>
-                    <td>
-                        @if ($soal->type_soal === 'Essay')
-                            <select name="jawaban_benar[{{ $soalId }}]" class="form-control">
-                                <option value="1" {{ ($jawaban['is_benar'] ?? false) ? 'selected' : '' }}>Benar</option>
-                                <option value="0" {{ !($jawaban['is_benar'] ?? false) ? 'selected' : '' }}>Salah</option>
-                            </select>
-                        @else
-                            <span class="badge {{ ($jawaban['is_benar'] ?? false) ? 'badge-success' : 'badge-danger' }}">
-                                {{ ($jawaban['is_benar'] ?? false) ? 'Benar' : 'Salah' }}
-                            </span>
-                        @endif
-                    </td>
-                    <td>{{ ($jawaban['is_benar'] ?? false) ? ($soal->skor ?? 0) : 0 }}</td>
-                </tr>
-                @endif
-            @endforeach
-            
-            </tbody>
-        </table>
-
-        <button class="btn btn-primary">Simpan Penilaian</button>
-    </form>
-</div>
-@endsection --}}
-
-
 @extends('layouts.app')
 
 @section('title', 'Data Siswa')
@@ -126,10 +65,15 @@
                                                             @else
                                                                 @php
                                                                     $status =
-                                                                        ($jawaban['jawaban'] ?? '') ===
-                                                                        ($soal->jawaban_benar ?? '')
+                                                                        strtolower(
+                                                                            trim((string) ($jawaban['jawaban'] ?? '')),
+                                                                        ) ===
+                                                                        strtolower(
+                                                                            trim((string) ($soal->jawaban_benar ?? '')),
+                                                                        )
                                                                             ? 'Benar'
                                                                             : 'Salah';
+
                                                                     $badgeClass =
                                                                         $status === 'Benar'
                                                                             ? 'badge-success'

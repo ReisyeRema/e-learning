@@ -113,8 +113,8 @@ class UserController extends Controller
 
         // Periksa apakah password diisi
         if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password); // Hash password untuk keamanan
-            $data['password_plain'] = $request->password; // Simpan password plain
+            $data['password'] = Hash::make($request->password); 
+            $data['password_plain'] = $request->password; 
         }        
 
 
@@ -131,7 +131,7 @@ class UserController extends Controller
                 Storage::disk('public')->delete('foto_user/' . $user->foto);
             }
 
-            $data['foto'] = $newImage; // Tambahkan foto baru ke data
+            $data['foto'] = $newImage; 
         }
 
         // Update data pengguna

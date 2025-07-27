@@ -298,6 +298,10 @@ Route::middleware(['auth', 'role:Guru'])->prefix('guru')->group(function () {
     Route::get('/rekap-akhir/{mapel}/{kelas}/{tahunAjaran}/{semester}', [RekapAkhirController::class, 'show'])->name('rekap-akhir.show');
     Route::get('/rekap-akhir/export/excel', [RekapAkhirController::class, 'export_excel'])->name('rekap-akhir.export');
 
+    Route::post('/import-soal/{kuis}', [SoalKuisController::class, 'import'])->name('soal.import');
+    Route::get('/export-template-soal', [SoalKuisController::class, 'exportTemplate'])->name('export.template.soal');
+
+
 });
 
 // Wali Kelas

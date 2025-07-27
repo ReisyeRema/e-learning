@@ -38,6 +38,7 @@ class ExportAbsensiKelas implements FromArray, WithTitle, WithStyles
             $tanggal = $absensi->tanggal ? $absensi->tanggal->format('d/m') : 'Tanpa Tanggal';
             $header[] = $tanggal;
         }
+
         // Tambahan kolom total
         $header[] = 'Hadir';
         $header[] = 'Izin';
@@ -99,10 +100,10 @@ class ExportAbsensiKelas implements FromArray, WithTitle, WithStyles
         $nuptk = $this->pembelajaran->guru->guru->nuptk ?? '-';
 
         return array_merge(
-            [[$judul]], // Judul
+            [[$judul]], 
             [['Guru Pengampu: ' . $guru . "          NUPTK:" . $nuptk]],
-            [$header],  // Header
-            $rows       // Data siswa
+            [$header],  
+            $rows       
         );
     }
 

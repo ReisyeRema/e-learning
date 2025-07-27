@@ -13,9 +13,6 @@
             </div>
 
             <div class="border-top px-4 py-3 d-flex justify-content-between align-items-center bg-light">
-                {{-- <button class="btn btn-outline-primary">
-                    <i class="bi bi-hand-thumbs-up"></i> Suka
-                </button> --}}
                 <button class="btn btn-outline-secondary" id="btn-komentar-utama">
                     <i class="bi bi-chat-dots"></i> Komentar
                 </button>
@@ -37,11 +34,9 @@
                 <!-- Komentar Utama -->
                 @foreach ($forum->komentar()->where('parent', 0)->orderBy('created_at', 'desc')->get() as $komentar)
                     <div class="d-flex mb-4">
-                        <!-- Avatar -->
                         <img src="{{ asset('assets/img/profil.png') }}" class="rounded-circle me-3" width="45"
                             height="45" alt="Profile">
 
-                        <!-- Konten komentar + form -->
                         <div class="flex-grow-1">
                             <!-- Komentar -->
                             <p class="mb-1">
@@ -55,7 +50,6 @@
                                 <input type="hidden" name="forum_id" value="{{ $forum->id }}">
                                 <input type="hidden" name="parent" value="{{ $komentar->id }}">
 
-                                <!-- ROW khusus form -->
                                 <div class="row g-2">
                                     <div class="col">
                                         <input type="text" name="konten" class="form-control"

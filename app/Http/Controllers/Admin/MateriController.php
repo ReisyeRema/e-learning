@@ -25,92 +25,6 @@ class MateriController extends Controller
     }
 
 
-    // public function store(MateriRequest $request)
-    // {
-    //     // Pastikan file ada
-    //     if (!$request->hasFile('file_path')) {
-    //         return redirect()->back()->withErrors(['file_path' => 'File materi harus diunggah!']);
-    //     }
-
-    //     $uploadedFile = $request->file('file_path');
-    //     $extension = $uploadedFile->getClientOriginalExtension();
-    //     $newFileName = $request->judul . '.' . now()->timestamp . '.' . $extension;
-
-    //     // Simpan file ke dalam direktori storage/app/public/materi
-    //     // $uploadedFile->storeAs('materi', $newFileName, 'public');
-
-    //     // Upload file ke Google Drive
-    //     $filePath = Storage::disk('google')->putFileAs('', $uploadedFile, $newFileName);
-
-    //     // Dapatkan link file yang diunggah
-    //     $googleDriveFileUrl = "https://drive.google.com/file/d/$filePath/view";
-
-    //     // Simpan ke database
-    //     Materi::create([
-    //         'user_id' => Auth::id(),
-    //         'judul' => $request->judul,
-    //         'deskripsi' => $request->deskripsi,
-    //         'file_path' => $googleDriveFileUrl,
-    //         'mime_type' => $uploadedFile->getClientMimeType(),
-    //         'file_size' => $uploadedFile->getSize(),
-    //     ]);
-
-    //     return redirect()->route('materi.index')->with('success', 'Materi Berhasil Ditambah');
-    // }
-
-    // public function update(MateriRequest $request, $id)
-    // {
-    //     $materi = Materi::findOrFail($id);
-
-    //     // Cek apakah yang mengakses adalah pemilik materi
-    //     if (Auth::id() !== $materi->user_id) {
-    //         return redirect()->back()->withErrors(['unauthorized' => 'Anda tidak memiliki izin untuk mengedit materi ini.']);
-    //     }
-
-    //     // Cek apakah ada file baru yang diunggah
-    //     if ($request->hasFile('file_path')) {
-    //         // Hapus file lama jika ada
-    //         // if ($materi->file_path && Storage::disk('public')->exists($materi->file_path)) {
-    //         //     Storage::disk('public')->delete($materi->file_path);
-    //         // }
-    //         if ($materi->file_path) {
-    //             $oldFileId = basename($materi->file_path); // Ambil ID file dari URL
-    //             Storage::disk('google')->delete($oldFileId);
-    //         }
-
-    //         // Upload file baru
-    //         $uploadedFile = $request->file('file_path');
-    //         $extension = $uploadedFile->getClientOriginalExtension();
-    //         $newFileName = $request->judul . '.' . now()->timestamp . '.' . $extension;
-
-    //         // Simpan file baru ke dalam direktori storage/app/public/materi
-    //         // $uploadedFile->storeAs('materi', $newFileName, 'public');
-
-    //         // Simpan file di Google Drive dan dapatkan ID-nya
-    //         $fileId = Storage::disk('google')->putFileAs('', $uploadedFile, $newFileName);
-
-    //         // Buat URL file baru
-    //         $googleDriveFileUrl = "https://drive.google.com/file/d/$fileId/view";
-
-    //         // Update data dengan file baru
-    //         $materi->update([
-    //             'judul' => $request->judul,
-    //             'deskripsi' => $request->deskripsi,
-    //             'file_path' => $googleDriveFileUrl,
-    //             'mime_type' => $uploadedFile->getClientMimeType(),
-    //             'file_size' => $uploadedFile->getSize(),
-    //         ]);
-    //     } else {
-    //         // Jika file tidak diubah, hanya update judul dan deskripsi
-    //         $materi->update([
-    //             'judul' => $request->judul,
-    //             'deskripsi' => $request->deskripsi,
-    //         ]);
-    //     }
-
-    //     return redirect()->route('materi.index')->with('success', 'Materi Berhasil Diupdate');
-    // }
-
     public function store(MateriRequest $request)
     {
         if (!$request->hasFile('file_path')) {
@@ -139,7 +53,7 @@ class MateriController extends Controller
             'user_id' => Auth::id(),
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
-            'file_path' => $fileId, // Simpan File ID saja
+            'file_path' => $fileId, 
             'mime_type' => $uploadedFile->getClientMimeType(),
             'file_size' => $uploadedFile->getSize(),
         ]);
@@ -270,7 +184,6 @@ class MateriController extends Controller
     }
 
 
-    // klik pertemuan agar tampil materi
     public function getMateriByPertemuan($pertemuan_id)
     {
         $pembelajaran_id = request()->query('pembelajaran_id');
@@ -324,7 +237,7 @@ class MateriController extends Controller
         $results = $service->files->listFiles(['q' => $query]);
 
         if (count($results->getFiles()) > 0) {
-            return $results->getFiles()[0]->getId(); // Folder sudah ada, ambil ID-nya
+            return $results->getFiles()[0]->getId(); 
         }
 
         // Jika folder belum ada, buat baru

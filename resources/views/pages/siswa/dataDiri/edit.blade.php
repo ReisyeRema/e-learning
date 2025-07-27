@@ -17,10 +17,6 @@
                         src="{{ $user->foto ? asset('storage/foto_user/' . $user->foto) : asset('assets/img/profil.png') }}"
                         alt="Foto Profil" class="rounded-circle img-fluid" style="max-width: 150px; max-height: 150px;">
                 </div>
-                {{-- <button type="button" class="btn btn-link text-primary"
-                    onclick="document.getElementById('uploadFoto').click();">
-                    <h6 style="color: #0157b3 !important;">Ganti Foto Profil</h6>
-                </button> --}}
 
                 <button type="button" class="btn btn-sm btn-outline-success"
                     onclick="document.getElementById('uploadFoto').click();">

@@ -15,9 +15,9 @@ class ExportAbsensi implements FromView, WithStyles, WithTitle
 {
     protected $absensi;
     protected $sheetTitle;
-    protected $jumlahKolomPertemuan; // ← Tambahkan ini
-    protected $jumlahBarisSiswa; // Baris data siswa (tanpa header)
-    protected $barisHeaderTabel = 6; // Header tabel mulai baris ke-6
+    protected $jumlahKolomPertemuan; 
+    protected $jumlahBarisSiswa; 
+    protected $barisHeaderTabel = 6; 
 
     public function __construct($pembelajaranId)
     {

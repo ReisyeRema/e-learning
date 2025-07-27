@@ -12,6 +12,7 @@ use App\Models\HasilKuis;
 use App\Models\WaliKelas;
 use App\Models\Enrollments;
 use App\Models\SubmitTugas;
+use App\Models\TahunAjaran;
 use App\Models\Pembelajaran;
 use App\Models\UserActivity;
 use Illuminate\Http\Request;
@@ -100,10 +101,10 @@ class DashboardController extends Controller
             }
         }
 
-        $tahunAjarans = \App\Models\TahunAjaran::all();
+        $tahunAjarans = TahunAjaran::all();
         // Jika ada filter tahun_ajaran, ambil data pembelajaran sesuai tahun ajaran
         $tahunAjaranId = $request->input('tahun_ajaran');
-        $pembelajaranQuery = \App\Models\Pembelajaran::query();
+        $pembelajaranQuery = Pembelajaran::query();
         if ($tahunAjaranId) {
             $pembelajaranQuery->where('tahun_ajaran_id', $tahunAjaranId);
         }
@@ -112,7 +113,7 @@ class DashboardController extends Controller
 
 
         // Get Distribusi Guru Permapel
-        $kelas = \App\Models\Kelas::all();
+        $kelas = Kelas::all();
         $kelasId = $request->input('kelas');
         if ($kelasId) {
             $pembelajaranQuery->where('kelas_id', $kelasId);

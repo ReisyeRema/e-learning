@@ -18,7 +18,6 @@
                             </div>
 
                             <!-- Form Utama untuk Semua Aksi -->
-                            <!-- Form Utama untuk Semua Aksi -->
                             <form id="batchActionForm" method="POST">
                                 @csrf
                                 <input type="hidden" name="pembelajaran_id" value="{{ $pembelajaran->id }}">
@@ -102,7 +101,7 @@
                                     document.getElementById('siswaIdsInput').value = selectedIds.join(',');
 
                                     let form = document.getElementById('batchActionForm');
-                                    form.action = url; // Set action sesuai tombol yang diklik
+                                    form.action = url; 
                                     form.submit();
                                 }
 
@@ -135,7 +134,7 @@
                                             document.getElementById('siswaIdsInput').value = selectedIds.join(',');
 
                                             let form = document.getElementById('batchActionForm');
-                                            form.action = url; // Set action ke batchDelete
+                                            form.action = url; 
                                             form.submit();
                                         }
                                     });

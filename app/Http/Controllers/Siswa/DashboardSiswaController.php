@@ -90,7 +90,7 @@ class DashboardSiswaController extends Controller
         // Mendapatkan tugas yang memiliki deadline di masa depan
         $tugasDeadline = PertemuanTugas::with('tugas', 'pembelajaran')
             ->whereIn('pembelajaran_id', $enrolledPembelajaranIds)
-            ->where('deadline', '>=', Carbon::now()) // Menggunakan where untuk membandingkan waktu penuh
+            ->where('deadline', '>=', Carbon::now()) 
             ->whereNotIn('tugas_id', $submittedTugasIds)
             ->orderBy('deadline')
             ->limit(5)
@@ -99,7 +99,7 @@ class DashboardSiswaController extends Controller
         // Mendapatkan kuis yang memiliki deadline di masa depan
         $kuisDeadline = PertemuanKuis::with('kuis', 'pembelajaran')
             ->whereIn('pembelajaran_id', $enrolledPembelajaranIds)
-            ->where('deadline', '>=', Carbon::now()) // Menggunakan where untuk membandingkan waktu penuh
+            ->where('deadline', '>=', Carbon::now()) 
             ->whereNotIn('kuis_id', $answeredKuisIds)
             ->orderBy('deadline')
             ->limit(5)
@@ -108,21 +108,6 @@ class DashboardSiswaController extends Controller
 
 
         // === STATUS PEMBELAJARAN TERAKHIR ===
-
-        // Mendapatkan status pembelajaran terakhir untuk siswa yang terdaftar dan telah di-approve
-        // $statusPembelajaran = Enrollments::where('siswa_id', $siswaId)
-        //     ->where('status', 'approved')
-        //     ->with(['pembelajaran' => function ($query) {
-        //         $query->select('id', 'nama_mapel');
-        //     }])
-        //     ->orderBy('updated_at', 'desc') // Menampilkan yang terakhir di-update
-        //     ->get();
-
-        // Menyaring pembelajaran yang statusnya masih dalam proses atau sudah selesai
-        // $statusPembelajaran = $statusPembelajaran->map(function ($status) {
-        //     $status->status = $status->updated_at->isPast() ? 'selesai' : 'proses';
-        //     return $status;
-        // });
         $statusPembelajaran = UserActivity::where('user_id', Auth::id())
             ->orderBy('performed_at', 'desc')
             ->limit(10)

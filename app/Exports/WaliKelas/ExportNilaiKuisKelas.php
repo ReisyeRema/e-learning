@@ -51,7 +51,7 @@ class ExportNilaiKuisKelas implements FromArray, WithTitle, WithStyles
 
         // Body dan nilai kolom
         $rows = [];
-        $nilaiKolom = array_fill(0, $kuisBiasa->count() + 1, []); // kolom nilai + rata-rata
+        $nilaiKolom = array_fill(0, $kuisBiasa->count() + 1, []); 
 
         foreach ($siswaList as $index => $siswa) {
             $row = [$index + 1, $siswa->name, $siswa->siswa->nis ?? '-'];
@@ -161,13 +161,13 @@ class ExportNilaiKuisKelas implements FromArray, WithTitle, WithStyles
             $query->where('pembelajaran_id', $this->pembelajaran->id);
         })->count();
 
-        $totalColumns = 3 + $kuisBiasaCount + 1 + $ujianCount; // No, Nama, kuis, rata2, ujian
+        $totalColumns = 3 + $kuisBiasaCount + 1 + $ujianCount; 
         $totalRows = $siswaCount + 4;
 
         $endColumn = Coordinate::stringFromColumnIndex($totalColumns);
 
-        $sheet->mergeCells("A1:{$endColumn}1"); // Judul
-        $sheet->mergeCells("A2:{$endColumn}2"); // Guru
+        $sheet->mergeCells("A1:{$endColumn}1"); 
+        $sheet->mergeCells("A2:{$endColumn}2"); 
 
 
         return [
@@ -193,7 +193,7 @@ class ExportNilaiKuisKelas implements FromArray, WithTitle, WithStyles
                     'startColor' => ['rgb' => 'EEEDEB'],
                 ],
             ],
-            "A3:{$endColumn}{$totalRows}" => [ // Border mulai dari header
+            "A3:{$endColumn}{$totalRows}" => [ 
                 'borders' => [
                     'allBorders' => [
                         'borderStyle' => Border::BORDER_THIN,
