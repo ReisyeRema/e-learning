@@ -60,6 +60,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 
 
 Route::get('/landing-page', [LandingPageController::class, 'index'])->name('landing-page.index');
+Route::post('/landing-page', [LandingPageController::class, 'submit'])->name('kontak.submit');
 
 // ppilih role
 Route::get('/choose-role', [RoleSelectController::class, 'show'])->name('choose-role');
