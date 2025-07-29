@@ -10,12 +10,10 @@
 
     .pertemuan-item:hover {
         background-color: #F7F7F7;
-        /* Biru muda saat hover */
     }
 
     .pertemuan-item.active {
         background-color: #F7F7F7 !important;
-        /* Biru saat aktif */
         color: rgb(0, 0, 0) !important;
         font-weight: bold;
     }
@@ -318,8 +316,6 @@ unset($__errorArgs, $__bag); ?>
 
                         if (response.length > 0) {
                             response.forEach(function(item) {
-                                // let fileUrl = item.materi.file_path ? "/storage/" + item
-                                //     .materi.file_path : "#";
 
                                 let kuisItem = `
                                     <div class="list-group-item d-flex justify-content-between align-items-center border rounded p-2 mb-2 kuis-item"
@@ -393,7 +389,7 @@ unset($__errorArgs, $__bag); ?>
                             // Tampilkan data ke dalam modal edit saat tombol edit diklik
                             $(document).on("click", ".edit-kuis", function(e) {
                                 e
-                                    .stopPropagation(); // Penting: mencegah klik masuk ke kuis-item dan membuka file
+                                    .stopPropagation(); 
 
                                 let id = $(this).data("id");
                                 let kuisId = $(this).data("kuis-id");
@@ -414,7 +410,7 @@ unset($__errorArgs, $__bag); ?>
                             $(".delete-kuis").click(function(e) {
                                 e.preventDefault();
                                 e
-                                    .stopPropagation(); // Mencegah event bubbling ke elemen .kuis-item
+                                    .stopPropagation(); 
 
                                 let kuisId = $(this).data("id");
                                 let parentItem = $(this).closest(".kuis-item");
@@ -476,7 +472,7 @@ unset($__errorArgs, $__bag); ?>
 
                             // Handler tombol salin token
                             $(".copy-token").click(function(e) {
-                                e.stopPropagation(); // Biar gak trigger klik item kuis
+                                e.stopPropagation(); 
                                 let token = $(this).data("token");
 
                                 // Salin ke clipboard

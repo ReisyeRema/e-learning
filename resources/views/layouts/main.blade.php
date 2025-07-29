@@ -38,10 +38,10 @@
                         <i class="bi bi-person-lines-fill"></i> Data Diri
                     </a>
                 
-                    <a href="{{ route('setifikat-siswa.index') }}"
+                    {{-- <a href="{{ route('setifikat-siswa.index') }}"
                        class="btn btn-outline-primary d-flex align-items-center gap-1">
                         <i class="bi bi-person-lines-fill"></i> Sertifikat
-                    </a>
+                    </a> --}}
                 </div>
                 
             </div>

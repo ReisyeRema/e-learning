@@ -27,11 +27,22 @@ class TugasSiswaController extends Controller
                 $query->where('siswa_id', $siswaId);
             }])
             ->get()
-            ->sortByDesc('created_at'); 
+            ->sortByDesc('created_at');
+
+        $pertemuanTugasAktif = collect();
+        $pertemuanTugasDraft = collect();
+
+        foreach ($pertemuanTugasList as $ptugas) {
+            if ($ptugas->pembelajaran->aktif) {
+                $pertemuanTugasAktif->push($ptugas);
+            } else {
+                $pertemuanTugasDraft->push($ptugas);
+            }
+        }
 
         $profileSekolah = ProfilSekolah::first();
 
-        return view('pages.siswa.tugas.index', compact('pertemuanTugasList', 'profileSekolah'));
+        return view('pages.siswa.tugas.index', compact('pertemuanTugasAktif', 'pertemuanTugasDraft', 'profileSekolah'));
     }
 
     protected function logActivity($activity, $details = '')

@@ -10,7 +10,6 @@
                     <div class="row">
                         <div class="col-12">
                             <!-- Header Section -->
-                            <!-- Header Section -->
                             <div class="d-flex justify-content-between align-items-start mb-3">
                                 <h4>Daftar Soal - <?php echo e($kuis->judul); ?></h4>
 

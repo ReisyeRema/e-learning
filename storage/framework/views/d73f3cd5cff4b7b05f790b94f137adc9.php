@@ -19,7 +19,6 @@
                             </div>
 
                             <!-- Form Utama untuk Semua Aksi -->
-                            <!-- Form Utama untuk Semua Aksi -->
                             <form id="batchActionForm" method="POST">
                                 <?php echo csrf_field(); ?>
                                 <input type="hidden" name="pembelajaran_id" value="<?php echo e($pembelajaran->id); ?>">
@@ -104,7 +103,7 @@
                                     document.getElementById('siswaIdsInput').value = selectedIds.join(',');
 
                                     let form = document.getElementById('batchActionForm');
-                                    form.action = url; // Set action sesuai tombol yang diklik
+                                    form.action = url; 
                                     form.submit();
                                 }
 
@@ -137,7 +136,7 @@
                                             document.getElementById('siswaIdsInput').value = selectedIds.join(',');
 
                                             let form = document.getElementById('batchActionForm');
-                                            form.action = url; // Set action ke batchDelete
+                                            form.action = url; 
                                             form.submit();
                                         }
                                     });

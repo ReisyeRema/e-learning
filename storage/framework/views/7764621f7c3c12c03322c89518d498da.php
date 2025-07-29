@@ -52,7 +52,7 @@
                 <?php $__empty_1 = true; $__currentLoopData = $riwayatAbsensi; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $absen): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <?php
                         $tanggal = $absen->absensi->tanggal;
-                        $jamAbsen = \Carbon\Carbon::parse($absen->created_at)->format('H:i'); // atau 'H:i:s' untuk detik
+                        $jamAbsen = \Carbon\Carbon::parse($absen->created_at)->format('H:i'); 
                     ?>
                     <tr style="background-color: <?php echo e($absen->keterangan == 'Hadir' ? '#e9f7ef' : '#fff3f3'); ?>;">
                         <td><?php echo e($i + 1); ?></td>
@@ -62,16 +62,16 @@
                             <?php
                                 switch ($absen->keterangan) {
                                     case 'Hadir':
-                                        $badgeClass = 'bg-success'; // Hijau
+                                        $badgeClass = 'bg-success'; 
                                         break;
                                     case 'Izin':
-                                        $badgeClass = 'bg-warning text-dark'; // Kuning
+                                        $badgeClass = 'bg-warning text-dark'; 
                                         break;
                                     case 'Sakit':
-                                        $badgeClass = 'bg-info text-dark'; // Biru Muda
+                                        $badgeClass = 'bg-info text-dark'; 
                                         break;
                                     case 'Alfa':
-                                        $badgeClass = 'bg-danger'; // Merah
+                                        $badgeClass = 'bg-danger'; 
                                         break;
                                     default:
                                         $badgeClass = 'bg-secondary';

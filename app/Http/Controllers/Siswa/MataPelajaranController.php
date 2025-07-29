@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Siswa;
 
 use Carbon\Carbon;
+use App\Models\Kelas;
 use App\Models\Tugas;
 use App\Models\Absensi;
 use App\Models\Enrollments;
+use App\Models\TahunAjaran;
 use Illuminate\Support\Str;
 use App\Models\Pembelajaran;
 use App\Models\UserActivity;
@@ -23,7 +25,7 @@ use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
 class MataPelajaranController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         // Log aktivitas
         $this->logActivity('Mengakses List Mata Pelajaran', 'User membuka halaman list mata pelajaran');
@@ -32,6 +34,21 @@ class MataPelajaranController extends Controller
 
         $enrollments = Enrollments::where('siswa_id', $siswaId)
             ->where('status', 'approved')
+            ->whereHas('pembelajaran', function ($query) use ($request) {
+                $query->where('aktif', true);
+
+                if ($request->filled('mapel')) {
+                    $query->where('nama_mapel', 'like', '%' . $request->mapel . '%');
+                }
+
+                if ($request->filled('kelas')) {
+                    $query->where('kelas_id', $request->kelas);
+                }
+
+                if ($request->filled('tahun_ajaran')) {
+                    $query->where('tahun_ajaran_id', $request->tahun_ajaran);
+                }
+            })
             ->with(['pembelajaran' => function ($query) use ($siswaId) {
                 $query->withCount(['enrollments', 'pertemuanMateri'])
                     ->with([
@@ -43,6 +60,14 @@ class MataPelajaranController extends Controller
                         }
                     ]);
             }])
+            ->get()
+            ->sortByDesc('created_at');
+
+        // Draft (pembelajaran tidak aktif)
+        $draftEnrollments = Enrollments::where('siswa_id', $siswaId)
+            ->where('status', 'approved')
+            ->whereHas('pembelajaran', fn($q) => $q->where('aktif', false))
+            ->with('pembelajaran.kelas', 'pembelajaran.tahunAjaran')
             ->get();
 
         // Tambahkan progress ke setiap enrollment
@@ -72,9 +97,14 @@ class MataPelajaranController extends Controller
             $enrollment->progress = round($progressTugas + $progressKuis);
         }
 
+        // Ambil data untuk dropdown filter
+        $kelasList = Kelas::orderBy('nama_kelas')->get();
+        $tahunAjaranList = TahunAjaran::orderBy('nama_tahun', 'desc')->get();
+
         $profileSekolah = ProfilSekolah::first();
 
-        return view('pages.siswa.mataPelajaran.index', compact('enrollments', 'profileSekolah'));
+        return view('pages.siswa.mataPelajaran.index', compact('enrollments', 'profileSekolah', 'draftEnrollments','kelasList',
+        'tahunAjaranList'));
     }
 
 
@@ -145,10 +175,12 @@ class MataPelajaranController extends Controller
             })
             ->get();
 
+        $isAktif = $pembelajaran->aktif === 1;
+
 
         $profileSekolah = ProfilSekolah::first();
 
-        return view('pages.siswa.mataPelajaran.show', compact('pembelajaran', 'tugas', 'profileSekolah', 'absensiAktif', 'detailAbsensi', 'riwayatAbsensi', 'absensiMasihAktif', 'waktuAbsensiBelumDimulai'));
+        return view('pages.siswa.mataPelajaran.show', compact('pembelajaran', 'tugas', 'profileSekolah', 'absensiAktif', 'detailAbsensi', 'riwayatAbsensi', 'absensiMasihAktif', 'waktuAbsensiBelumDimulai', 'isAktif'));
     }
 
     public function lakukanAbsensi(Request $request, $id)
@@ -274,7 +306,7 @@ class MataPelajaranController extends Controller
         $results = $service->files->listFiles(['q' => $query]);
 
         if (count($results->getFiles()) > 0) {
-            return $results->getFiles()[0]->getId(); 
+            return $results->getFiles()[0]->getId();
         }
 
         // Jika folder belum ada, buat baru

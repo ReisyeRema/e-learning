@@ -12,13 +12,11 @@
                             <!-- Button Section -->
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <p class="card-title">Daftar Data Siswa</p>
-                                <!-- Button to trigger modal -->
                                 <a href="<?php echo e(route('siswa.create')); ?>" class="btn btn-primary">Tambah Data</a>
                             </div>
 
                             <!-- Dropdown Filter Section -->
                             <div class="row">
-                                <!-- Tombol Download -->
                                 <div class="col-md-3">
                                     <form method="GET" action="<?php echo e(route('siswa.export')); ?>">
                                         <input type="hidden" name="kelas_id" value="<?php echo e(request('kelas_id')); ?>">
@@ -105,7 +103,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <?php echo e($users->links()); ?> <!-- Tambahkan pagination -->
+                            <?php echo e($users->links()); ?> 
                         </div>
                     </div>
                 </div>

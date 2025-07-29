@@ -423,7 +423,13 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary"
                                     data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-success" id="submitButton">Kumpulkan</button>
+                                <button type="submit" class="btn btn-success" id="submitButton"
+                                    {{ !$isAktif ? 'disabled' : '' }}>Kumpulkan</button>
+                                @if (!$isAktif)
+                                    <div class="alert alert-warning mt-2">
+                                        Pembelajaran sudah tidak aktif. Pengumpulan tugas dinonaktifkan.
+                                    </div>
+                                @endif
 
                             </div>
                         </form>
@@ -461,7 +467,14 @@
                                 required>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Mulai Kuis</button>
+                            <button type="submit" class="btn btn-primary" {{ !$isAktif ? 'disabled' : '' }}>Mulai
+                                Kuis</button>
+                            @if (!$isAktif)
+                                <div class="alert alert-warning mt-2">
+                                    Pembelajaran sudah tidak aktif. Kuis tidak bisa dikerjakan.
+                                </div>
+                            @endif
+
                         </div>
                     </div>
                 </form>
@@ -736,7 +749,7 @@
                 const urlFilled = urlInput && urlInput.value.trim() !== '';
 
                 if (!fileFilled && !urlFilled) {
-                    e.preventDefault(); 
+                    e.preventDefault();
                     Swal.fire({
                         icon: 'warning',
                         title: 'Pengumpulan Tidak Lengkap',

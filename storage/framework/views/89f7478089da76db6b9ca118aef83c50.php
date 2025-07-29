@@ -185,8 +185,6 @@
 
     <div class="overlay" id="overlay"></div>
 
-    
-
     <main class="main p-3">
         <div class="container">
             <!-- Tombol Kembali -->
@@ -254,7 +252,7 @@
                                 $kategori = $kuis->kuis->kategori;
 
                                 if (in_array($kategori, ['Ujian Mid', 'Ujian Akhir'])) {
-                                    $judulGroup = $kategori; // Jadi "Ujian Mid" atau "Ujian Akhir"
+                                    $judulGroup = $kategori;
                                 } else {
                                     $judulGroup = $kuis->kuis->materi->judul ?? 'Materi Tidak Diketahui';
                                 }
@@ -426,7 +424,13 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary"
                                     data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-success" id="submitButton">Kumpulkan</button>
+                                <button type="submit" class="btn btn-success" id="submitButton"
+                                    <?php echo e(!$isAktif ? 'disabled' : ''); ?>>Kumpulkan</button>
+                                <?php if(!$isAktif): ?>
+                                    <div class="alert alert-warning mt-2">
+                                        Pembelajaran sudah tidak aktif. Pengumpulan tugas dinonaktifkan.
+                                    </div>
+                                <?php endif; ?>
 
                             </div>
                         </form>
@@ -464,7 +468,14 @@
                                 required>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Mulai Kuis</button>
+                            <button type="submit" class="btn btn-primary" <?php echo e(!$isAktif ? 'disabled' : ''); ?>>Mulai
+                                Kuis</button>
+                            <?php if(!$isAktif): ?>
+                                <div class="alert alert-warning mt-2">
+                                    Pembelajaran sudah tidak aktif. Kuis tidak bisa dikerjakan.
+                                </div>
+                            <?php endif; ?>
+
                         </div>
                     </div>
                 </form>
@@ -671,8 +682,6 @@
         });
     </script>
 
-    
-
     <script>
         document.querySelectorAll('.btn-kerjakan-kuis').forEach(button => {
             button.addEventListener('click', function(e) {
@@ -741,7 +750,7 @@
                 const urlFilled = urlInput && urlInput.value.trim() !== '';
 
                 if (!fileFilled && !urlFilled) {
-                    e.preventDefault(); // Mencegah form terkirim
+                    e.preventDefault();
                     Swal.fire({
                         icon: 'warning',
                         title: 'Pengumpulan Tidak Lengkap',

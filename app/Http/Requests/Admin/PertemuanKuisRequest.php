@@ -27,7 +27,6 @@ class PertemuanKuisRequest extends FormRequest
             'kuis_id' => 'required|exists:kuis,id',
             'deadline' => 'nullable|date|after:now',
             'token' => 'nullable|string|unique:pertemuan_kuis,token',
-            // 'kategori_kuis' => 'required|in:Ujian Akhir,Ujian Mid,Latihan,Kuis',
         ];
     }
 
@@ -41,8 +40,6 @@ class PertemuanKuisRequest extends FormRequest
             'kuis_id.required' => 'kuis harus dipilih.',
             'kuis_id.exists' => 'kuis yang dipilih tidak valid.',
             'deadline.after' => 'Deadline harus lebih dari waktu sekarang.',
-            // 'kategori_kuis.required' => 'Kategori Kuis wajib diisi.',
-            // 'kategori_kuis.in' => 'Kategori Kuis harus salah satu dari: Ujian Akhir,Ujian Mid, Latihan, Kuis.',
         ];
     }
 }

@@ -10,12 +10,10 @@
 
     .pertemuan-item:hover {
         background-color: #F7F7F7;
-        /* Biru muda saat hover */
     }
 
     .pertemuan-item.active {
         background-color: #F7F7F7 !important;
-        /* Biru saat aktif */
         color: rgb(0, 0, 0) !important;
         font-weight: bold;
     }
@@ -53,7 +51,6 @@
                             Tambahkan
                         </button>
                     </div>
-                    
 
                     <a href="<?php echo e(route('tugas.export', ['pembelajaran_id' => $pembelajaran->id])); ?>" class="btn btn-sm btn-success mb-3">
                         <i class="fa fa-download"></i> Export Nilai Tugas
@@ -68,7 +65,6 @@
                                 <div class="card-body">
                                     <ul class="list-group" id="sidebar-pertemuan">
                                         <h5 class="mb-3">Daftar Pertemuan Tugas</h5>
-                                        
                                         <?php $__currentLoopData = $pertemuan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <li class="list-group-item d-flex justify-content-between align-items-center pertemuan-item"
                                                 data-pertemuan="<?php echo e($item->id); ?>"
@@ -393,7 +389,7 @@ unset($__errorArgs, $__bag); ?>
                             // Tampilkan data ke dalam modal edit saat tombol edit diklik
                             $(document).on("click", ".edit-tugas", function(e) {
                                 e
-                                    .stopPropagation(); // Penting: mencegah klik masuk ke tugas-item dan membuka file
+                                    .stopPropagation(); 
 
                                 let id = $(this).data("id");
                                 let tugasId = $(this).data("tugas-id");

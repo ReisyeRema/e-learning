@@ -158,7 +158,7 @@ class KuisSiswaController extends Controller
 
         $siswaId = Auth::id();
 
-        // Ambil semua pertemuanTugas yang berasal dari pembelajaran yang di-enroll siswa
+        // Ambil semua pertemuanKuis yang berasal dari pembelajaran yang di-enroll siswa
         $pertemuanKuisList = \App\Models\PertemuanKuis::with(['kuis', 'pembelajaran.kelas', 'pembelajaran.tahunAjaran'])
             ->whereHas('pembelajaran.enrollments', function ($query) use ($siswaId) {
                 $query->where('siswa_id', $siswaId);
@@ -167,11 +167,22 @@ class KuisSiswaController extends Controller
                 $query->where('siswa_id', $siswaId);
             }])
             ->get()
-            ->sortByDesc('created_at'); // Atau bisa juga berdasarkan deadline
+            ->sortByDesc('created_at');
+
+        $pertemuanKuisAktif = collect();
+        $pertemuanKuisDraft = collect();
+
+        foreach ($pertemuanKuisList as $ptugas) {
+            if ($ptugas->pembelajaran->aktif) {
+                $pertemuanKuisAktif->push($ptugas);
+            } else {
+                $pertemuanKuisDraft->push($ptugas);
+            }
+        }
 
         $profileSekolah = ProfilSekolah::first();
 
-        return view('pages.siswa.kuis.index', compact('pertemuanKuisList', 'profileSekolah'));
+        return view('pages.siswa.kuis.index', compact('pertemuanKuisAktif', 'pertemuanKuisDraft', 'profileSekolah'));
     }
 
     protected function logActivity($activity, $details = '')
