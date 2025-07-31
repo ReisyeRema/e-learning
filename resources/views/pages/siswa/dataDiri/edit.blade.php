@@ -56,14 +56,14 @@
                 <label for="nis" class="col-md-3 col-form-label text-left">NIS</label>
                 <div class="col-md-9">
                     <input id="nis" name="nis" type="text" value="{{ old('nis', $profile->nis ?? '') }}"
-                        class="form-control" disabled>
+                        class="form-control">
                 </div>
             </div>
 
             <div class="row mb-3">
                 <label for="kelas_id" class="col-md-3 col-form-label text-left">Kelas</label>
                 <div class="col-md-9">
-                    <select name="kelas_id" class="form-control @error('kelas_id') is-invalid @enderror" id="kelas_id" disabled>
+                    <select name="kelas_id" class="form-control @error('kelas_id') is-invalid @enderror" id="kelas_id">
                         <option value="">Pilih Kelas</option>
                         @foreach ($kelas as $item)
                             <option value="{{ $item->id }}"

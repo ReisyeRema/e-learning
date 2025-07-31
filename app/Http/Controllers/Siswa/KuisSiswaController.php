@@ -106,10 +106,20 @@ class KuisSiswaController extends Controller
             $jumlahDijawab++;
             $isCorrect = false;
 
+            // if ($soal->type_soal === 'Essay') {
+            //     $isCorrect = strtolower(trim($soal->jawaban_benar)) === strtolower(trim($jawabanUser));
+            // } elseif (in_array($soal->type_soal, ['Objective', 'TrueFalse'])) {
+            //     $isCorrect = strtolower(trim((string)$soal->jawaban_benar)) === strtolower(trim((string)$jawabanUser));
+            // }
+
             if ($soal->type_soal === 'Essay') {
                 $isCorrect = strtolower(trim($soal->jawaban_benar)) === strtolower(trim($jawabanUser));
             } elseif (in_array($soal->type_soal, ['Objective', 'TrueFalse'])) {
-                $isCorrect = strtolower(trim((string)$soal->jawaban_benar)) === strtolower(trim((string)$jawabanUser));
+                if ($soal->type_soal === 'TrueFalse') {
+                    $isCorrect = $this->normalizeBoolean($soal->jawaban_benar) === $this->normalizeBoolean($jawabanUser);
+                } else {
+                    $isCorrect = strtolower(trim((string)$soal->jawaban_benar)) === strtolower(trim((string)$jawabanUser));
+                }
             }
 
             if ($isCorrect) {
@@ -192,5 +202,11 @@ class KuisSiswaController extends Controller
             'activity' => $activity,
             'details' => $details,
         ]);
+    }
+
+    function normalizeBoolean($value)
+    {
+        $value = strtolower(trim((string) $value));
+        return in_array($value, ['1', 'true', 'ya', 'yes']) ? 'true' : 'false';
     }
 }

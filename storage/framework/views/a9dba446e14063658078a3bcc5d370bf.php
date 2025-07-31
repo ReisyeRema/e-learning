@@ -7,44 +7,37 @@
         <h2 class="mb-4 fw-bold text-center">Mata Pelajaran</h2>
 
         <div class="d-flex justify-content-center mb-2">
-        <form method="GET" action="<?php echo e(route('mata-pelajaran.index')); ?>" class="mb-4">
-            <div class="row g-2">
-                <div class="col-md-3">
-                    <input type="text" name="mapel" value="<?php echo e(request('mapel')); ?>" class="form-control" placeholder="Nama Mapel">
-                </div>
-        
-                <div class="col-md-3">
-                    <select name="kelas" class="form-select">
-                        <option value="">-- Semua Kelas --</option>
-                        <?php $__currentLoopData = $kelasList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $kelas): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <option value="<?php echo e($kelas->id); ?>" <?php echo e(request('kelas') == $kelas->id ? 'selected' : ''); ?>>
-                                <?php echo e($kelas->nama_kelas); ?>
+            <form method="GET" action="<?php echo e(route('mata-pelajaran.index')); ?>" class="mb-4">
+                <div class="row g-2">
 
-                            </option>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </select>
-                </div>
-        
-                <div class="col-md-3">
-                    <select name="tahun_ajaran" class="form-select">
-                        <option value="">-- Semua Tahun Ajaran --</option>
-                        <?php $__currentLoopData = $tahunAjaranList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tahun): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <option value="<?php echo e($tahun->id); ?>" <?php echo e(request('tahun_ajaran') == $tahun->id ? 'selected' : ''); ?>>
-                                <?php echo e($tahun->nama_tahun); ?>
+                    <div class="col-md-4">
+                        <select name="tahun_ajaran" class="form-select">
+                            <option value="">-- Semua Tahun Ajaran --</option>
+                            <?php $__currentLoopData = $tahunAjaranList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tahun): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($tahun->id); ?>"
+                                    <?php echo e(request('tahun_ajaran') == $tahun->id ? 'selected' : ''); ?>>
+                                    <?php echo e($tahun->nama_tahun); ?>
 
-                            </option>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </select>
+                                </option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <input type="text" name="mapel" value="<?php echo e(request('mapel')); ?>" class="form-control"
+                            placeholder="Nama Mapel">
+                    </div>
+
+                    
+
+                    <div class="col-md-3 mt-2">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                        <a href="<?php echo e(route('mata-pelajaran.index')); ?>" class="btn btn-secondary">Reset</a>
+                    </div>
                 </div>
-        
-                <div class="col-md-3 mt-2">
-                    <button type="submit" class="btn btn-primary">Filter</button>
-                    <a href="<?php echo e(route('mata-pelajaran.index')); ?>" class="btn btn-secondary">Reset</a>
-                </div>
-            </div>
-        </form>
+            </form>
         </div>
-        
+
         <?php if($enrollments->isEmpty()): ?>
             <p class="text-center text-muted">Tidak ada mata pelajaran</p>
         <?php else: ?>
@@ -69,7 +62,10 @@
                                 <div class="row g-3 align-items-center">
                                     <!-- Gambar (Sebelah Kiri) -->
                                     <div class="col-md-3">
-                                        <img src="<?php echo e(asset('storage/covers/' . $enrollment->pembelajaran->cover)); ?>"
+                                        <img src="<?php echo e($enrollment->pembelajaran->cover &&
+                                        file_exists(public_path('storage/covers/' . $enrollment->pembelajaran->cover))
+                                            ? asset('storage/covers/' . $enrollment->pembelajaran->cover)
+                                            : asset('assets/img/default-cover.png')); ?>"
                                             class="img-fluid rounded" alt="Cover"
                                             style="height: 150px; object-fit: cover; width: 100%;">
                                     </div>
@@ -78,7 +74,8 @@
                                     <div class="col-md-9">
                                         <h5 class="fw-bold text-success"><?php echo e($enrollment->pembelajaran->nama_mapel); ?> -
                                             <?php echo e($enrollment->pembelajaran->kelas->nama_kelas); ?> -
-                                            <?php echo e($enrollment->pembelajaran->semester); ?>
+                                            <?php echo e($enrollment->pembelajaran->semester); ?> -
+                                            <?php echo e($enrollment->pembelajaran->tahunAjaran->nama_tahun); ?>
 
                                         </h5>
                                         <p>
@@ -143,9 +140,14 @@
                                     <div class="card shadow-sm border-20 rounded p-3 bg-light" style="opacity: 0.6;">
                                         <div class="row g-3 align-items-center">
                                             <div class="col-md-3">
-                                                <img src="<?php echo e(asset('storage/covers/' . $enrollment->pembelajaran->cover)); ?>"
+                                                
+                                                <img src="<?php echo e($enrollment->pembelajaran->cover &&
+                                                file_exists(public_path('storage/covers/' . $enrollment->pembelajaran->cover))
+                                                    ? asset('storage/covers/' . $enrollment->pembelajaran->cover)
+                                                    : asset('images/default-cover.png')); ?>"
                                                     class="img-fluid rounded"
                                                     style="height: 150px; object-fit: cover; width: 100%;" alt="Cover">
+
                                             </div>
                                             <div class="col-md-9">
                                                 <h5 class="fw-bold"><?php echo e($enrollment->pembelajaran->nama_mapel); ?> -
@@ -156,7 +158,8 @@
                                                         class="badge bg-secondary"><?php echo e($enrollment->pembelajaran->guru->name); ?></span>
                                                 </p>
                                                 <small class="fst-italic text-danger">Mata pelajaran ini tidak aktif
-                                                    (draft)</small>
+                                                    (draft)
+                                                </small>
                                             </div>
                                         </div>
                                     </div>

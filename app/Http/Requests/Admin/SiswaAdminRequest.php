@@ -35,12 +35,12 @@ class SiswaAdminRequest extends FormRequest
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
 
             // Validasi untuk siswa
-            'nis' => 'nullable|string|max:10|regex:/^\d{1,10}$/|unique:siswa,nis,' . $siswaId,
-            'tempat_lahir' => 'required|string|max:100',
-            'tanggal_lahir' => 'required|date',
-            'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
-            'alamat' => 'required|string|max:255',
-            'kelas_id' => 'required|exists:kelas,id',
+            'nis' => 'string|string|max:10|regex:/^\d{1,10}$/|unique:siswa,nis,' . $siswaId,
+            'tempat_lahir' => 'nullable|string|max:100',
+            'tanggal_lahir' => 'nullable|date',
+            'jenis_kelamin' => 'nullable|in:Laki-Laki,Perempuan',
+            'alamat' => 'nullable|string|max:255',
+            'kelas_id' => 'nullable|exists:kelas,id',
         ];
     }
 
@@ -72,18 +72,15 @@ class SiswaAdminRequest extends FormRequest
             // Pesan error untuk siswa
             'user_id.exists' => 'ID pengguna tidak valid.',
             'kelas_id.exists' => 'ID pengguna tidak valid.',
+            'nis.required' => 'NIS wajib diisi.',
             'nis.max' => 'NIS maksimal 10 digit.',
             'nis.regex' => 'NIS hanya boleh terdiri dari angka.',
-            'tempat_lahir.required' => 'Tempat lahir wajib diisi.',
             'tempat_lahir.string' => 'Tempat lahir harus berupa teks.',
             'tempat_lahir.max' => 'Tempat lahir maksimal 100 karakter.',
-            'tanggal_lahir.required' => 'Tanggal lahir wajib diisi.',
             'tanggal_lahir.date' => 'Tanggal lahir harus berupa tanggal yang valid.',
-            'jenis_kelamin.required' => 'Jenis kelamin wajib diisi.',
             'jenis_kelamin.in' => 'Jenis kelamin harus salah satu dari: Laki-Laki, Perempuan.',
-            'alamat.required' => 'Alamat wajib diisi.',
             'alamat.string' => 'Alamat harus berupa teks.',
             'alamat.max' => 'Alamat maksimal 255 karakter.',
-        ];
+            'kelas_id.exists' => 'Kelas tidak valid.',        ];
     }
 }

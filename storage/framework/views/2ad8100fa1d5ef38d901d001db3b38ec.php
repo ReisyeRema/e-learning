@@ -253,6 +253,15 @@
         border-radius: 5px;
     }
 
+    .swal-btn-green {
+        background-color: #38c172 !important;
+        color: white !important;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 5px;
+    }
+
+
     .swal-btn-red:hover {
         background-color: #a00 !important;
     }

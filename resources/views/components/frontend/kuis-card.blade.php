@@ -58,8 +58,6 @@
                         @if ($hasilKuis)
                             <a href="#" class="text-decoration-none fw-bold" data-bs-toggle="modal"
                                 data-bs-target="#modalDetailKuis{{ $kuis->id }}">Lihat</a>
-                        @elseif ($pertemuanKuis->pembelajaran->status !== 'aktif')
-                            <span class="text-muted fw-bold" style="opacity: 0.6; cursor: not-allowed;">Kumpulkan</span>
                         @else
                             <a href="{{ route('mata-pelajaran.show', ['mapel' => $slugMapel, 'kelas' => $slugKelas, 'tahunAjaran' => $slugTahunAjaran, 'semester' => $slugSemester]) }}"
                                 class="text-decoration-none fw-bold">Kerjakan</a>

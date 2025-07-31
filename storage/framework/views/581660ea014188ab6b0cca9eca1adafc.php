@@ -12,19 +12,15 @@
     <style>
         .service-item {
             background-color: #fff;
-            /* agar bayangan terlihat jelas */
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-            /* bayangan halus */
             transition: all 0.3s ease;
         }
 
         .service-item:hover {
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            /* bayangan lebih besar saat hover */
             transform: translateY(-5px);
-            /* sedikit naik saat hover */
         }
     </style>
 </head>
@@ -45,9 +41,6 @@
                         <h1>Belajar Lebih Mudah dan Terstruktur</h1>
                         <p>Akses materi, tugas, dan kuis secara online dengan platform e-learning kami. Tingkatkan
                             pengalaman belajar di mana saja, kapan saja.</p>
-                        <div class="d-flex">
-                            <a href="<?php echo e(route('login-siswa')); ?>" class="btn-get-started">Get Started</a>
-                        </div>
                     </div>
                     <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="100">
                         <img src="<?php echo e(asset('assets/frontend/landing-page/assets/img/hero-img.png')); ?>"
@@ -63,35 +56,51 @@
             <div class="container" data-aos="fade-up" data-aos-delay="100">
                 <div class="row gy-4">
 
+                    <!-- Guru -->
                     <div class="col-lg-3 col-md-6">
                         <div class="stats-item text-center w-100 h-100">
-                            <span data-purecounter-start="0" data-purecounter-end="<?php echo e($jumlahGuru); ?>"
-                                data-purecounter-duration="1" class="purecounter"></span>
-                            <p>Guru</p>
+                            <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center mb-3"
+                                style="background-color: #48a6a7; width: 100px; height: 100px;">
+                                <span data-purecounter-start="0" data-purecounter-end="<?php echo e($jumlahGuru); ?>"
+                                    data-purecounter-duration="1" class="purecounter text-white fs-3"></span>
+                            </div>
+                            <p class="fw-semibold">Guru</p>
                         </div>
                     </div>
 
+                    <!-- Siswa -->
                     <div class="col-lg-3 col-md-6">
                         <div class="stats-item text-center w-100 h-100">
-                            <span data-purecounter-start="0" data-purecounter-end="<?php echo e($jumlahSiswa); ?>"
-                                data-purecounter-duration="1" class="purecounter"></span>
-                            <p>Siswa</p>
+                            <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center mb-3"
+                                style="background-color: #48a6a7; width: 100px; height: 100px;">
+                                <span data-purecounter-start="0" data-purecounter-end="<?php echo e($jumlahSiswa); ?>"
+                                    data-purecounter-duration="1" class="purecounter text-white fs-3"></span>
+                            </div>
+                            <p class="fw-semibold">Siswa</p>
                         </div>
                     </div>
 
+                    <!-- Kelas -->
                     <div class="col-lg-3 col-md-6">
                         <div class="stats-item text-center w-100 h-100">
-                            <span data-purecounter-start="0" data-purecounter-end="<?php echo e($jumlahKelas); ?>"
-                                data-purecounter-duration="1" class="purecounter"></span>
-                            <p>Kelas</p>
+                            <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center mb-3"
+                                style="background-color: #48a6a7; width: 100px; height: 100px;">
+                                <span data-purecounter-start="0" data-purecounter-end="<?php echo e($jumlahKelas); ?>"
+                                    data-purecounter-duration="1" class="purecounter text-white fs-3"></span>
+                            </div>
+                            <p class="fw-semibold">Kelas</p>
                         </div>
                     </div>
 
+                    <!-- Mata Pelajaran -->
                     <div class="col-lg-3 col-md-6">
                         <div class="stats-item text-center w-100 h-100">
-                            <span data-purecounter-start="0" data-purecounter-end="<?php echo e($jumlahMapel); ?>"
-                                data-purecounter-duration="1" class="purecounter"></span>
-                            <p>Mata Pelajaran</p>
+                            <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center mb-3"
+                                style="background-color: #48a6a7; width: 100px; height: 100px;">
+                                <span data-purecounter-start="0" data-purecounter-end="<?php echo e($jumlahMapel); ?>"
+                                    data-purecounter-duration="1" class="purecounter text-white fs-3"></span>
+                            </div>
+                            <p class="fw-semibold">Mata Pelajaran</p>
                         </div>
                     </div>
 
@@ -149,7 +158,9 @@
         <section id="class" class="services section light-background">
             <div class="container section-title" data-aos="fade-up">
                 <span>Kelas</span>
-                <p class="mt-5">Daftar kelas yang tersedia dalam sistem</p>
+                <p class="mt-5 fs-5">Berikut adalah daftar kelas yang tersedia di <strong>SMA Negeri 2 Kerinci
+                        Kanan</strong>. <br>
+                    Klik pada nama kelas untuk melihat mata pelajaran yang terkait, dan mulai perjalanan belajarmu!</p>
             </div>
 
             <div class="container">
@@ -157,13 +168,21 @@
                     <?php $__currentLoopData = $kelas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $kls): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
                             <div class="service-item position-relative">
-                                <div class="icon" style="background: #48a6a7">
-                                    <i class="bi bi-book"></i>
+                                <div class="icon mb-3"
+                                    style="background: #48a6a7; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="bi bi-easel2 text-white fs-2"></i>
                                 </div>
                                 <a href="<?php echo e(route('kelas.show', $kls->id)); ?>" class="stretched-link">
-                                    <h3 style="color: #48a6a7"><?php echo e($kls->nama_kelas); ?></h3>
+                                    <h2 style="color: #48a6a7"><?php echo e($kls->nama_kelas); ?></h2>
                                 </a>
-                                <p>Kelas ini memiliki sejumlah siswa yang terdaftar.</p>
+                                <p class="text-secondary mt-2">
+                                    Bergabung dengan kelas <strong><?php echo e($kls->nama_kelas); ?></strong> untuk mengakses
+                                    berbagai mata pelajaran,
+                                    diskusi aktif, tugas dan kuis dalam setiap pembelajaran.
+                                </p>
+                                <a href="<?php echo e(route('kelas.show', $kls->id)); ?>" class="btn btn-outline-success mt-3">
+                                    Lihat Detail Kelas
+                                </a>
                             </div>
                         </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -216,50 +235,46 @@
                                 </div>
                             </div><!-- End Info Item -->
 
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d48389.78314118045!2d-74.006138!3d40.710059!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a22a3bda30d%3A0xb89d1fe6bc499443!2sDowntown%20Conference%20Center!5e0!3m2!1sen!2sus!4v1676961268712!5m2!1sen!2sus"
-                                frameborder="0" style="border:0; width: 100%; height: 270px;" allowfullscreen=""
-                                loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            
                         </div>
                     </div>
 
                     <div class="col-lg-7">
-                        <?php if(session('success')): ?>
-                            <div class="alert alert-success"><?php echo e(session('success')); ?></div>
-                        <?php endif; ?>
-                    
-                        <form action="<?php echo e(route('kontak.submit')); ?>" method="post">
-                            <?php echo csrf_field(); ?>
-                            <div class="row gy-4">
-                    
-                                <div class="col-md-6">
-                                    <label for="name-field" class="pb-2">Your Name</label>
-                                    <input name="nama" type="text" id="name-field" class="form-control" required>
-                                </div>
-                    
-                                <div class="col-md-6">
-                                    <label for="email-field" class="pb-2">Your Email</label>
-                                    <input name="email" type="email" class="form-control" id="email-field" required>
-                                </div>
-                    
-                                <div class="col-md-12">
-                                    <label for="subject-field" class="pb-2">Subject</label>
-                                    <input name="subjek" type="text" class="form-control" id="subject-field" required>
-                                </div>
-                    
-                                <div class="col-md-12">
-                                    <label for="message-field" class="pb-2">Message</label>
-                                    <textarea name="pesan" class="form-control" rows="10" id="message-field" required></textarea>
-                                </div>
-                    
-                                <div class="col-md-12 text-center">                    
-                                    <button type="submit" class="btn btn-success">Send Message</button>
-                                </div>
-                    
-                            </div>
-                        </form>
-                    </div><!-- End Contact Form -->
+                        <div class="info-wrap">
+                            <form action="<?php echo e(route('kontak.submit')); ?>" method="post">
+                                <?php echo csrf_field(); ?>
+                                <div class="row gy-4">
 
+                                    <div class="col-md-6">
+                                        <label for="name-field" class="pb-2">Your Name</label>
+                                        <input name="nama" type="text" id="name-field" class="form-control"
+                                            required>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="email-field" class="pb-2">Your Email</label>
+                                        <input name="email" type="email" class="form-control" id="email-field"
+                                            required>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label for="subject-field" class="pb-2">Subject</label>
+                                        <input name="subjek" type="text" class="form-control" id="subject-field"
+                                            required>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label for="message-field" class="pb-2">Message</label>
+                                        <textarea name="pesan" class="form-control" rows="10" id="message-field" required></textarea>
+                                    </div>
+
+                                    <div class="col-md-12 text-center">
+                                        <button type="submit" class="btn btn-success">Send Message</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!-- End Contact Form -->
                 </div>
 
             </div>

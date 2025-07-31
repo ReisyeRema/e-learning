@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('siswa', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('kelas_id')->constrained('kelas')->onDelete('cascade');
-            $table->string('nis')->nullable();
-            $table->string('tempat_lahir');
-            $table->date('tanggal_lahir');
-            $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan']);
-            $table->string('alamat');
+            $table->foreignId('kelas_id')->nullable()->constrained('kelas')->onDelete('cascade');
+            $table->string('nis');
+            $table->string('tempat_lahir')->nullable();
+            $table->date('tanggal_lahir')->nullable();
+            $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan'])->nullable();
+            $table->string('alamat')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

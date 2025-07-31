@@ -1,8 +1,5 @@
 
 
-
-
-
 <?php $__env->startSection('title', 'Data Siswa'); ?>
 
 <?php $__env->startSection('content'); ?>

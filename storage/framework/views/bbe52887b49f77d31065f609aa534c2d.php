@@ -49,10 +49,18 @@
                     <a href="<?php echo e(route('password.request')); ?>"><i class="fas fa-key"></i> Lupa Password?</a>
                 </div>
 
-                <button type="submit" class="login-btn">Masuk</button>
+                <button type="submit" class="login-btn mb-5">Masuk</button>
+
             </form>
+
+            <div class="remember-forgot">
+                <span class="ml-10 mr-3">Belum Punya Akun?</span>
+                <a href="<?php echo e(route('register')); ?>">Buat Akun</a>
+            </div>
+
             <footer class="login-footer">
-                <p>&copy; <?php echo e(date('Y')); ?> <?php echo e($profilSekolah->nama ?? 'Nama Sekolah'); ?>. All rights reserved.</p>
+                <p>&copy; <?php echo e(date('Y')); ?> <?php echo e($profilSekolah->nama_sekolah ?? 'Nama Sekolah'); ?>. All rights reserved.
+                </p>
             </footer>
         </div>
     </div>
@@ -89,6 +97,19 @@
                     buttonsStyling: false,
                     customClass: {
                         confirmButton: 'swal-btn-red'
+                    }
+                });
+            <?php endif; ?>
+
+            <?php if(session('success')): ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    html: '<p style="color: #555;"><?php echo e(session('success')); ?></p>',
+                    confirmButtonText: '<i class="fas fa-check"></i> Oke',
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: 'swal-btn-green'
                     }
                 });
             <?php endif; ?>

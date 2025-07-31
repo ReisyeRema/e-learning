@@ -88,7 +88,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleInputName1">NIS</label>
+                                                    <label for="exampleInputName1">NIS <span class="text-danger">*</span></label>
                                                     <input name="nis"
                                                         class="form-control @error('nis') is-invalid @enderror"
                                                         value="{{ old('nis') }}" type="text" id="exampleInputnis1"
@@ -120,7 +120,7 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleInputName1">Tempat Lahir <span class="text-danger">*</span></label>
+                                                    <label for="exampleInputName1">Tempat Lahir</label>
                                                     <input name="tempat_lahir"
                                                         class="form-control @error('tempat_lahir') is-invalid @enderror"
                                                         value="{{ old('tempat_lahir') }}" type="text"
@@ -134,7 +134,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="tanggalLahir">Tanggal Lahir <span class="text-danger">*</span></label>
+                                                    <label for="tanggalLahir">Tanggal Lahir</label>
                                                     <div class="input-group">
                                                         <input name="tanggal_lahir" id="tanggalLahir"
                                                             class="form-control @error('tanggal_lahir') is-invalid @enderror"
@@ -156,7 +156,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleSelectGender">Jenis Kelamin <span class="text-danger">*</span></label>
+                                                    <label for="exampleSelectGender">Jenis Kelamin</label>
                                                     <select name="jenis_kelamin"
                                                         class="form-control  @error('jenis_kelamin') is-invalid @enderror"
                                                         value="{{ old('jenis_kelamin') }}" id="exampleSelectGender">
@@ -181,7 +181,7 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleInputName1">Alamat <span class="text-danger">*</span></label>
+                                                    <label for="exampleInputName1">Alamat</label>
                                                     <input name="alamat"
                                                         class="form-control @error('alamat') is-invalid @enderror"
                                                         value="{{ old('alamat') }}" type="text"
@@ -196,7 +196,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleSelectKelas">Kelas <span class="text-danger">*</span></label>
+                                                    <label for="exampleSelectKelas">Kelas</label>
                                                     <select name="kelas_id"
                                                         class="form-control @error('kelas_id') is-invalid @enderror"
                                                         id="exampleSelectKelas">

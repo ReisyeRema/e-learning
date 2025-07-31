@@ -17,7 +17,6 @@
                         src="<?php echo e($user->foto ? asset('storage/foto_user/' . $user->foto) : asset('assets/img/profil.png')); ?>"
                         alt="Foto Profil" class="rounded-circle img-fluid" style="max-width: 150px; max-height: 150px;">
                 </div>
-                
 
                 <button type="button" class="btn btn-sm btn-outline-success"
                     onclick="document.getElementById('uploadFoto').click();">
@@ -57,7 +56,7 @@
                 <label for="nis" class="col-md-3 col-form-label text-left">NIS</label>
                 <div class="col-md-9">
                     <input id="nis" name="nis" type="text" value="<?php echo e(old('nis', $profile->nis ?? '')); ?>"
-                        class="form-control" disabled>
+                        class="form-control">
                 </div>
             </div>
 
@@ -71,7 +70,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" id="kelas_id" disabled>
+unset($__errorArgs, $__bag); ?>" id="kelas_id">
                         <option value="">Pilih Kelas</option>
                         <?php $__currentLoopData = $kelas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <option value="<?php echo e($item->id); ?>"

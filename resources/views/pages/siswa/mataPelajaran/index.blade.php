@@ -7,42 +7,45 @@
         <h2 class="mb-4 fw-bold text-center">Mata Pelajaran</h2>
 
         <div class="d-flex justify-content-center mb-2">
-        <form method="GET" action="{{ route('mata-pelajaran.index') }}" class="mb-4">
-            <div class="row g-2">
-                <div class="col-md-3">
-                    <input type="text" name="mapel" value="{{ request('mapel') }}" class="form-control" placeholder="Nama Mapel">
+            <form method="GET" action="{{ route('mata-pelajaran.index') }}" class="mb-4">
+                <div class="row g-2">
+
+                    <div class="col-md-4">
+                        <select name="tahun_ajaran" class="form-select">
+                            <option value="">-- Semua Tahun Ajaran --</option>
+                            @foreach ($tahunAjaranList as $tahun)
+                                <option value="{{ $tahun->id }}"
+                                    {{ request('tahun_ajaran') == $tahun->id ? 'selected' : '' }}>
+                                    {{ $tahun->nama_tahun }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <input type="text" name="mapel" value="{{ request('mapel') }}" class="form-control"
+                            placeholder="Nama Mapel">
+                    </div>
+
+                    {{-- <div class="col-md-3">
+                        <select name="kelas" class="form-select">
+                            <option value="">-- Semua Kelas --</option>
+                            @foreach ($kelasList as $kelas)
+                                <option value="{{ $kelas->id }}" {{ request('kelas') == $kelas->id ? 'selected' : '' }}>
+                                    {{ $kelas->nama_kelas }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div> --}}
+
+                    <div class="col-md-3 mt-2">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                        <a href="{{ route('mata-pelajaran.index') }}" class="btn btn-secondary">Reset</a>
+                    </div>
                 </div>
-        
-                <div class="col-md-3">
-                    <select name="kelas" class="form-select">
-                        <option value="">-- Semua Kelas --</option>
-                        @foreach ($kelasList as $kelas)
-                            <option value="{{ $kelas->id }}" {{ request('kelas') == $kelas->id ? 'selected' : '' }}>
-                                {{ $kelas->nama_kelas }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-        
-                <div class="col-md-3">
-                    <select name="tahun_ajaran" class="form-select">
-                        <option value="">-- Semua Tahun Ajaran --</option>
-                        @foreach ($tahunAjaranList as $tahun)
-                            <option value="{{ $tahun->id }}" {{ request('tahun_ajaran') == $tahun->id ? 'selected' : '' }}>
-                                {{ $tahun->nama_tahun }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-        
-                <div class="col-md-3 mt-2">
-                    <button type="submit" class="btn btn-primary">Filter</button>
-                    <a href="{{ route('mata-pelajaran.index') }}" class="btn btn-secondary">Reset</a>
-                </div>
-            </div>
-        </form>
+            </form>
         </div>
-        
+
         @if ($enrollments->isEmpty())
             <p class="text-center text-muted">Tidak ada mata pelajaran</p>
         @else
@@ -67,7 +70,10 @@
                                 <div class="row g-3 align-items-center">
                                     <!-- Gambar (Sebelah Kiri) -->
                                     <div class="col-md-3">
-                                        <img src="{{ asset('storage/covers/' . $enrollment->pembelajaran->cover) }}"
+                                        <img src="{{ $enrollment->pembelajaran->cover &&
+                                        file_exists(public_path('storage/covers/' . $enrollment->pembelajaran->cover))
+                                            ? asset('storage/covers/' . $enrollment->pembelajaran->cover)
+                                            : asset('assets/img/default-cover.png') }}"
                                             class="img-fluid rounded" alt="Cover"
                                             style="height: 150px; object-fit: cover; width: 100%;">
                                     </div>
@@ -76,7 +82,8 @@
                                     <div class="col-md-9">
                                         <h5 class="fw-bold text-success">{{ $enrollment->pembelajaran->nama_mapel }} -
                                             {{ $enrollment->pembelajaran->kelas->nama_kelas }} -
-                                            {{ $enrollment->pembelajaran->semester }}
+                                            {{ $enrollment->pembelajaran->semester }} -
+                                            {{ $enrollment->pembelajaran->tahunAjaran->nama_tahun }}
                                         </h5>
                                         <p>
                                             <span
@@ -139,9 +146,16 @@
                                     <div class="card shadow-sm border-20 rounded p-3 bg-light" style="opacity: 0.6;">
                                         <div class="row g-3 align-items-center">
                                             <div class="col-md-3">
-                                                <img src="{{ asset('storage/covers/' . $enrollment->pembelajaran->cover) }}"
+                                                {{-- <img src="{{ asset('storage/covers/' . $enrollment->pembelajaran->cover) }}"
+                                                    class="img-fluid rounded"
+                                                    style="height: 150px; object-fit: cover; width: 100%;" alt="Cover"> --}}
+                                                <img src="{{ $enrollment->pembelajaran->cover &&
+                                                file_exists(public_path('storage/covers/' . $enrollment->pembelajaran->cover))
+                                                    ? asset('storage/covers/' . $enrollment->pembelajaran->cover)
+                                                    : asset('images/default-cover.png') }}"
                                                     class="img-fluid rounded"
                                                     style="height: 150px; object-fit: cover; width: 100%;" alt="Cover">
+
                                             </div>
                                             <div class="col-md-9">
                                                 <h5 class="fw-bold">{{ $enrollment->pembelajaran->nama_mapel }} -
@@ -152,7 +166,8 @@
                                                         class="badge bg-secondary">{{ $enrollment->pembelajaran->guru->name }}</span>
                                                 </p>
                                                 <small class="fst-italic text-danger">Mata pelajaran ini tidak aktif
-                                                    (draft)</small>
+                                                    (draft)
+                                                </small>
                                             </div>
                                         </div>
                                     </div>

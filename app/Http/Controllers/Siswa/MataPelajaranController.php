@@ -41,10 +41,6 @@ class MataPelajaranController extends Controller
                     $query->where('nama_mapel', 'like', '%' . $request->mapel . '%');
                 }
 
-                if ($request->filled('kelas')) {
-                    $query->where('kelas_id', $request->kelas);
-                }
-
                 if ($request->filled('tahun_ajaran')) {
                     $query->where('tahun_ajaran_id', $request->tahun_ajaran);
                 }
@@ -67,7 +63,7 @@ class MataPelajaranController extends Controller
         $draftEnrollments = Enrollments::where('siswa_id', $siswaId)
             ->where('status', 'approved')
             ->whereHas('pembelajaran', fn($q) => $q->where('aktif', false))
-            ->with('pembelajaran.kelas', 'pembelajaran.tahunAjaran')
+            ->with('pembelajaran.tahunAjaran')
             ->get();
 
         // Tambahkan progress ke setiap enrollment
@@ -98,12 +94,11 @@ class MataPelajaranController extends Controller
         }
 
         // Ambil data untuk dropdown filter
-        $kelasList = Kelas::orderBy('nama_kelas')->get();
         $tahunAjaranList = TahunAjaran::orderBy('nama_tahun', 'desc')->get();
 
         $profileSekolah = ProfilSekolah::first();
 
-        return view('pages.siswa.mataPelajaran.index', compact('enrollments', 'profileSekolah', 'draftEnrollments','kelasList',
+        return view('pages.siswa.mataPelajaran.index', compact('enrollments', 'profileSekolah', 'draftEnrollments',
         'tahunAjaranList'));
     }
 
