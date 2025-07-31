@@ -160,6 +160,9 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::put('/siswa/{siswa}/update', [SiswaAdminController::class, 'update'])->name('siswa.update');
     Route::delete('/siswa/{siswa}/destroy', [SiswaAdminController::class, 'destroy'])->name('siswa.destroy');
     Route::get('/siswa/export/excel', [SiswaAdminController::class, 'export_excel'])->name('siswa.export');
+    Route::patch('siswa/unverify-multiple', [SiswaAdminController::class, 'unverifyMultiple'])->name('siswa.unverify.multiple');
+    Route::patch('/siswa/verify-multiple', [SiswaAdminController::class, 'verifyMultiple'])->name('siswa.verify.multiple');
+
 
 
     // profile sekolah admin

@@ -73,6 +73,11 @@ class AuthenticatedSessionController extends Controller
                 return back()->withErrors(['email' => 'Anda tidak memiliki akses ke halaman ini.']);
             }
 
+            // Cek apakah siswa sudah diverifikasi
+            if (!$user->is_verified) {
+                Auth::logout();
+                return back()->withErrors(['email' => 'Akun Anda belum diverifikasi oleh admin.']);
+            }
 
             return redirect()->route('dashboard-siswa.index');
         } catch (ValidationException $e) {

@@ -44,7 +44,7 @@ class SiswaAdminController extends Controller
 
     public function create()
     {
-        $kelas = Kelas::all(); 
+        $kelas = Kelas::all();
         return view('pages.admin.siswa.create', compact('kelas'));
     }
 
@@ -114,8 +114,8 @@ class SiswaAdminController extends Controller
 
         // Periksa apakah password diisi
         if ($request->filled('password')) {
-            $updateUserData['password'] = Hash::make($request->password); 
-            $updateUserData['password_plain'] = $request->password; 
+            $updateUserData['password'] = Hash::make($request->password);
+            $updateUserData['password_plain'] = $request->password;
         }
 
         // Update foto jika ada file baru
@@ -212,8 +212,8 @@ class SiswaAdminController extends Controller
                 $query->where('pembelajaran_id', $pembelajaran->id);
             })
             ->get()
-            ->sortBy('name') 
-            ->values(); 
+            ->sortBy('name')
+            ->values();
 
         return view('pages.admin.siswa.show', compact('pembelajaran', 'kelasData', 'siswaList'));
     }
@@ -227,5 +227,54 @@ class SiswaAdminController extends Controller
             'activity' => $activity,
             'details' => $details,
         ]);
+    }
+
+    // public function verify($id)
+    // {
+    //     $user = User::findOrFail($id);
+
+    //     if ($user->hasRole('Siswa')) {
+    //         $user->is_verified = true;
+    //         $user->save();
+
+    //         return redirect()->back()->with('success', 'Akun siswa berhasil diverifikasi.');
+    //     }
+
+    //     return redirect()->back()->with('error', 'Hanya akun siswa yang bisa diverifikasi.');
+    // }
+
+    public function verifyMultiple(Request $request)
+    {
+        $ids = explode(',', $request->input('user_ids'));
+
+        if (empty($ids)) {
+            return redirect()->back()->with('error', 'Tidak ada siswa yang dipilih untuk diverifikasi.');
+        }
+
+        // $users = User::whereIn('id', $ids)->get();
+
+        // foreach ($users as $user) {
+        //     if ($user->hasRole('Siswa')) {
+        //         $user->is_verified;
+        //         $user->save();
+        //     }
+        // }
+        User::whereIn('id', $ids)->update(['is_verified' => true]);
+
+
+        return redirect()->back()->with('success', 'Siswa berhasil diverifikasi.');
+    }
+
+    public function unverifyMultiple(Request $request)
+    {
+        $ids = explode(',', $request->input('user_ids'));
+
+        if (empty($ids)) {
+            return redirect()->back()->with('error', 'Tidak ada siswa yang dipilih untuk diverifikasi.');
+        }
+
+        User::whereIn('id', $ids)->update(['is_verified' => false]);
+
+        return redirect()->back()->with('success', 'Verifikasi siswa dibatalkan.');
     }
 }

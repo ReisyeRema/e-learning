@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('password_plain')->nullable();
             $table->string('foto')->nullable();
+            $table->boolean('is_verified')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });
