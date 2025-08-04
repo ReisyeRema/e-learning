@@ -143,7 +143,7 @@ unset($__errorArgs, $__bag); ?>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleInputName1">NIS</label>
+                                                    <label for="exampleInputName1">NIS <span class="text-danger">*</span></label>
                                                     <input name="nis"
                                                         class="form-control <?php $__errorArgs = ['nis'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -242,7 +242,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                                                            value="<?php echo e(old('tanggal_lahir', $siswa->tanggal_lahir->format('Y-m-d'))); ?>"
+                                                            value="<?php echo e(old('tanggal_lahir', $siswa->tanggal_lahir ? $siswa->tanggal_lahir->format('Y-m-d') : '')); ?>"
                                                             type="date" placeholder="Pilih Tanggal">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">

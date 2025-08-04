@@ -82,7 +82,7 @@
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <strong>Tanggal Lahir:</strong><br>
-                                                                    <?php echo e($item->tanggal_lahir->format('d-m-Y')); ?>
+                                                                    <?php echo e($item->tanggal_lahir ? $item->tanggal_lahir->format('d-m-Y') : '-'); ?>
 
                                                                 </div>
                                                             </div>

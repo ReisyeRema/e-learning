@@ -68,7 +68,7 @@
                         @foreach ($kelas as $item)
                             <option value="{{ $item->id }}"
                                 {{ old('kelas_id', $profile->kelas_id ?? '') == $item->id ? 'selected' : '' }}>
-                                {{ $item->nama_kelas }} - {{ $item->tahun_ajaran }}
+                                {{ $item->nama_kelas }} 
                             </option>
                         @endforeach
                     </select>
@@ -79,7 +79,7 @@
                 <label for="tempat_lahir" class="col-md-3 col-form-label text-left">Tempat Lahir</label>
                 <div class="col-md-9">
                     <input id="tempat_lahir" name="tempat_lahir" type="text"
-                        value="{{ old('tempat_lahir', $profile->tempat_lahir ?? '') }}" class="form-control" required>
+                        value="{{ old('tempat_lahir', $profile->tempat_lahir ?? '') }}" class="form-control">
                 </div>
             </div>
 

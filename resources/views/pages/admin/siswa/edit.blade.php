@@ -137,7 +137,7 @@
                                                     <div class="input-group">
                                                         <input name="tanggal_lahir" id="tanggalLahir"
                                                             class="form-control @error('tanggal_lahir') is-invalid @enderror"
-                                                            value="{{ old('tanggal_lahir', $siswa->tanggal_lahir->format('Y-m-d')) }}"
+                                                            value="{{ old('tanggal_lahir', $siswa->tanggal_lahir ? $siswa->tanggal_lahir->format('Y-m-d') : '') }}"
                                                             type="date" placeholder="Pilih Tanggal">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">

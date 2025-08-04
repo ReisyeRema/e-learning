@@ -46,7 +46,6 @@
                     <i class="fas fa-book-open me-2"></i> Daftar Mata Pelajaran -
                     <span class="text-success"><?php echo e($kelas->nama_kelas); ?></span>
                 </h2>
-                
             </div>
 
 

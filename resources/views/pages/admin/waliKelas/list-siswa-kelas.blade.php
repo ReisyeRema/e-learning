@@ -78,7 +78,7 @@
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <strong>Tanggal Lahir:</strong><br>
-                                                                    {{ $item->tanggal_lahir->format('d-m-Y') }}
+                                                                    {{ $item->tanggal_lahir ? $item->tanggal_lahir->format('d-m-Y') : '-' }}
                                                                 </div>
                                                             </div>
                                                             <div class="row mb-3">

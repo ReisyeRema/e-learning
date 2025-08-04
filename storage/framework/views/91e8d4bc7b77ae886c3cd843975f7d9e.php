@@ -75,8 +75,7 @@ unset($__errorArgs, $__bag); ?>" id="kelas_id">
                         <?php $__currentLoopData = $kelas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <option value="<?php echo e($item->id); ?>"
                                 <?php echo e(old('kelas_id', $profile->kelas_id ?? '') == $item->id ? 'selected' : ''); ?>>
-                                <?php echo e($item->nama_kelas); ?> - <?php echo e($item->tahun_ajaran); ?>
-
+                                <?php echo e($item->nama_kelas); ?> 
                             </option>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
@@ -87,7 +86,7 @@ unset($__errorArgs, $__bag); ?>" id="kelas_id">
                 <label for="tempat_lahir" class="col-md-3 col-form-label text-left">Tempat Lahir</label>
                 <div class="col-md-9">
                     <input id="tempat_lahir" name="tempat_lahir" type="text"
-                        value="<?php echo e(old('tempat_lahir', $profile->tempat_lahir ?? '')); ?>" class="form-control" required>
+                        value="<?php echo e(old('tempat_lahir', $profile->tempat_lahir ?? '')); ?>" class="form-control">
                 </div>
             </div>
 
