@@ -59,8 +59,7 @@
                             <a href="#" class="text-decoration-none fw-bold" data-bs-toggle="modal"
                                 data-bs-target="#modalDetailTugas<?php echo e($tugas->id); ?>">Lihat</a>
                     
-                        <?php elseif($pertemuanTugas->pembelajaran->status !== 'aktif'): ?>
-                            <span class="text-muted fw-bold" style="opacity: 0.6; cursor: not-allowed;">Kumpulkan</span>
+                        
                     
                         <?php else: ?>
                             <a href="<?php echo e(route('mata-pelajaran.show', ['mapel' => $slugMapel, 'kelas' => $slugKelas, 'tahunAjaran' => $slugTahunAjaran, 'semester' => $slugSemester])); ?>"
